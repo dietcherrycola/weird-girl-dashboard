@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📅 Calendar — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.fc-color-swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s}
+.fc-color-swatch.selected{border-color:white;box-shadow:0 0 0 2px var(--ch);transform:scale(1.15)}
+.fc-month-cell{min-height:70px;border:1px solid rgba(0,0,0,.06);border-radius:6px;padding:3px 4px;cursor:pointer;transition:background .15s;background:white;position:relative}
+.fc-month-cell:hover{background:#fdf6f0}
+.fc-month-cell.today{background:var(--chp);border-color:var(--ch)}
+.fc-month-cell.other-month{background:#fafafa;opacity:.6}
+.fc-month-cell.selected{border-color:var(--ch);box-shadow:0 0 0 2px var(--chp)}
+.fc-day-num{font-size:11px;font-weight:600;color:var(--tm);margin-bottom:2px}
+.fc-month-cell.today .fc-day-num{color:var(--ch);font-weight:700}
+.fc-event-pill{font-size:9px;padding:1px 5px;border-radius:3px;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;cursor:pointer;display:block;line-height:1.4}
+.fc-more-pill{font-size:8px;color:var(--tmut);padding:1px 3px;cursor:pointer}
+.fc-week-day-col{border:1px solid rgba(0,0,0,.07);border-radius:8px;padding:.4rem .5rem;min-height:90px;background:white}
+.fc-week-day-col.today{background:var(--chp);border-color:var(--ch)}
+.fc-week-day-hdr{font-size:9px;font-weight:700;color:var(--tmut);text-transform:uppercase;margin-bottom:.3rem;text-align:center}
+.fc-week-day-hdr.today-hdr{color:var(--ch)}
+.fc-agenda-item{display:flex;gap:10px;padding:8px 10px;background:white;border:1px solid rgba(0,0,0,.07);border-radius:10px;margin-bottom:5px;align-items:flex-start;cursor:pointer;transition:box-shadow .15s}
+.fc-agenda-item:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.fc-agenda-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.fc-day-event-row{display:flex;gap:7px;padding:6px 8px;background:white;border:1px solid rgba(0,0,0,.07);border-radius:8px;margin-bottom:4px;align-items:flex-start;cursor:pointer;font-size:11px}
+.fc-day-event-row:hover{box-shadow:0 2px 6px rgba(0,0,0,.08)}
+/* Home widget event dots */
+.cd.has-event{position:relative}
+.cd.has-event::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--ch)}
+.home-cal-events{margin-top:.4rem;display:flex;flex-direction:column;gap:2px}
+.home-cal-event-pill{font-size:9px;padding:2px 6px;border-radius:4px;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+
+/* Recur day chips */
+.fc-day-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1.5px solid var(--cbr);background:white;cursor:pointer;font-size:11px;font-weight:600;color:var(--tmut);transition:all .15s;user-select:none}
+.fc-day-chip input{display:none}
+.fc-color-swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s}
+.fc-color-swatch.selected{border-color:white;box-shadow:0 0 0 2px var(--ch);transform:scale(1.15)}
+.fc-month-cell{min-height:70px;border:1px solid rgba(0,0,0,.06);border-radius:6px;padding:3px 4px;cursor:pointer;transition:background .15s;background:white;position:relative}
+.fc-month-cell:hover{background:#fdf6f0}
+.fc-month-cell.today{background:var(--chp);border-color:var(--ch)}
+.fc-month-cell.other-month{background:#fafafa;opacity:.6}
+.fc-month-cell.selected{border-color:var(--ch);box-shadow:0 0 0 2px var(--chp)}
+.fc-day-num{font-size:11px;font-weight:600;color:var(--tm);margin-bottom:2px}
+.fc-month-cell.today .fc-day-num{color:var(--ch);font-weight:700}
+.fc-event-pill{font-size:9px;padding:1px 5px;border-radius:3px;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;cursor:pointer;display:block;line-height:1.4}
+.fc-more-pill{font-size:8px;color:var(--tmut);padding:1px 3px;cursor:pointer}
+.fc-week-day-col{border:1px solid rgba(0,0,0,.07);border-radius:8px;padding:.4rem .5rem;min-height:90px;background:white}
+.fc-week-day-col.today{background:var(--chp);border-color:var(--ch)}
+.fc-week-day-hdr{font-size:9px;font-weight:700;color:var(--tmut);text-transform:uppercase;margin-bottom:.3rem;text-align:center}
+.fc-week-day-hdr.today-hdr{color:var(--ch)}
+.fc-agenda-item{display:flex;gap:10px;padding:8px 10px;background:white;border:1px solid rgba(0,0,0,.07);border-radius:10px;margin-bottom:5px;align-items:flex-start;cursor:pointer;transition:box-shadow .15s}
+.fc-agenda-item:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.fc-agenda-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.fc-day-event-row{display:flex;gap:7px;padding:6px 8px;background:white;border:1px solid rgba(0,0,0,.07);border-radius:8px;margin-bottom:4px;align-items:flex-start;cursor:pointer;font-size:11px}
+.fc-day-event-row:hover{box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.fc-day-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;border:1.5px solid var(--cbr);background:white;cursor:pointer;font-size:11px;font-weight:600;color:var(--tmut);transition:all .15s;user-select:none}
+.fc-day-chip input{display:none}
+.fc-day-chip.sel{background:var(--ch);border-color:var(--ch);color:white}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db" id="page-calendar">
+
+  <!-- header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:1rem">
+    <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--chd)">📅 My Calendar</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-red" onclick="fcOpenNewEvent()">+ New event</button>
+      <div style="display:flex;gap:3px;background:rgba(0,0,0,.05);border-radius:8px;padding:3px">
+        <button id="fc-view-month" onclick="fcShowView('month')" style="padding:5px 12px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;background:var(--ch);color:white;transition:all .15s">Month</button>
+        <button id="fc-view-week" onclick="fcShowView('week')" style="padding:5px 12px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;background:transparent;color:var(--tmut);transition:all .15s">Week</button>
+        <button id="fc-view-agenda" onclick="fcShowView('agenda')" style="padding:5px 12px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;background:transparent;color:var(--tmut);transition:all .15s">Agenda</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONTH VIEW -->
+  <div id="fc-month-view">
+    <div class="card" style="padding:.9rem">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.9rem">
+        <button class="cal-nav" onclick="fcPrev()">‹</button>
+        <div style="flex:1;text-align:center;font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--chd)" id="fc-month-lbl"></div>
+        <button class="cal-nav" onclick="fcNext()">›</button>
+        <button onclick="fcGoToday()" style="font-size:10px;padding:5px 11px;border-radius:7px;border:1px solid var(--cbr);background:white;cursor:pointer;color:var(--chd);font-weight:600;font-family:'DM Sans',sans-serif">Today</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px">
+        <div class="cdl">Sun</div><div class="cdl">Mon</div><div class="cdl">Tue</div>
+        <div class="cdl">Wed</div><div class="cdl">Thu</div><div class="cdl">Fri</div><div class="cdl">Sat</div>
+      </div>
+      <div id="fc-month-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px"></div>
+    </div>
+  </div>
+
+  <!-- WEEK VIEW -->
+  <div id="fc-week-view" style="display:none">
+    <div class="card" style="padding:.9rem">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.9rem">
+        <button class="cal-nav" onclick="fcPrev()">‹</button>
+        <div style="flex:1;text-align:center;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--chd)" id="fc-week-lbl"></div>
+        <button class="cal-nav" onclick="fcNext()">›</button>
+        <button onclick="fcGoToday()" style="font-size:10px;padding:5px 11px;border-radius:7px;border:1px solid var(--cbr);background:white;cursor:pointer;color:var(--chd);font-weight:600;font-family:'DM Sans',sans-serif">Today</button>
+      </div>
+      <div id="fc-week-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px"></div>
+    </div>
+  </div>
+
+  <!-- AGENDA VIEW -->
+  <div id="fc-agenda-view" style="display:none">
+    <div class="card" style="padding:.9rem">
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--chd);margin-bottom:.8rem">Upcoming events</div>
+      <div id="fc-agenda-list"></div>
+      <div id="fc-agenda-empty" style="font-size:11px;color:var(--tmut);font-style:italic;text-align:center;padding:2rem">No upcoming events — add one! 🗓️</div>
+    </div>
+  </div>
+
+  <!-- DAY PANEL -->
+  <div id="fc-day-panel" style="display:none;margin-top:.8rem">
+    <div class="card" style="padding:.9rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem;flex-wrap:wrap;gap:6px">
+        <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--chd)" id="fc-day-title"></div>
+        <button class="btn btn-red" style="font-size:10px;padding:5px 11px" onclick="fcOpenNewEventOnDay()">+ Add event</button>
+      </div>
+      <div id="fc-day-events"></div>
+      <div id="fc-day-empty" style="font-size:11px;color:var(--tmut);font-style:italic;padding:.5rem 0">Nothing on this day — add something!</div>
+    </div>
+  </div>
+
+  <!-- EVENT MODAL -->
+  <div class="mo" id="fc-event-modal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal" style="max-width:460px">
+      <div class="modal-title" id="fc-modal-title">✨ New event</div>
+
+      <div class="fr">
+        <label class="fl">Event name *</label>
+        <input class="inp inp-full" id="fc-ev-name" placeholder="What's happening?">
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.6rem">
+        <div>
+          <label class="fl">Date *</label>
+          <input class="inp inp-full" id="fc-ev-date" type="date">
+        </div>
+        <div>
+          <label class="fl">End date <span style="opacity:.5;font-size:9px">(optional)</span></label>
+          <input class="inp inp-full" id="fc-ev-end-date" type="date">
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.6rem">
+        <div>
+          <label class="fl">Time <span style="opacity:.5;font-size:9px">(optional)</span></label>
+          <input class="inp inp-full" id="fc-ev-time" type="time">
+        </div>
+        <div>
+          <label class="fl">Category</label>
+          <select class="inp inp-full" id="fc-ev-cat">
+            <option value="personal">🌸 Personal</option>
+            <option value="health">🩺 Health</option>
+            <option value="school">📚 School</option>
+            <option value="work">💼 Work / Barbie</option>
+            <option value="social">👯 Social</option>
+            <option value="birthday">🎂 Birthday</option>
+            <option value="reminder">⏰ Reminder</option>
+            <option value="other">📌 Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fr">
+        <label class="fl">Colour</label>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;padding:.2rem 0" id="fc-color-picker">
+          <div class="fc-color-swatch selected" data-color="#c0392b" style="background:#c0392b" onclick="fcPickColor(this)"></div>
+          <div class="fc-color-swatch" data-color="#e07b10" style="background:#e07b10" onclick="fcPickColor(this)"></div>
+          <div class="fc-color-swatch" data-color="#c9a84c" style="background:#c9a84c" onclick="fcPickColor(this)"></div>
+          <div class="fc-color-swatch" data-color="#27ae60" style="background:#27ae60" onclick="fcPickColor(this)"></div>
+          <div class="fc-color-swatch" data-color="#2980b9" style="background:#2980b9" onclick="fcPickColor(this)"></div>
+          <div class="fc-color-swatch" data-color="#8e44ad" style="background:#8e44ad" onclick="fcPickColor(this)"></div>
+          <div class="fc-color-swatch" data-color="#e91e8c" style="background:#e91e8c" onclick="fcPickColor(this)"></div>
+          <div class="fc-color-swatch" data-color="#1a5fa0" style="background:#1a5fa0" onclick="fcPickColor(this)"></div>
+          <div class="fc-color-swatch" data-color="#555" style="background:#555" onclick="fcPickColor(this)"></div>
+        </div>
+      </div>
+
+      <div class="fr">
+        <label class="fl">Repeat</label>
+        <select class="inp inp-full" id="fc-ev-recur" onchange="fcToggleRecurDays()">
+          <option value="none">No repeat</option>
+          <option value="daily">Every day</option>
+          <option value="custom">Custom — pick days &amp; interval</option>
+          <option value="monthly">Every month (same date)</option>
+          <option value="yearly">Every year (same date)</option>
+        </select>
+      </div>
+      <!-- Custom repeat picker -->
+      <div id="fc-recur-days-wrap" style="display:none;margin-bottom:.6rem;background:var(--chp);border-radius:10px;padding:.6rem .8rem;border:1px solid rgba(192,57,43,.15)">
+        <div style="font-size:9px;font-weight:700;color:var(--chd);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.4px">On these days of the week</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.6rem">
+          <label class="fc-day-chip"><input type="checkbox" value="0" id="fc-rd-0"> Sun</label>
+          <label class="fc-day-chip"><input type="checkbox" value="1" id="fc-rd-1"> Mon</label>
+          <label class="fc-day-chip"><input type="checkbox" value="2" id="fc-rd-2"> Tue</label>
+          <label class="fc-day-chip"><input type="checkbox" value="3" id="fc-rd-3"> Wed</label>
+          <label class="fc-day-chip"><input type="checkbox" value="4" id="fc-rd-4"> Thu</label>
+          <label class="fc-day-chip"><input type="checkbox" value="5" id="fc-rd-5"> Fri</label>
+          <label class="fc-day-chip"><input type="checkbox" value="6" id="fc-rd-6"> Sat</label>
+        </div>
+        <div style="font-size:9px;font-weight:700;color:var(--chd);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.4px">Every how many weeks?</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">
+          <label class="fc-day-chip"><input type="radio" name="fc-week-interval" value="1" id="fc-wi-1" checked> Every week</label>
+          <label class="fc-day-chip"><input type="radio" name="fc-week-interval" value="2" id="fc-wi-2"> Every 2 weeks</label>
+          <label class="fc-day-chip"><input type="radio" name="fc-week-interval" value="3" id="fc-wi-3"> Every 3 weeks</label>
+          <label class="fc-day-chip"><input type="radio" name="fc-week-interval" value="4" id="fc-wi-4"> Every 4 weeks</label>
+        </div>
+        <div style="font-size:9px;color:var(--tmut);margin-top:.4rem;font-style:italic">e.g. check Fri + Every 2 weeks = every other Friday 🎀</div>
+      </div>
+
+      <div class="fr">
+        <label class="fl">Notes</label>
+        <textarea class="inp inp-full" id="fc-ev-notes" placeholder="Details, location, links..." style="height:60px;resize:none"></textarea>
+      </div>
+
+      <div style="display:flex;gap:7px;margin-top:.4rem">
+        <button class="btn btn-red" style="flex:1" onclick="fcSaveEvent()">Save event ✓</button>
+        <button class="btn btn-outline" id="fc-delete-btn" style="display:none;border-color:var(--ch);color:var(--ch)" onclick="fcDeleteEvent()">Delete</button>
+        <button class="btn btn-outline" onclick="document.getElementById('fc-event-modal').classList.remove('open')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('calendar');
+
+// ===== FULL CALENDAR =====
+(function(){
+const FC_STORAGE='wg_fc_events';
+let fcEvents=[],fcYear,fcMonth,fcSelectedDay=null,fcView='month',fcEditId=null,fcNewEventDay=null,fcPickedColor='#c0392b';
+let fcWeekStart=null;
+const FC_CAT_COLORS={personal:'#e91e8c',health:'#c0392b',school:'#2980b9',work:'#c9a84c',social:'#27ae60',birthday:'#8e44ad',reminder:'#e07b10',other:'#555'};
+const FC_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const FC_DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const FC_DAY_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function fcLoad(){fcEvents=ls(FC_STORAGE,[]);}
+function fcSave(){ss(FC_STORAGE,fcEvents);}
+function fcTodayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fcDs(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
+function fcParse(str){const p=str.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+
+function fcOccursOn(ev,dateStr){
+  if(!ev.date)return false;
+  if(!ev.recur||ev.recur==='none'){
+    if(ev.endDate&&ev.endDate>=ev.date)return dateStr>=ev.date&&dateStr<=ev.endDate;
+    return ev.date===dateStr;
+  }
+  const base=fcParse(ev.date),target=fcParse(dateStr);
+  if(target<base)return false;
+  const diff=Math.round((target-base)/86400000);
+  if(ev.recur==='daily')return true;
+  if(ev.recur==='custom'){
+    // If no days selected, fall back to same weekday as start
+    if(!ev.recurDays||!ev.recurDays.length) return diff%7===0;
+    // Check if target's day-of-week is in the selected days
+    if(!ev.recurDays.includes(target.getDay())) return false;
+    // Check week interval — which week number (from start) is this?
+    const interval=ev.weekInterval||1;
+    const weeksSinceBase=Math.floor(diff/7);
+    return weeksSinceBase%interval===0;
+  }
+  if(ev.recur==='monthly')return target.getDate()===base.getDate();
+  if(ev.recur==='yearly')return target.getDate()===base.getDate()&&target.getMonth()===base.getMonth();
+  return false;
+}
+function fcOnDate(dateStr){return fcEvents.filter(ev=>fcOccursOn(ev,dateStr));}
+
+// ---- VIEWS ----
+window.fcShowView=function(view){
+  fcView=view;
+  ['month','week','agenda'].forEach(v=>{
+    const el=document.getElementById('fc-'+v+'-view');
+    if(el)el.style.display=v===view?'block':'none';
+    const btn=document.getElementById('fc-view-'+v);
+    if(btn){btn.style.background=v===view?'var(--ch)':'';btn.style.color=v===view?'white':'';}
+  });
+  if(view==='month')fcRenderMonth();
+  else if(view==='week')fcRenderWeek();
+  else if(view==='agenda')fcRenderAgenda();
+};
+
+window.fcPrev=function(){
+  if(fcView==='month'){fcMonth--;if(fcMonth<0){fcMonth=11;fcYear--;}fcRenderMonth();}
+  else if(fcView==='week'&&fcWeekStart){fcWeekStart.setDate(fcWeekStart.getDate()-7);fcRenderWeek();}
+};
+window.fcNext=function(){
+  if(fcView==='month'){fcMonth++;if(fcMonth>11){fcMonth=0;fcYear++;}fcRenderMonth();}
+  else if(fcView==='week'&&fcWeekStart){fcWeekStart.setDate(fcWeekStart.getDate()+7);fcRenderWeek();}
+};
+window.fcGoToday=function(){
+  const n=new Date();fcYear=n.getFullYear();fcMonth=n.getMonth();
+  fcWeekStart=fcGetWeekStart(new Date());
+  if(fcView==='month')fcRenderMonth();
+  else if(fcView==='week')fcRenderWeek();
+};
+
+// ---- MONTH ----
+function fcRenderMonth(){
+  const g=document.getElementById('fc-month-grid');if(!g)return;
+  const lbl=document.getElementById('fc-month-lbl');if(lbl)lbl.textContent=FC_MONTHS[fcMonth]+' '+fcYear;
+  g.innerHTML='';
+  const today=fcTodayStr();
+  const firstDay=new Date(fcYear,fcMonth,1).getDay();
+  const daysInMonth=new Date(fcYear,fcMonth+1,0).getDate();
+  const daysInPrev=new Date(fcYear,fcMonth,0).getDate();
+  // prev month fill
+  for(let i=firstDay-1;i>=0;i--){
+    const pm=fcMonth-1<0?11:fcMonth-1,py=fcMonth-1<0?fcYear-1:fcYear;
+    g.appendChild(fcMakeCell(py,pm,daysInPrev-i,true));
+  }
+  // this month
+  for(let d=1;d<=daysInMonth;d++)g.appendChild(fcMakeCell(fcYear,fcMonth,d,false));
+  // next month fill
+  const total=firstDay+daysInMonth,rem=total%7===0?0:7-(total%7);
+  for(let d=1;d<=rem;d++){
+    const nm=fcMonth+1>11?0:fcMonth+1,ny=fcMonth+1>11?fcYear+1:fcYear;
+    g.appendChild(fcMakeCell(ny,nm,d,true));
+  }
+  fcUpdateHomeWidget();
+}
+
+function fcMakeCell(ey,em,d,otherMonth){
+  const dateStr=fcDs(ey,em,d),today=fcTodayStr();
+  const isToday=dateStr===today,isSel=dateStr===fcSelectedDay;
+  const evs=fcOnDate(dateStr);
+  const cell=document.createElement('div');
+  cell.className='fc-month-cell'+(otherMonth?' other-month':'')+(isToday?' today':'')+(isSel?' selected':'');
+  cell.onclick=function(){fcSelectDay(dateStr);};
+  const dn=document.createElement('div');dn.className='fc-day-num';dn.textContent=d;cell.appendChild(dn);
+  evs.slice(0,2).forEach(function(ev){
+    const pill=document.createElement('div');pill.className='fc-event-pill';
+    pill.style.background=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+    pill.textContent=(ev.time?ev.time.slice(0,5)+' ':'')+ev.name;
+    pill.onclick=function(e){e.stopPropagation();fcEditEvent(ev.id);};
+    cell.appendChild(pill);
+  });
+  if(evs.length>2){const m=document.createElement('div');m.className='fc-more-pill';m.textContent='+'+(evs.length-2)+' more';cell.appendChild(m);}
+  return cell;
+}
+
+window.fcSelectDay=function(dateStr){
+  fcSelectedDay=dateStr;
+  fcRenderMonth();
+  fcShowDayPanel(dateStr);
+};
+
+function fcShowDayPanel(dateStr){
+  const panel=document.getElementById('fc-day-panel');if(!panel)return;
+  const d=fcParse(dateStr);
+  const title=document.getElementById('fc-day-title');
+  if(title)title.textContent=FC_DAY_NAMES[d.getDay()]+', '+FC_MONTHS[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
+  fcNewEventDay=dateStr;
+  panel.style.display='block';
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  const evList=document.getElementById('fc-day-events');
+  const empty=document.getElementById('fc-day-empty');
+  if(!evList)return;
+  const evs=fcOnDate(dateStr).sort(function(a,b){return(a.time||'99:99').localeCompare(b.time||'99:99');});
+  evList.innerHTML='';
+  if(empty)empty.style.display=evs.length?'none':'block';
+  evs.forEach(function(ev){
+    const color=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+    const row=document.createElement('div');row.className='fc-day-event-row';
+    row.innerHTML='<div style="width:4px;border-radius:2px;background:'+color+';flex-shrink:0;align-self:stretch"></div>'
+      +'<div style="flex:1"><div style="font-weight:600;font-size:12px">'+ev.name+'</div>'
+      +'<div style="font-size:9px;color:var(--tmut);margin-top:2px">'+(ev.time||'All day')+(ev.recur&&ev.recur!=='none'?' \u00b7 \uD83D\uDD04 Repeats':'')+(ev.notes?' \u00b7 '+ev.notes:'')+'</div></div>'
+      +'<button class="hob-btn-sm" onclick="fcEditEvent(\''+ev.id+'\')">Edit</button>';
+    evList.appendChild(row);
+  });
+}
+
+window.fcOpenNewEventOnDay=function(){fcOpenNewEvent(fcNewEventDay);};
+
+// ---- WEEK ----
+function fcGetWeekStart(date){const d=new Date(date);d.setDate(d.getDate()-d.getDay());d.setHours(0,0,0,0);return d;}
+
+function fcRenderWeek(){
+  if(!fcWeekStart)fcWeekStart=fcGetWeekStart(new Date());
+  const g=document.getElementById('fc-week-grid');if(!g)return;
+  const today=fcTodayStr();
+  const ws=new Date(fcWeekStart),we=new Date(fcWeekStart);we.setDate(we.getDate()+6);
+  const lbl=document.getElementById('fc-week-lbl');
+  if(lbl)lbl.textContent=FC_MONTHS[ws.getMonth()].slice(0,3)+' '+ws.getDate()+' \u2013 '+FC_MONTHS[we.getMonth()].slice(0,3)+' '+we.getDate()+', '+we.getFullYear();
+  g.innerHTML='';
+  for(let i=0;i<7;i++){
+    const day=new Date(fcWeekStart);day.setDate(day.getDate()+i);
+    const dateStr=fcDs(day.getFullYear(),day.getMonth(),day.getDate());
+    const isToday=dateStr===today;
+    const evs=fcOnDate(dateStr).sort(function(a,b){return(a.time||'99:99').localeCompare(b.time||'99:99');});
+    const col=document.createElement('div');col.className='fc-week-day-col'+(isToday?' today':'');
+    const hdr=document.createElement('div');hdr.className='fc-week-day-hdr'+(isToday?' today-hdr':'');
+    hdr.innerHTML=FC_DAYS[i]+'<br>'+day.getDate();col.appendChild(hdr);
+    evs.forEach(function(ev){
+      const pill=document.createElement('div');pill.className='fc-event-pill';
+      pill.style.background=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+      pill.style.marginBottom='3px';
+      pill.textContent=(ev.time?ev.time.slice(0,5)+' ':'')+ev.name;
+      pill.onclick=function(){fcEditEvent(ev.id);};col.appendChild(pill);
+    });
+    if(!evs.length){const e=document.createElement('div');e.style.cssText='font-size:9px;color:rgba(0,0,0,.2);text-align:center;margin-top:.5rem';e.textContent='\u2014';col.appendChild(e);}
+    g.appendChild(col);
+  }
+}
+
+// ---- AGENDA ----
+function fcRenderAgenda(){
+  const list=document.getElementById('fc-agenda-list'),empty=document.getElementById('fc-agenda-empty');
+  if(!list)return;list.innerHTML='';
+  const today=fcTodayStr(),upcoming=[];
+  for(let i=0;i<90;i++){
+    const d=new Date();d.setDate(d.getDate()+i);
+    const dateStr=fcDs(d.getFullYear(),d.getMonth(),d.getDate());
+    const evs=fcOnDate(dateStr);
+    if(evs.length)upcoming.push({dateStr,d:new Date(d),evs});
+  }
+  if(empty)empty.style.display=upcoming.length?'none':'block';
+  upcoming.forEach(function(item){
+    const isToday=item.dateStr===today;
+    const dh=document.createElement('div');
+    dh.style.cssText='font-size:10px;font-weight:700;color:'+(isToday?'var(--ch)':'var(--tmut)')+';text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px';
+    dh.textContent=(isToday?'TODAY \u2014 ':'')+FC_DAY_NAMES[item.d.getDay()]+', '+FC_MONTHS[item.d.getMonth()]+' '+item.d.getDate();
+    list.appendChild(dh);
+    item.evs.sort(function(a,b){return(a.time||'99:99').localeCompare(b.time||'99:99');}).forEach(function(ev){
+      const color=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+      const el=document.createElement('div');el.className='fc-agenda-item';
+      el.innerHTML='<div class="fc-agenda-dot" style="background:'+color+'"></div>'
+        +'<div style="flex:1"><div style="font-size:12px;font-weight:600">'+ev.name+'</div>'
+        +'<div style="font-size:9px;color:var(--tmut);margin-top:2px">'+(ev.time?ev.time+' \u00b7 ':'')+( ev.cat||'')+(ev.recur&&ev.recur!=='none'?' \u00b7 \uD83D\uDD04 repeating':'')+'</div>'
+        +(ev.notes?'<div style="font-size:10px;color:var(--tmut);margin-top:2px;font-style:italic">'+ev.notes+'</div>':'')
+        +'</div><button class="hob-btn-sm" onclick="fcEditEvent(\''+ev.id+'\')">Edit</button>';
+      list.appendChild(el);
+    });
+  });
+}
+
+// ---- CRUD ----
+window.fcOpenNewEvent=function(dateStr){
+  fcEditId=null;
+  const mt=document.getElementById('fc-modal-title');if(mt)mt.textContent='\u2728 New event';
+  const db=document.getElementById('fc-delete-btn');if(db)db.style.display='none';
+  const nd=document.getElementById('fc-ev-name');if(nd)nd.value='';
+  const dd=document.getElementById('fc-ev-date');if(dd)dd.value=dateStr||fcTodayStr();
+  const ed=document.getElementById('fc-ev-end-date');if(ed)ed.value='';
+  const td=document.getElementById('fc-ev-time');if(td)td.value='';
+  const rd=document.getElementById('fc-ev-recur');if(rd)rd.value='none';
+  [0,1,2,3,4,5,6].forEach(function(d){const el=document.getElementById('fc-rd-'+d);if(el)el.checked=false;});
+  const defWi=document.getElementById('fc-wi-1');if(defWi)defWi.checked=true;
+  fcToggleRecurDays();
+  const cd=document.getElementById('fc-ev-cat');if(cd)cd.value='personal';
+  const nd2=document.getElementById('fc-ev-notes');if(nd2)nd2.value='';
+  fcPickedColor='#c0392b';
+  document.querySelectorAll('.fc-color-swatch').forEach(function(s){s.classList.toggle('selected',s.dataset.color===fcPickedColor);});
+  const modal=document.getElementById('fc-event-modal');if(modal)modal.classList.add('open');
+};
+
+window.fcPickColor=function(el){
+  document.querySelectorAll('.fc-color-swatch').forEach(function(s){s.classList.remove('selected');});
+  el.classList.add('selected');fcPickedColor=el.dataset.color;
+};
+
+window.fcSaveEvent=function(){
+  const nameEl=document.getElementById('fc-ev-name');
+  const name=nameEl?nameEl.value.trim():'';if(!name)return;
+  const id=fcEditId||('ev_'+Date.now()+'_'+Math.random().toString(36).slice(2,6));
+  function gv(elId){const el=document.getElementById(elId);return el?el.value:'';}
+  const recur=gv('fc-ev-recur');
+  const recurDays=[];
+  let weekInterval=1;
+  if(recur==='custom'){
+    [0,1,2,3,4,5,6].forEach(function(d){const el=document.getElementById('fc-rd-'+d);if(el&&el.checked)recurDays.push(d);});
+    const wi=document.querySelector('input[name="fc-week-interval"]:checked');
+    weekInterval=wi?parseInt(wi.value):1;
+  }
+  const ev={id,name,date:gv('fc-ev-date'),endDate:gv('fc-ev-end-date'),time:gv('fc-ev-time'),cat:gv('fc-ev-cat'),color:fcPickedColor,recur,recurDays,weekInterval,notes:gv('fc-ev-notes')};
+  if(fcEditId){const idx=fcEvents.findIndex(function(e){return e.id===fcEditId;});if(idx>=0)fcEvents[idx]=ev;else fcEvents.push(ev);}
+  else fcEvents.push(ev);
+  fcSave();
+  const modal=document.getElementById('fc-event-modal');if(modal)modal.classList.remove('open');
+  fcEditId=null;
+  fcRenderMonth();
+  if(fcView==='week')fcRenderWeek();
+  if(fcView==='agenda')fcRenderAgenda();
+  if(fcSelectedDay)fcShowDayPanel(fcSelectedDay);
+  fcUpdateHomeWidget();
+};
+
+window.fcEditEvent=function(id){
+  const ev=fcEvents.find(function(e){return e.id===id;});if(!ev)return;
+  fcEditId=id;
+  const mt=document.getElementById('fc-modal-title');if(mt)mt.textContent='\u270F\uFE0F Edit event';
+  const db=document.getElementById('fc-delete-btn');if(db)db.style.display='inline-block';
+  function sv(elId,val){const el=document.getElementById(elId);if(el)el.value=val||'';}
+  sv('fc-ev-name',ev.name);sv('fc-ev-date',ev.date);sv('fc-ev-end-date',ev.endDate);
+  sv('fc-ev-time',ev.time);sv('fc-ev-cat',ev.cat||'personal');sv('fc-ev-recur',ev.recur||'none');sv('fc-ev-notes',ev.notes);
+  [0,1,2,3,4,5,6].forEach(function(d){const el=document.getElementById('fc-rd-'+d);if(el)el.checked=ev.recurDays&&ev.recurDays.includes(d);});
+  const wi=ev.weekInterval||1;const wiEl=document.getElementById('fc-wi-'+wi);if(wiEl)wiEl.checked=true;
+  fcToggleRecurDays();
+  fcPickedColor=ev.color||'#c0392b';
+  document.querySelectorAll('.fc-color-swatch').forEach(function(s){s.classList.toggle('selected',s.dataset.color===fcPickedColor);});
+  const modal=document.getElementById('fc-event-modal');if(modal)modal.classList.add('open');
+};
+
+window.fcDeleteEvent=function(){
+  if(!fcEditId)return;
+  if(!confirm('Delete this event?'))return;
+  fcEvents=fcEvents.filter(function(e){return e.id!==fcEditId;});
+  fcSave();
+  const modal=document.getElementById('fc-event-modal');if(modal)modal.classList.remove('open');
+  fcEditId=null;
+  fcRenderMonth();
+  if(fcView==='week')fcRenderWeek();
+  if(fcView==='agenda')fcRenderAgenda();
+  if(fcSelectedDay)fcShowDayPanel(fcSelectedDay);
+  fcUpdateHomeWidget();
+};
+
+// ---- HOME WIDGET ----
+function fcUpdateHomeWidget(){
+  // Add event dots to home calendar cells
+  const g=document.getElementById('cal-grid');if(!g)return;
+  g.querySelectorAll('.cd:not(.empty)').forEach(function(cell){
+    const d=parseInt(cell.textContent);if(isNaN(d))return;
+    const dateStr=fcDs(calY,calM,d);
+    if(fcOnDate(dateStr).length)cell.classList.add('has-event');
+    else cell.classList.remove('has-event');
+  });
+  // Today's events below home calendar
+  let container=document.getElementById('home-cal-today-events');
+  if(!container){
+    const card=document.querySelector('#cal-grid')&&document.querySelector('#cal-grid').closest('.card');
+    if(card){container=document.createElement('div');container.id='home-cal-today-events';container.className='home-cal-events';card.appendChild(container);}
+  }
+  if(!container)return;
+  const todayEvs=fcOnDate(fcTodayStr()).sort(function(a,b){return(a.time||'99:99').localeCompare(b.time||'99:99');});
+  container.innerHTML='';
+  if(todayEvs.length){
+    const hdr=document.createElement('div');hdr.style.cssText='font-size:9px;font-weight:700;color:var(--tmut);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;margin-top:.3rem';hdr.textContent="Today's events";container.appendChild(hdr);
+    todayEvs.slice(0,4).forEach(function(ev){
+      const pill=document.createElement('div');pill.className='home-cal-event-pill';
+      pill.style.background=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+      pill.textContent=(ev.time?ev.time.slice(0,5)+' ':'')+ev.name;
+      pill.onclick=function(){window.location.href='calendar.html';};container.appendChild(pill);
+    });
+    if(todayEvs.length>4){const m=document.createElement('div');m.style.cssText='font-size:9px;color:var(--tmut);padding:1px 3px';m.textContent='+'+(todayEvs.length-4)+' more \u2014 open calendar';container.appendChild(m);}
+  }
+}
+
+// Toggle day-of-week picker
+window.fcToggleRecurDays=function(){
+  const recur=document.getElementById('fc-ev-recur');
+  const wrap=document.getElementById('fc-recur-days-wrap');
+  if(!wrap||!recur)return;
+  wrap.style.display=recur.value==='custom'?'block':'none';
+};
+
+// Override renderCal to also show dots
+const _origRenderCalFC=window.renderCal;
+window.renderCal=function(){
+  if(_origRenderCalFC)_origRenderCalFC();
+  fcLoad();fcUpdateHomeWidget();
+};
+
+// ---- INIT ----
+window.initFullCalendar=function(){
+  fcLoad();
+  const n=new Date();fcYear=n.getFullYear();fcMonth=n.getMonth();
+  if(!fcWeekStart)fcWeekStart=fcGetWeekStart(new Date());
+  fcShowView('month');
+};
+
+// Run on load
+fcLoad();
+setTimeout(function(){initFullCalendar();},100);
+})();
+
+// Auto-init
+if(typeof initFullCalendar === 'function') initFullCalendar();
+</script>
+</body>
+</html>

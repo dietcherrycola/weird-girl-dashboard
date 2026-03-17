@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎮 Gaming — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tmut);text-decoration:none;margin-bottom:1rem;padding:5px 12px;border-radius:20px;border:1px solid var(--cbr);background:white;transition:all .15s}.back-link:hover{background:var(--chp);color:var(--ch)}
+.game-nav{display:flex;gap:5px;flex-wrap:wrap;padding:.5rem .6rem;background:white;border:1px solid var(--cbr);border-radius:14px;margin-bottom:1rem}
+.gn-btn{font-size:10px;padding:5px 12px;border-radius:20px;border:2px solid rgba(0,0,0,.08);background:white;cursor:pointer;color:var(--tmut);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s;white-space:nowrap}
+.gn-btn:hover{border-color:var(--gc);color:var(--gc)}.gn-btn.active{background:var(--gc);color:white;border-color:var(--gc)}
+.game-page{display:none;animation:fadeIn .25s ease}.game-page.active{display:block}
+.game-hero{display:flex;align-items:center;gap:1rem;border-radius:18px;padding:1.1rem 1.4rem;margin-bottom:1rem;position:relative;overflow:hidden}
+.game-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gcl),white);z-index:0}
+.game-hero>*{position:relative;z-index:1}
+.gh-emoji{font-size:2.5rem}.gh-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:var(--gc)}.gh-sub{font-size:.75rem;color:var(--tmut);margin-top:2px}
+.game-page.dark-theme{background:linear-gradient(180deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);border-radius:16px;padding:1rem;color:white;min-height:400px}
+.game-page.dark-theme .gc{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}.game-page.dark-theme .gc::before{background:linear-gradient(90deg,var(--gc),color-mix(in srgb,var(--gc) 60%,white))}
+.game-page.dark-theme .gc-t{color:var(--gcl)}.game-page.dark-theme .gi-inp,.game-page.dark-theme .sv-sel,.game-page.dark-theme .sv-name{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:white}
+.game-page.dark-theme .gi{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08);color:white}
+.game-page.dark-theme .tip-card{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08)}
+.sv-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:.5rem .7rem;border-radius:10px;margin-bottom:.8rem}
+.sv-bar.dark{background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.2)}.sv-bar.light{background:rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.08)}
+.sv-lbl{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
+.sv-sel{border:1.5px solid rgba(0,0,0,.12);border-radius:8px;padding:5px 10px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;color:var(--tm);outline:none;cursor:pointer;min-width:140px}
+.sv-name{border:1.5px solid rgba(0,0,0,.12);border-radius:7px;padding:4px 9px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;color:var(--tm);outline:none;max-width:160px}
+.sv-bar.dark .sv-lbl{color:#c9a84c}.sv-bar.dark .sv-sel,.sv-bar.dark .sv-name{background:rgba(255,255,255,.1);border-color:rgba(201,168,76,.3);color:white}.sv-bar.dark .sv-sel option{background:#1a1a2e;color:white}
+.gc{background:white;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:.9rem 1rem;margin-bottom:.9rem;position:relative;overflow:hidden}
+.gc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gc),color-mix(in srgb,var(--gc) 60%,white))}
+.gc-t{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--gc);margin-bottom:.6rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.gc-t-right{margin-left:auto;display:flex;gap:4px;align-items:center}
+.gc-g2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+.gc-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+@media(max-width:700px){.gc-g2,.gc-g3{grid-template-columns:1fr}}
+.gi{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid rgba(0,0,0,.07);border-radius:7px;font-size:11px;margin-bottom:3px;background:white}
+.gi-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:11px;padding:0 3px}.gi-del:hover{color:var(--ch)}
+.gi-add{display:flex;gap:5px;align-items:center;margin-top:.4rem;flex-wrap:wrap}
+.gi-inp{border:1.5px solid rgba(0,0,0,.1);border-radius:7px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--tm);background:white;outline:none;flex:1}.gi-inp:focus{border-color:var(--gc)}
+.gi-btn{font-size:11px;padding:4px 10px;border-radius:7px;border:1.5px solid rgba(0,0,0,.1);background:white;cursor:pointer;color:var(--gc);font-family:'DM Sans',sans-serif;font-weight:600}.gi-btn:hover{background:var(--gcl);border-color:var(--gc)}
+.save-btn{width:100%;margin-top:.4rem;padding:5px;border:none;border-radius:8px;background:var(--gc);color:white;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer}.save-btn:hover{opacity:.85}
+textarea.gi-area{width:100%;border:1.5px solid rgba(0,0,0,.1);border-radius:8px;padding:6px 9px;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--tm);background:white;resize:none;height:80px;outline:none}.gi-area:focus{border-color:var(--gc)}
+/* TIPS */
+.tip-card{display:flex;gap:8px;padding:7px 10px;background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.06);border-radius:9px;margin-bottom:5px;font-size:10px;line-height:1.5;align-items:flex-start}
+.tip-icon{font-size:14px;flex-shrink:0}
+/* SESSION TRACKER */
+.session-bar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:.5rem;background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.06);border-radius:10px;margin-bottom:.7rem}
+.session-btn{font-size:10px;padding:4px 12px;border-radius:20px;border:1.5px solid rgba(0,0,0,.1);background:white;cursor:pointer;color:var(--gc);font-family:'DM Sans',sans-serif;font-weight:600;transition:all .15s}.session-btn:hover{background:var(--gcl);border-color:var(--gc)}
+.session-stat{text-align:center;padding:6px 10px;background:white;border:1px solid rgba(0,0,0,.06);border-radius:8px;min-width:70px}
+.ss-val{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--gc)}.ss-lbl{font-size:8px;color:var(--tmut);text-transform:uppercase;letter-spacing:.5px}
+/* DAILY CHECKLIST */
+.daily-item{display:flex;align-items:center;gap:6px;font-size:10px;cursor:pointer;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.04);line-height:1.4}.daily-item:last-child{border-bottom:none}
+.daily-item input{accent-color:var(--gc);flex-shrink:0}
+.daily-bar{height:6px;background:rgba(0,0,0,.06);border-radius:3px;overflow:hidden;margin-top:.4rem}
+.daily-fill{height:100%;border-radius:3px;background:var(--gc);transition:width .3s}
+/* GUIDE SECTION */
+.guide-block{background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.06);border-radius:10px;padding:.7rem .9rem;margin-bottom:.6rem}
+.guide-h{font-size:11px;font-weight:700;color:var(--gc);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.guide-p{font-size:10px;line-height:1.6;color:var(--tm)}
+/* CHECKLIST WITH PROGRESS */
+.quest-item{display:flex;align-items:center;gap:6px;padding:4px 8px;font-size:10px;border-bottom:1px solid rgba(0,0,0,.04);cursor:pointer}
+.quest-item:last-child{border-bottom:none}
+.quest-cb{width:14px;height:14px;border:2px solid rgba(0,0,0,.15);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;transition:all .15s}
+.quest-cb.done{background:var(--gc);border-color:var(--gc);color:white}
+.quest-text.done-t{text-decoration:line-through;opacity:.5}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+<a href="hobbies.html" class="back-link">← Back to Hobbies</a>
+<div style="text-align:center;margin-bottom:1.2rem">
+  <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#5b3fa0">🎮 Gaming</div>
+  <div style="font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Your library, your backlog, your worlds</div>
+</div>
+
+<!-- GAME NAV -->
+<div class="game-nav">
+  <button class="gn-btn active" onclick="goGame('overview')" style="--gc:#5b3fa0">📊 Overview</button>
+  <button class="gn-btn" onclick="goGame('skyrim')" style="--gc:#c9a84c">🗡️ Skyrim</button>
+  <button class="gn-btn" onclick="goGame('sims4')" style="--gc:#1c6b5e">🏠 Sims 4</button>
+  <button class="gn-btn" onclick="goGame('stardew')" style="--gc:#5a8c3c">🌾 Stardew</button>
+  <button class="gn-btn" onclick="goGame('minecraft')" style="--gc:#5d7c15">⛏️ Minecraft</button>
+  <button class="gn-btn" onclick="goGame('hytale')" style="--gc:#2e6b9e">🌲 Hytale</button>
+  <button class="gn-btn" onclick="goGame('echos')" style="--gc:#9b5fa0">🌸 Echos</button>
+  <button class="gn-btn" onclick="goGame('dbd')" style="--gc:#8b0000">🔪 DBD</button>
+  <button class="gn-btn" onclick="goGame('acnh')" style="--gc:#3d9e5e">🏝️ ACNH</button>
+</div>
+
+<!-- ==================== OVERVIEW ==================== -->
+<div class="game-page active" id="gp-overview" style="--gc:#5b3fa0;--gcl:#ede8f8">
+  <!-- STATS ROW -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem" id="ov-stats"></div>
+
+  <!-- SESSION LOGGER -->
+  <div class="gc"><div class="gc-t">🕹️ Log a gaming session<span class="gc-t-right"><span id="ov-session-saved" style="font-size:10px;color:var(--green);min-height:14px"></span></span></div>
+    <div class="session-bar">
+      <select class="gi-inp" id="ov-sess-game" style="flex:none;width:130px"><option>Skyrim</option><option>Sims 4</option><option>Stardew Valley</option><option>Minecraft</option><option>Hytale</option><option>Echos of Plum Grove</option><option>Dead by Daylight</option><option>Animal Crossing</option><option>Other</option></select>
+      <input class="gi-inp" type="number" id="ov-sess-hours" placeholder="Hours" style="flex:none;width:70px" min="0" step="0.5">
+      <input class="gi-inp" id="ov-sess-note" placeholder="What did you do?..." style="flex:1">
+      <button class="session-btn" onclick="logSession()">Log session</button>
+    </div>
+    <div id="ov-session-log" style="max-height:200px;overflow-y:auto"></div>
+  </div>
+
+  <div class="gc-g3">
+    <div class="gc"><div class="gc-t">🎮 Currently playing</div><div id="ov-current"></div>
+      <div class="gi-add"><input class="gi-inp" id="ov-cur-inp" placeholder="Game title..."><button class="gi-btn" onclick="gAdd('ov-current','ov-cur-inp','wh_gaming_current')">+</button></div></div>
+    <div class="gc"><div class="gc-t">📋 Backlog</div><div id="ov-backlog"></div>
+      <div class="gi-add"><input class="gi-inp" id="ov-bl-inp" placeholder="Add to backlog..."><button class="gi-btn" onclick="gAdd('ov-backlog','ov-bl-inp','wh_gaming_backlog')">+</button></div></div>
+    <div class="gc"><div class="gc-t">✅ Completed</div><div id="ov-completed"></div>
+      <div class="gi-add"><input class="gi-inp" id="ov-comp-inp" placeholder="Completed game..."><button class="gi-btn" onclick="gAdd('ov-completed','ov-comp-inp','wh_gaming_completed')">+</button></div></div>
+  </div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">🛒 Wishlist</div><div id="ov-wishlist"></div>
+      <div class="gi-add"><input class="gi-inp" id="ov-wish-inp" placeholder="Game I want..."><input class="gi-inp" id="ov-wish-price" placeholder="$" style="max-width:55px"><button class="gi-btn" onclick="gWishAdd()">+</button></div></div>
+    <div class="gc"><div class="gc-t">📝 Gaming notes</div>
+      <textarea class="gi-area" id="ov-notes" placeholder="Thoughts, discoveries, things to look up..."></textarea>
+      <button class="save-btn" onclick="gSaveText('ov-notes','wh_gaming_notes')">Save notes</button></div>
+  </div>
+  <!-- WEEKLY GAMING GOALS -->
+  <div class="gc"><div class="gc-t">🎯 Weekly gaming goals</div>
+    <div id="ov-weekly-goals"></div>
+    <div class="gi-add"><input class="gi-inp" id="ov-wg-inp" placeholder="This week I want to..."><button class="gi-btn" onclick="addWeeklyGoal()">+</button></div>
+  </div>
+</div>
+
+<!-- ==================== SKYRIM ==================== -->
+<div class="game-page dark-theme" id="gp-skyrim" style="--gc:#c9a84c;--gcl:#fff8e0">
+  <div class="game-hero" style="background:none"><div class="gh-emoji">🗡️</div><div><div class="gh-title" style="color:#c9a84c">The Elder Scrolls V: Skyrim</div><div class="gh-sub" style="color:rgba(255,255,255,.7)">Fus Ro Dah your way through every playthrough</div></div></div>
+  <div class="sv-bar dark"><span class="sv-lbl">💾 Save file:</span><select class="sv-sel" id="skyrim-sv-sel" onchange="svSwitch('skyrim')"><option>Save 1</option></select><input class="sv-name" id="skyrim-sv-name" placeholder="Name this save..." oninput="svLabel('skyrim')"></div>
+
+  <!-- SESSION QUICK LOG -->
+  <div class="session-bar" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
+    <span style="font-size:10px;color:#c9a84c;font-weight:600">Quick log:</span>
+    <input class="gi-inp" type="number" id="sky-hours" placeholder="Hours" style="width:60px" min="0" step="0.5">
+    <input class="gi-inp" id="sky-did" placeholder="What did you do..." style="flex:1">
+    <button class="session-btn" style="color:#c9a84c" onclick="quickLog('Skyrim','sky-hours','sky-did')">Log</button>
+  </div>
+
+  <!-- CHARACTER -->
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">🧙 Character</div>
+      <div class="gi-add" style="margin:0"><input class="gi-inp" id="skyrim-char" placeholder="Character name..."></div>
+      <div class="gi-add"><select class="sv-sel" id="skyrim-race" style="min-width:0;flex:1"><option>Nord</option><option>Imperial</option><option>Breton</option><option>Redguard</option><option>Dunmer</option><option>Altmer</option><option>Bosmer</option><option>Orc</option><option>Argonian</option><option>Khajiit</option></select><select class="sv-sel" id="skyrim-build" style="min-width:0;flex:1"><option>Warrior</option><option>Mage</option><option>Stealth</option><option>Battlemage</option><option>Paladin</option><option>Nightblade</option><option>Spellsword</option></select></div>
+      <button class="save-btn" onclick="svSaveChar('skyrim')">Save character</button>
+      <div id="skyrim-char-display" style="font-size:10px;color:rgba(255,255,255,.6);margin-top:4px;font-style:italic"></div>
+    </div>
+    <div class="gc"><div class="gc-t">📋 Current quests & goals</div>
+      <textarea class="gi-area" id="skyrim-quests" placeholder="What are you working on..." style="height:100px"></textarea>
+      <button class="save-btn" onclick="gSaveText('skyrim-quests','wh_skyrim_quests')">Save</button></div>
+  </div>
+
+  <!-- QUESTLINE TRACKER -->
+  <div class="gc"><div class="gc-t">📜 Major questline tracker<span class="gc-t-right" id="sky-quest-pct" style="font-size:9px;color:rgba(255,255,255,.5)"></span></div>
+    <div id="skyrim-questlines"></div>
+  </div>
+
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">🔧 Mods installed</div><div id="skyrim-mods"></div>
+      <div class="gi-add"><input class="gi-inp" id="skyrim-mod-inp" placeholder="Mod name..."><button class="gi-btn" onclick="gAdd('skyrim-mods','skyrim-mod-inp','wh_skyrim_mods')">+</button></div></div>
+    <div class="gc"><div class="gc-t">📝 Playthrough notes</div>
+      <textarea class="gi-area" id="skyrim-notes" placeholder="Discoveries, locations, build notes..."></textarea>
+      <button class="save-btn" onclick="gSaveText('skyrim-notes','wh_skyrim_notes')">Save</button></div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="gc"><div class="gc-t">💡 Skyrim tips & tricks</div><div id="skyrim-tips"></div></div>
+</div>
+
+<!-- ==================== SIMS 4 ==================== -->
+<div class="game-page" id="gp-sims4" style="--gc:#1c6b5e;--gcl:#e0f5f0">
+  <div class="game-hero"><div class="gh-emoji">🏠</div><div><div class="gh-title" style="color:#1c6b5e">The Sims 4</div><div class="gh-sub">Build. Live. Control.</div></div></div>
+  <div class="sv-bar light"><span class="sv-lbl" style="color:var(--gc)">💾 Household:</span><select class="sv-sel" id="sims4-sv-sel" onchange="svSwitch('sims4')"><option>Save 1</option></select><input class="sv-name" id="sims4-sv-name" placeholder="Name this household..." oninput="svLabel('sims4')"></div>
+
+  <div class="session-bar"><span style="font-size:10px;color:#1c6b5e;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="sim-hours" placeholder="Hrs" style="width:60px" min="0" step="0.5"><input class="gi-inp" id="sim-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#1c6b5e" onclick="quickLog('Sims 4','sim-hours','sim-did')">Log</button></div>
+
+  <div class="gc-g3">
+    <div class="gc"><div class="gc-t">👨‍👩‍👧‍👦 Households</div><div id="sims-households"></div><div class="gi-add"><input class="gi-inp" id="sims-hh-inp" placeholder="Household name..."><button class="gi-btn" onclick="gAdd('sims-households','sims-hh-inp','wh_sims_households')">+</button></div></div>
+    <div class="gc"><div class="gc-t">🏗️ Builds</div><div id="sims-builds"></div><div class="gi-add"><input class="gi-inp" id="sims-build-inp" placeholder="Build name/idea..."><button class="gi-btn" onclick="gAdd('sims-builds','sims-build-inp','wh_sims_builds')">+</button></div></div>
+    <div class="gc"><div class="gc-t">🎭 Challenges</div><div id="sims-challenges"></div><div class="gi-add"><input class="gi-inp" id="sims-ch-inp" placeholder="Challenge name..."><button class="gi-btn" onclick="gAdd('sims-challenges','sims-ch-inp','wh_sims_challenges')">+</button></div></div>
+  </div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">📦 Packs I have</div><div id="sims-packs"></div><div class="gi-add"><input class="gi-inp" id="sims-pack-inp" placeholder="Pack name..."><button class="gi-btn" onclick="gAdd('sims-packs','sims-pack-inp','wh_sims_packs')">+</button></div></div>
+    <div class="gc"><div class="gc-t">🛒 Packs wishlist</div><div id="sims-packs-wish"></div><div class="gi-add"><input class="gi-inp" id="sims-pw-inp" placeholder="Pack I want..."><button class="gi-btn" onclick="gAdd('sims-packs-wish','sims-pw-inp','wh_sims_packs_wish')">+</button></div></div>
+  </div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">✨ CC I have</div><div id="sims-cc"></div><div class="gi-add"><input class="gi-inp" id="sims-cc-inp" placeholder="CC item..."><button class="gi-btn" onclick="gAdd('sims-cc','sims-cc-inp','wh_sims_cc')">+</button></div></div>
+    <div class="gc"><div class="gc-t">💕 CC I want</div><div id="sims-cc-want"></div><div class="gi-add"><input class="gi-inp" id="sims-ccw-inp" placeholder="CC I want..."><button class="gi-btn" onclick="gAdd('sims-cc-want','sims-ccw-inp','wh_sims_cc_want')">+</button></div></div>
+  </div>
+  <div class="gc"><div class="gc-t">🌳 Legacy / Family tree</div>
+    <textarea class="gi-area" id="sims-legacy" placeholder="Track generations, family connections, heir notes..." style="height:100px"></textarea>
+    <button class="save-btn" style="background:#1c6b5e" onclick="gSaveText('sims-legacy','wh_sims_legacy')">Save</button></div>
+  <div class="gc"><div class="gc-t">💡 Sims 4 tips</div><div id="sims-tips"></div></div>
+  <div class="gc"><div class="gc-t">📝 Notes</div><textarea class="gi-area" id="sims-notes" placeholder="Build ideas, storylines, mods to try..."></textarea><button class="save-btn" style="background:#1c6b5e" onclick="gSaveText('sims-notes','wh_sims_notes')">Save</button></div>
+</div>
+
+<!-- ==================== STARDEW ==================== -->
+<div class="game-page" id="gp-stardew" style="--gc:#5a8c3c;--gcl:#eaf5e0">
+  <div class="game-hero"><div class="gh-emoji">🌾</div><div><div class="gh-title" style="color:#5a8c3c">Stardew Valley</div><div class="gh-sub">Farm, fish, befriend, and flourish</div></div></div>
+  <div class="sv-bar light"><span class="sv-lbl" style="color:var(--gc)">💾 Farm:</span><select class="sv-sel" id="stardew-sv-sel" onchange="svSwitch('stardew')"><option>Save 1</option></select><input class="sv-name" id="stardew-sv-name" placeholder="Farm name..." oninput="svLabel('stardew')"></div>
+  <div class="session-bar"><span style="font-size:10px;color:#5a8c3c;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="sdv-hours" placeholder="Hrs" style="width:60px"><input class="gi-inp" id="sdv-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#5a8c3c" onclick="quickLog('Stardew Valley','sdv-hours','sdv-did')">Log</button></div>
+
+  <!-- SEASON GUIDE -->
+  <div class="gc"><div class="gc-t">📅 Season guide — what to do each season</div><div id="stardew-seasons"></div></div>
+
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">🎯 Current goals</div><div id="stardew-goals"></div><div class="gi-add"><input class="gi-inp" id="stardew-goal-inp" placeholder="Goal..."><button class="gi-btn" onclick="gAdd('stardew-goals','stardew-goal-inp','wh_stardew_goals')">+</button></div></div>
+    <div class="gc"><div class="gc-t">💕 Relationships</div><div id="stardew-rels"></div><div class="gi-add"><input class="gi-inp" id="stardew-rel-inp" placeholder="Villager + heart level..."><button class="gi-btn" onclick="gAdd('stardew-rels','stardew-rel-inp','wh_stardew_rels')">+</button></div></div>
+  </div>
+
+  <!-- DAILY CHECKLIST -->
+  <div class="gc"><div class="gc-t">📋 Daily farm checklist<span class="gc-t-right" style="font-size:9px;color:var(--tmut)">Resets each day</span></div><div id="stardew-daily"></div></div>
+
+  <div class="gc"><div class="gc-t">💡 Stardew tips</div><div id="stardew-tips"></div></div>
+  <div class="gc"><div class="gc-t">📝 Farm notes</div><textarea class="gi-area" id="stardew-notes" placeholder="Layout plans, crop schedules, things to remember..."></textarea><button class="save-btn" style="background:#5a8c3c" onclick="gSaveText('stardew-notes','wh_stardew_notes')">Save</button></div>
+</div>
+
+<!-- ==================== MINECRAFT ==================== -->
+<div class="game-page" id="gp-minecraft" style="--gc:#5d7c15;--gcl:#e8f0d0">
+  <div class="game-hero"><div class="gh-emoji">⛏️</div><div><div class="gh-title" style="color:#5d7c15">Minecraft</div><div class="gh-sub">Build anything. Survive everything.</div></div></div>
+  <div class="sv-bar light"><span class="sv-lbl" style="color:var(--gc)">💾 World:</span><select class="sv-sel" id="minecraft-sv-sel" onchange="svSwitch('minecraft')"><option>Save 1</option></select><input class="sv-name" id="minecraft-sv-name" placeholder="World name..." oninput="svLabel('minecraft')"></div>
+  <div class="session-bar"><span style="font-size:10px;color:#5d7c15;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="mc-hours" placeholder="Hrs" style="width:60px"><input class="gi-inp" id="mc-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#5d7c15" onclick="quickLog('Minecraft','mc-hours','mc-did')">Log</button></div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">🌍 Worlds</div><div id="mc-worlds"></div><div class="gi-add"><input class="gi-inp" id="mc-world-inp" placeholder="World name + seed..."><button class="gi-btn" onclick="gAdd('mc-worlds','mc-world-inp','wh_mc_worlds')">+</button></div></div>
+    <div class="gc"><div class="gc-t">🏗️ Build ideas</div><div id="mc-builds"></div><div class="gi-add"><input class="gi-inp" id="mc-build-inp" placeholder="Build idea..."><button class="gi-btn" onclick="gAdd('mc-builds','mc-build-inp','wh_mc_builds')">+</button></div></div>
+  </div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">🏆 Achievements</div><div id="mc-achievements"></div><div class="gi-add"><input class="gi-inp" id="mc-ach-inp" placeholder="Achievement..."><button class="gi-btn" onclick="gAdd('mc-achievements','mc-ach-inp','wh_mc_achievements')">+</button></div></div>
+    <div class="gc"><div class="gc-t">🔧 Mods</div><div id="mc-mods"></div><div class="gi-add"><input class="gi-inp" id="mc-mod-inp" placeholder="Mod name..."><button class="gi-btn" onclick="gAdd('mc-mods','mc-mod-inp','wh_mc_mods')">+</button></div></div>
+  </div>
+  <div class="gc"><div class="gc-t">💡 Minecraft tips</div><div id="mc-tips"></div></div>
+  <div class="gc"><div class="gc-t">📝 Notes</div><textarea class="gi-area" id="mc-notes" placeholder="Redstone, coordinates, resource locations..."></textarea><button class="save-btn" style="background:#5d7c15" onclick="gSaveText('mc-notes','wh_mc_notes')">Save</button></div>
+</div>
+
+<!-- ==================== HYTALE ==================== -->
+<div class="game-page" id="gp-hytale" style="--gc:#2e6b9e;--gcl:#ddeeff">
+  <div class="game-hero"><div class="gh-emoji">🌲</div><div><div class="gh-title" style="color:#2e6b9e">Hytale</div><div class="gh-sub">The game we're all waiting for</div></div></div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">📋 Plans & ideas</div><div id="hytale-plans"></div><div class="gi-add"><input class="gi-inp" id="hytale-plan-inp" placeholder="Something I want to do..."><button class="gi-btn" onclick="gAdd('hytale-plans','hytale-plan-inp','wh_hytale_plans')">+</button></div></div>
+    <div class="gc"><div class="gc-t">📰 News & updates</div><div id="hytale-news"></div><div class="gi-add"><input class="gi-inp" id="hytale-news-inp" placeholder="News item..."><button class="gi-btn" onclick="gAdd('hytale-news','hytale-news-inp','wh_hytale_news')">+</button></div></div>
+  </div>
+  <div class="gc"><div class="gc-t">💭 Hype journal</div><textarea class="gi-area" id="hytale-hype" placeholder="What excites you, features you're hoping for..."></textarea><button class="save-btn" style="background:#2e6b9e" onclick="gSaveText('hytale-hype','wh_hytale_hype')">Save</button></div>
+</div>
+
+<!-- ==================== ECHOS ==================== -->
+<div class="game-page" id="gp-echos" style="--gc:#9b5fa0;--gcl:#f5eaf8">
+  <div class="game-hero"><div class="gh-emoji">🌸</div><div><div class="gh-title" style="color:#9b5fa0">Echoes of the Plum Grove</div><div class="gh-sub">Cozy farming with a haunting twist</div></div></div>
+  <div class="sv-bar light"><span class="sv-lbl" style="color:var(--gc)">💾 Village:</span><select class="sv-sel" id="echos-sv-sel" onchange="svSwitch('echos')"><option>Save 1</option></select><input class="sv-name" id="echos-sv-name" placeholder="Village name..." oninput="svLabel('echos')"></div>
+  <div class="session-bar"><span style="font-size:10px;color:#9b5fa0;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="ech-hours" placeholder="Hrs" style="width:60px"><input class="gi-inp" id="ech-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#9b5fa0" onclick="quickLog('Echos','ech-hours','ech-did')">Log</button></div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">🏘️ Villagers</div><div id="echos-villagers"></div><div class="gi-add"><input class="gi-inp" id="echos-v-inp" placeholder="Villager..."><button class="gi-btn" onclick="gAdd('echos-villagers','echos-v-inp','wh_echos_villagers')">+</button></div></div>
+    <div class="gc"><div class="gc-t">🎯 Goals</div><div id="echos-goals"></div><div class="gi-add"><input class="gi-inp" id="echos-g-inp" placeholder="Goal..."><button class="gi-btn" onclick="gAdd('echos-goals','echos-g-inp','wh_echos_goals')">+</button></div></div>
+  </div>
+  <div class="gc"><div class="gc-t">📝 Notes</div><textarea class="gi-area" id="echos-notes" placeholder="Discoveries, secrets, farming plans..."></textarea><button class="save-btn" style="background:#9b5fa0" onclick="gSaveText('echos-notes','wh_echos_notes')">Save</button></div>
+</div>
+
+<!-- ==================== DBD ==================== -->
+<div class="game-page dark-theme" id="gp-dbd" style="--gc:#ff4444;--gcl:#ffe0e0">
+  <div class="game-hero" style="background:none"><div class="gh-emoji">🔪</div><div><div class="gh-title" style="color:#ff4444">Dead by Daylight</div><div class="gh-sub" style="color:rgba(255,255,255,.7)">Survive. Escape. Or don't.</div></div></div>
+  <div class="session-bar" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)"><span style="font-size:10px;color:#ff4444;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="dbd-hours" placeholder="Hrs" style="width:60px"><input class="gi-inp" id="dbd-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#ff4444" onclick="quickLog('Dead by Daylight','dbd-hours','dbd-did')">Log</button></div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">🎭 Killer mains</div><div id="dbd-killers"></div><div class="gi-add"><input class="gi-inp" id="dbd-k-inp" placeholder="Killer..."><button class="gi-btn" onclick="gAdd('dbd-killers','dbd-k-inp','wh_dbd_killers')">+</button></div></div>
+    <div class="gc"><div class="gc-t">🏃 Survivor mains</div><div id="dbd-survivors"></div><div class="gi-add"><input class="gi-inp" id="dbd-s-inp" placeholder="Survivor..."><button class="gi-btn" onclick="gAdd('dbd-survivors','dbd-s-inp','wh_dbd_survivors')">+</button></div></div>
+  </div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">🧩 Favorite perks</div><div id="dbd-perks"></div><div class="gi-add"><input class="gi-inp" id="dbd-p-inp" placeholder="Perk..."><button class="gi-btn" onclick="gAdd('dbd-perks','dbd-p-inp','wh_dbd_perks')">+</button></div></div>
+    <div class="gc"><div class="gc-t">🎯 Builds to try</div><div id="dbd-builds"></div><div class="gi-add"><input class="gi-inp" id="dbd-b-inp" placeholder="Build + perks..."><button class="gi-btn" onclick="gAdd('dbd-builds','dbd-b-inp','wh_dbd_builds')">+</button></div></div>
+  </div>
+  <div class="gc"><div class="gc-t">💡 DBD tips</div><div id="dbd-tips"></div></div>
+  <div class="gc"><div class="gc-t">📝 Match notes</div><textarea class="gi-area" id="dbd-notes" placeholder="Strategies, funny moments, salt..."></textarea><button class="save-btn" style="background:#ff4444" onclick="gSaveText('dbd-notes','wh_dbd_notes')">Save</button></div>
+</div>
+
+<!-- ==================== ACNH ==================== -->
+<div class="game-page" id="gp-acnh" style="--gc:#3d9e5e;--gcl:#eafaf1">
+  <div class="game-hero"><div class="gh-emoji">🏝️</div><div><div class="gh-title" style="color:#3d9e5e">Animal Crossing: New Horizons</div><div class="gh-sub">Your island, your paradise</div></div></div>
+  <div class="session-bar"><span style="font-size:10px;color:#3d9e5e;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="ac-hours" placeholder="Hrs" style="width:60px"><input class="gi-inp" id="ac-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#3d9e5e" onclick="quickLog('Animal Crossing','ac-hours','ac-did')">Log</button></div>
+  <div class="gc-g3">
+    <div class="gc"><div class="gc-t">🏘️ Villagers</div><div id="acnh-villagers"></div><div class="gi-add"><input class="gi-inp" id="acnh-v-inp" placeholder="Villager..."><button class="gi-btn" style="color:#3d9e5e" onclick="gAdd('acnh-villagers','acnh-v-inp','wh_acnh_villagers')">+</button></div></div>
+    <div class="gc"><div class="gc-t">💭 Dreamies</div><div id="acnh-dreamvils"></div><div class="gi-add"><input class="gi-inp" id="acnh-d-inp" placeholder="Dream villager..."><button class="gi-btn" style="color:#3d9e5e" onclick="gAdd('acnh-dreamvils','acnh-d-inp','wh_acnh_dreamvils')">+</button></div></div>
+    <div class="gc"><div class="gc-t">🛒 Wishlist</div><div id="acnh-wishlist"></div><div class="gi-add"><input class="gi-inp" id="acnh-w-inp" placeholder="Item I want..."><button class="gi-btn" style="color:#3d9e5e" onclick="gAdd('acnh-wishlist','acnh-w-inp','wh_acnh_wishlist')">+</button></div></div>
+  </div>
+  <!-- DAILY CHECKLIST -->
+  <div class="gc"><div class="gc-t">📋 Daily island checklist<span class="gc-t-right" style="font-size:9px;color:var(--tmut)">Resets each day</span></div><div id="acnh-daily"></div></div>
+  <div class="gc-g2">
+    <div class="gc"><div class="gc-t">📊 Streak</div><div id="acnh-streak" style="text-align:center;padding:.5rem"><div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#3d9e5e" id="acnh-streak-num">0</div><div style="font-size:10px;color:var(--tmut)">day streak</div></div><div id="acnh-history" style="display:flex;gap:2px;flex-wrap:wrap;justify-content:center;margin-top:.4rem"></div></div>
+    <div class="gc"><div class="gc-t">💡 ACNH tips</div><div id="acnh-tips"></div></div>
+  </div>
+  <div class="gc"><div class="gc-t">🎨 Island design notes</div><textarea class="gi-area" id="acnh-design-notes" placeholder="Theme ideas, layout plans, terraforming notes..."></textarea><button class="save-btn" style="background:#3d9e5e" onclick="gSaveText('acnh-design-notes','wh_acnh_design')">Save</button></div>
+  <div style="text-align:center;margin-top:.5rem"><a href="acnh.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#3d9e5e;color:white;border-radius:10px;font-size:11px;font-weight:600;text-decoration:none;font-family:'DM Sans',sans-serif">🍃 Open full ACNH Island Guide →</a></div>
+</div>
+
+</div>
+
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('hobbies');
+
+// ===== NAV =====
+window.goGame=id=>{document.querySelectorAll('.game-page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.gn-btn').forEach(b=>b.classList.remove('active'));document.getElementById('gp-'+id).classList.add('active');document.querySelector(`.gn-btn[onclick="goGame('${id}')"]`).classList.add('active');window.scrollTo(0,0)};
+
+// ===== LIST SYSTEM =====
+function gRender(c,k){const el=document.getElementById(c);if(!el)return;const items=ls(k,[]);el.innerHTML='';if(!items.length){el.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic;opacity:.7">Nothing yet</div>';return}items.forEach((item,i)=>{const text=typeof item==='string'?item:(item.text||item.name||'');const price=item.price?' · $'+item.price:'';const e=document.createElement('div');e.className='gi';e.innerHTML=`<span style="flex:1">${text}${price}</span><button class="gi-del" onclick="gDel('${c}','${k}',${i})">×</button>`;el.appendChild(e)})}
+window.gAdd=(c,iid,k)=>{const inp=document.getElementById(iid);if(!inp)return;const v=inp.value.trim();if(!v)return;const items=ls(k,[]);items.push(v);ss(k,items);inp.value='';gRender(c,k)};
+window.gDel=(c,k,i)=>{const items=ls(k,[]);items.splice(i,1);ss(k,items);gRender(c,k)};
+window.gWishAdd=()=>{const n=document.getElementById('ov-wish-inp').value.trim();if(!n)return;const p=document.getElementById('ov-wish-price').value.trim();const items=ls('wh_gaming_wishlist',[]);items.push({text:n,price:p});ss('wh_gaming_wishlist',items);document.getElementById('ov-wish-inp').value='';document.getElementById('ov-wish-price').value='';gRender('ov-wishlist','wh_gaming_wishlist')};
+window.gSaveText=(id,key)=>{const el=document.getElementById(id);if(el)ss(key,el.value)};
+function gLoadText(id,key){const el=document.getElementById(id);if(el)el.value=ls(key,'')||''}
+
+// ===== SESSION LOGGING =====
+let sessions=ls('wh_game_sessions',[]);
+window.logSession=()=>{
+  const game=document.getElementById('ov-sess-game').value;
+  const hours=parseFloat(document.getElementById('ov-sess-hours').value)||0;
+  const note=document.getElementById('ov-sess-note').value.trim();
+  if(!hours&&!note)return;
+  sessions.unshift({game,hours,note,date:new Date().toLocaleDateString(),ts:Date.now()});
+  ss('wh_game_sessions',sessions);document.getElementById('ov-sess-hours').value='';document.getElementById('ov-sess-note').value='';
+  renderSessions();renderOvStats();
+  const s=document.getElementById('ov-session-saved');s.textContent='Logged ✨';setTimeout(()=>s.textContent='',2000);
+};
+window.quickLog=(game,hid,nid)=>{
+  const hours=parseFloat(document.getElementById(hid).value)||0;
+  const note=document.getElementById(nid).value.trim();
+  if(!hours&&!note)return;
+  sessions.unshift({game,hours,note,date:new Date().toLocaleDateString(),ts:Date.now()});
+  ss('wh_game_sessions',sessions);document.getElementById(hid).value='';document.getElementById(nid).value='';
+  renderSessions();renderOvStats();addDone('Played '+game+' for '+hours+'h 🎮');
+};
+function renderSessions(){
+  const c=document.getElementById('ov-session-log');if(!c)return;c.innerHTML='';
+  if(!sessions.length){c.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic">No sessions logged yet</div>';return}
+  sessions.slice(0,20).forEach((s,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;gap:6px;padding:5px 8px;border:1px solid rgba(0,0,0,.06);border-radius:7px;font-size:10px;margin-bottom:3px;align-items:center';e.innerHTML=`<span style="font-size:9px;color:var(--tmut);min-width:55px">${s.date}</span><span style="font-weight:600;color:var(--gc);min-width:80px">${s.game}</span><span style="font-weight:700">${s.hours}h</span><span style="flex:1;color:var(--tmut);font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.note||''}</span><button class="gi-del" onclick="delSession(${i})">×</button>`;c.appendChild(e)});
+}
+window.delSession=i=>{sessions.splice(i,1);ss('wh_game_sessions',sessions);renderSessions();renderOvStats()};
+
+// OVERVIEW STATS
+function renderOvStats(){
+  const c=document.getElementById('ov-stats');if(!c)return;
+  const week=sessions.filter(s=>Date.now()-s.ts<604800000);
+  const totalHours=week.reduce((a,s)=>a+s.hours,0);
+  const gamesPlayed=new Set(week.map(s=>s.game)).size;
+  const totalSessions=week.length;
+  const fav=week.length?Object.entries(week.reduce((a,s)=>{a[s.game]=(a[s.game]||0)+s.hours;return a},{})).sort((a,b)=>b[1]-a[1])[0]?.[0]||'—':'—';
+  c.innerHTML=`<div class="session-stat"><div class="ss-val">${totalHours.toFixed(1)}</div><div class="ss-lbl">Hours this week</div></div><div class="session-stat"><div class="ss-val">${totalSessions}</div><div class="ss-lbl">Sessions</div></div><div class="session-stat"><div class="ss-val">${gamesPlayed}</div><div class="ss-lbl">Games played</div></div><div class="session-stat"><div class="ss-val" style="font-size:13px">${fav}</div><div class="ss-lbl">Most played</div></div>`;
+}
+
+// WEEKLY GOALS
+let weeklyGoals=ls('wh_gaming_weekly',[]);
+function renderWeeklyGoals(){
+  const c=document.getElementById('ov-weekly-goals');if(!c)return;c.innerHTML='';
+  if(!weeklyGoals.length){c.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic">Set some goals for this week!</div>';return}
+  weeklyGoals.forEach((g,i)=>{const e=document.createElement('div');e.className='quest-item';e.onclick=()=>{weeklyGoals[i].done=!weeklyGoals[i].done;ss('wh_gaming_weekly',weeklyGoals);renderWeeklyGoals()};e.innerHTML=`<div class="quest-cb ${g.done?'done':''}">${g.done?'✓':''}</div><span class="quest-text ${g.done?'done-t':''}" style="flex:1">${g.text}</span><button class="gi-del" onclick="event.stopPropagation();weeklyGoals.splice(${i},1);ss('wh_gaming_weekly',weeklyGoals);renderWeeklyGoals()">×</button>`;c.appendChild(e)});
+}
+window.addWeeklyGoal=()=>{const v=document.getElementById('ov-wg-inp').value.trim();if(!v)return;weeklyGoals.push({text:v,done:false});ss('wh_gaming_weekly',weeklyGoals);document.getElementById('ov-wg-inp').value='';renderWeeklyGoals()};
+
+// ===== SAVE FILE SYSTEM =====
+const SAVE_GAMES=['skyrim','sims4','stardew','minecraft','hytale','echos'];
+const MAX_SAVES=8;
+function svInit(){SAVE_GAMES.forEach(game=>{const saves=ls('sv_'+game,[{name:'Save 1',slot:0}]);const sel=document.getElementById(game+'-sv-sel');if(!sel)return;sel.innerHTML='';saves.forEach((s,i)=>{const o=document.createElement('option');o.value=i;o.textContent=s.name||('Save '+(i+1));sel.appendChild(o)});if(saves.length<MAX_SAVES){const o=document.createElement('option');o.value='new';o.textContent='+ New save';sel.appendChild(o)}const ne=document.getElementById(game+'-sv-name');if(ne&&saves[0])ne.value=saves[0].name||''})}
+window.svSwitch=game=>{const sel=document.getElementById(game+'-sv-sel');if(!sel)return;const saves=ls('sv_'+game,[{name:'Save 1',slot:0}]);if(sel.value==='new'){if(saves.length>=MAX_SAVES){alert('Max 8 saves!');sel.value=0;return}saves.push({name:'Save '+(saves.length+1),slot:saves.length});ss('sv_'+game,saves);svInit();sel.value=saves.length-1}const ne=document.getElementById(game+'-sv-name');const idx=parseInt(sel.value)||0;if(ne&&saves[idx])ne.value=saves[idx].name||''};
+window.svLabel=game=>{const sel=document.getElementById(game+'-sv-sel');const ne=document.getElementById(game+'-sv-name');if(!sel||!ne)return;const saves=ls('sv_'+game,[{name:'Save 1',slot:0}]);const idx=parseInt(sel.value)||0;if(saves[idx]){saves[idx].name=ne.value;ss('sv_'+game,saves);const opt=sel.options[idx];if(opt)opt.textContent=ne.value||('Save '+(idx+1))}};
+window.svSaveChar=game=>{const c=document.getElementById(game+'-char')?.value||'';const r=document.getElementById(game+'-race')?.value||'';const b=document.getElementById(game+'-build')?.value||'';ss('wh_'+game+'_char',{name:c,race:r,build:b});const d=document.getElementById(game+'-char-display');if(d)d.textContent=`${r} ${b} — ${c||'Unnamed'}`};
+
+// ===== SKYRIM QUESTLINES =====
+const SKY_QUESTS=['Main Quest (Dragonborn)','Companions','College of Winterhold','Thieves Guild','Dark Brotherhood','Civil War (Stormcloaks)','Civil War (Imperial)','Dragonborn DLC','Dawnguard DLC','Bards College','Daedric Artifacts (15 total)'];
+function renderSkyrimQuests(){
+  const c=document.getElementById('skyrim-questlines');if(!c)return;c.innerHTML='';
+  const data=ls('wh_skyrim_questlines',{});
+  let done=0;
+  SKY_QUESTS.forEach((q,i)=>{const d=data[i];if(d)done++;const e=document.createElement('div');e.className='quest-item';e.onclick=()=>{data[i]=!data[i];ss('wh_skyrim_questlines',data);renderSkyrimQuests()};e.innerHTML=`<div class="quest-cb ${d?'done':''}">${d?'✓':''}</div><span class="quest-text ${d?'done-t':''}">${q}</span>`;c.appendChild(e)});
+  const pct=document.getElementById('sky-quest-pct');if(pct)pct.textContent=done+'/'+SKY_QUESTS.length+' complete';
+}
+renderSkyrimQuests();
+
+// ===== DAILY CHECKLISTS =====
+function renderDaily(cid,tasks,sk,color){
+  const c=document.getElementById(cid);if(!c)return;c.innerHTML='';
+  const today=new Date().toISOString().split('T')[0];
+  let d=ls(sk,{});if(d.date!==today)d={date:today,checks:{}};
+  let done=0;
+  tasks.forEach((t,i)=>{const dn=d.checks[i];if(dn)done++;const lbl=document.createElement('label');lbl.className='daily-item';lbl.innerHTML=`<input type="checkbox" ${dn?'checked':''} style="accent-color:${color}"><span style="${dn?'text-decoration:line-through;opacity:.5':''}">${t}</span>`;lbl.querySelector('input').onchange=()=>{d.checks[i]=!d.checks[i];ss(sk,d);renderDaily(cid,tasks,sk,color)};c.appendChild(lbl)});
+  const bar=document.createElement('div');bar.className='daily-bar';bar.innerHTML=`<div class="daily-fill" style="width:${Math.round(done/tasks.length*100)}%;background:${color}"></div>`;c.appendChild(bar);
+  const lbl=document.createElement('div');lbl.style.cssText='font-size:9px;color:var(--tmut);text-align:center;margin-top:3px';lbl.textContent=done+'/'+tasks.length+' done today';c.appendChild(lbl);
+}
+
+// STARDEW DAILY
+renderDaily('stardew-daily',['Water all crops','Check animals (pet, milk, collect eggs)','Check Traveling Cart (Fri/Sun)','Harvest ripe crops','Process artisan goods','Check crab pots','Forage around town','Check mail & TV (Queen of Sauce on Sundays!)','Talk to villagers (2+ per day for friendship)','Check mines/skull cavern if energy allows'],'wh_stardew_daily','#5a8c3c');
+
+// ACNH DAILY
+const ACNH_DAILIES=['Check in at Resident Services','Hit money rock (8 hits!)','Dig up fossils (4 per day)','Check Nook\'s Cranny','Check Able Sisters','Shake trees for furniture','Collect shells on beach','Talk to villagers','Water flowers','Check message bottle','Pick weeds','Shoot balloon presents'];
+renderDaily('acnh-daily',ACNH_DAILIES,'wh_acnh_daily','#3d9e5e');
+
+// ACNH STREAK
+function updateACNHStreak(){const streak=ls('wh_acnh_streak',{count:0,lastDate:null,history:[]});const today=new Date().toISOString().split('T')[0];const data=ls('wh_acnh_daily',{});const done=data.date===today?Object.values(data.checks).filter(Boolean).length:0;if(done>=6&&streak.lastDate!==today){streak.count++;streak.lastDate=today;streak.history.push({date:today,done});ss('wh_acnh_streak',streak)}document.getElementById('acnh-streak-num').textContent=streak.count;const hist=document.getElementById('acnh-history');if(!hist)return;hist.innerHTML='';(streak.history||[]).slice(-14).forEach(h=>{const dot=document.createElement('div');dot.style.cssText=`width:12px;height:12px;border-radius:3px;background:#3d9e5e;opacity:${h.done/ACNH_DAILIES.length}`;dot.title=h.date+': '+h.done+'/'+ACNH_DAILIES.length;hist.appendChild(dot)})}
+updateACNHStreak();
+
+// ===== STARDEW SEASON GUIDE =====
+[{s:'🌸 Spring',tips:'Best crops: Strawberries (from Egg Festival day 13!), Cauliflower, Potatoes. Fish: Legend (rainy day, Mountain Lake). Events: Egg Festival (13th), Flower Dance (24th). Forage: Leek, Daffodil, Dandelion, Spring Onion.'},
+{s:'☀️ Summer',tips:'Best crops: Blueberries (multi-harvest!), Starfruit (Oasis), Melons. Fish: Super Cucumber, Octopus (night). Events: Luau (11th), Dance of Moonlight Jellies (28th). Start saving for Fall seeds!'},
+{s:'🍂 Fall',tips:'Best crops: Cranberries (multi-harvest!), Pumpkins, Artichokes. Fish: Walleye (rainy night). Events: Stardew Valley Fair (16th) — display 9 best items! Spirit\'s Eve (27th). LAST chance to complete Community Center bundles before Winter.'},
+{s:'❄️ Winter',tips:'No crops (unless greenhouse/ginger island). Focus on: Mining, fishing, upgrading tools, socializing. Fish: Squid (night), Sturgeon (for Caviar). Forage: Crystal Fruit, Crocus, Holly, Snow Yam. Perfect time to redesign farm layout.'}
+].forEach(season=>{const e=document.createElement('div');e.className='guide-block';e.innerHTML=`<div class="guide-h">${season.s}</div><div class="guide-p">${season.tips}</div>`;document.getElementById('stardew-seasons').appendChild(e)});
+
+// ===== TIPS =====
+function renderTips(containerId, tips){
+  const c=document.getElementById(containerId);if(!c)return;
+  tips.forEach(t=>{const e=document.createElement('div');e.className='tip-card';e.innerHTML=`<span class="tip-icon">${t.icon||'💡'}</span><div><div style="font-weight:600">${t.tip}</div>${t.detail?'<div style="font-size:9px;color:var(--tmut);margin-top:2px">'+t.detail+'</div>':''}</div>`;c.appendChild(e)});
+}
+renderTips('skyrim-tips',[
+  {icon:'⚔️',tip:'Don\'t spread skill points too thin',detail:'Pick 3-4 skills to focus on. A focused build dominates, a scattered build struggles.'},
+  {icon:'🛡️',tip:'Smithing + Enchanting = god mode',detail:'Level both to 100 and you can make gear stronger than anything you\'ll find.'},
+  {icon:'💰',tip:'Transmute iron ore → gold ore → gold jewelry → enchant → sell',detail:'Best money loop in the game. Transmute spell found in Halted Stream Camp.'},
+  {icon:'🏃',tip:'Sneak everywhere early game',detail:'Sneak levels fast, and sneak attack bonuses are insane (15x dagger, 3x bow).'},
+  {icon:'🗺️',tip:'Get a horse ASAP',detail:'Costs 1000g at Whiterun stables. Can climb mountains at absurd angles.'},
+  {icon:'📚',tip:'Sell enchanted gear to level Speech',detail:'Higher value items = more Speech XP. Enchant cheap daggers with Banish Daedra.'}
+]);
+renderTips('sims-tips',[
+  {icon:'💡',tip:'bb.moveobjects on',detail:'The #1 build cheat. Place objects anywhere, clip through walls, stack items.'},
+  {icon:'🏠',tip:'Hold Alt while placing objects',detail:'Free placement — objects snap to a finer grid instead of the normal one.'},
+  {icon:'💰',tip:'motherlode / rosebud',detail:'50k / 1k simoleons. Or use: money [amount] for exact amounts.'},
+  {icon:'🎭',tip:'MCCommand Center mod is essential',detail:'Automates story progression, fixes bugs, adds control. The #1 mod for gameplay.'},
+  {icon:'📸',tip:'Tab mode for screenshots',detail:'Press Tab in live mode for cinematic camera. Use C to capture.'},
+  {icon:'🌳',tip:'Legacy tip: write a family bio for each generation',detail:'Future you will forget storylines. Keep notes in the legacy tracker above!'}
+]);
+renderTips('stardew-tips',[
+  {icon:'⛏️',tip:'Bring food to the mines for healing',detail:'Common Gold Star Cheese from cows heals 225 energy and 101 health.'},
+  {icon:'🌾',tip:'Quality Sprinklers by Summer Year 1',detail:'Iron bar + Gold bar + Refined Quartz. Automates watering = way more free time.'},
+  {icon:'💕',tip:'Loved gifts: check the Wiki',detail:'Each villager has 2 "loved" gifts. Giving loved gifts = fastest friendship.'},
+  {icon:'💰',tip:'Ancient Fruit + Greenhouse = infinite money',detail:'Once you get one Ancient Fruit seed, you can fill the greenhouse and make wine forever.'},
+  {icon:'🎣',tip:'Level Fishing early — it gets easier',detail:'Fishing feels impossible at level 1. By level 5 it\'s actually fun.'}
+]);
+renderTips('mc-tips',[
+  {icon:'⛏️',tip:'Never dig straight down',detail:'Classic rule. Always dig stairs or stand on the edge of a block.'},
+  {icon:'🛏️',tip:'Sleep on Day 1',detail:'Skipping the first night avoids hostile mobs before you have gear.'},
+  {icon:'💎',tip:'Diamonds spawn between Y -64 and Y 16',detail:'Best level is Y -59. Use Fortune III pickaxe for multiple drops.'},
+  {icon:'🏠',tip:'Build a starter base on Day 1',detail:'Dirt hut counts. Just need walls, a door, a crafting table, and a furnace.'},
+  {icon:'🔥',tip:'Smelt while you mine',detail:'Bring a furnace to the mine. Process ores while you keep digging.'}
+]);
+renderTips('dbd-tips',[
+  {icon:'🏃',tip:'Windows are stronger than pallets',detail:'A well-timed vault wastes more of the killer\'s time than dropping a pallet.'},
+  {icon:'👂',tip:'Listen for the heartbeat (Terror Radius)',detail:'It tells you how close the killer is. Learn the different sounds for different killers.'},
+  {icon:'🎯',tip:'Do gens. Seriously.',detail:'Hiding in lockers or urban evading around the map loses games. Do generators.'},
+  {icon:'🔪',tip:'As killer: patrol gens, don\'t chase one survivor forever',detail:'If a chase takes more than 30 seconds, break off and pressure gens.'},
+  {icon:'💀',tip:'Learn 2-3 killers well rather than all of them',detail:'Muscle memory and map knowledge matter more than having every killer at level 10.'}
+]);
+renderTips('acnh-tips',[
+  {icon:'💰',tip:'Hit rocks for 8 resources',detail:'Dig 2 holes behind you so you don\'t bounce back. Hit fast — each rock gives 8 drops.'},
+  {icon:'🌺',tip:'Water flowers to breed hybrids',detail:'Place flowers in a checkerboard pattern. Water daily. Rare colors take time but are worth it.'},
+  {icon:'🎈',tip:'Balloons spawn every 5 minutes',detail:'They come from one side of the island. Stand on the beach and listen for the whoosh sound.'},
+  {icon:'🏝️',tip:'Use the Happy Island Designer to plan',detail:'eugeneration.github.io/happy-island-designer — plan before you terraform!'},
+  {icon:'📦',tip:'Always buy the item of the day at Nook\'s',detail:'The daily special rotates. Some rare items only appear a few times ever.'}
+]);
+
+// ===== INIT ALL LISTS =====
+const ALL_LISTS=[
+  ['ov-current','wh_gaming_current'],['ov-backlog','wh_gaming_backlog'],['ov-completed','wh_gaming_completed'],['ov-wishlist','wh_gaming_wishlist'],
+  ['skyrim-mods','wh_skyrim_mods'],
+  ['sims-households','wh_sims_households'],['sims-builds','wh_sims_builds'],['sims-challenges','wh_sims_challenges'],['sims-packs','wh_sims_packs'],['sims-packs-wish','wh_sims_packs_wish'],['sims-cc','wh_sims_cc'],['sims-cc-want','wh_sims_cc_want'],
+  ['stardew-goals','wh_stardew_goals'],['stardew-rels','wh_stardew_rels'],
+  ['mc-worlds','wh_mc_worlds'],['mc-builds','wh_mc_builds'],['mc-achievements','wh_mc_achievements'],['mc-mods','wh_mc_mods'],
+  ['hytale-plans','wh_hytale_plans'],['hytale-news','wh_hytale_news'],
+  ['echos-villagers','wh_echos_villagers'],['echos-goals','wh_echos_goals'],
+  ['dbd-killers','wh_dbd_killers'],['dbd-survivors','wh_dbd_survivors'],['dbd-perks','wh_dbd_perks'],['dbd-builds','wh_dbd_builds'],
+  ['acnh-villagers','wh_acnh_villagers'],['acnh-dreamvils','wh_acnh_dreamvils'],['acnh-wishlist','wh_acnh_wishlist'],
+];
+ALL_LISTS.forEach(([c,k])=>gRender(c,k));
+['ov-notes/wh_gaming_notes','skyrim-quests/wh_skyrim_quests','skyrim-notes/wh_skyrim_notes','sims-notes/wh_sims_notes','sims-legacy/wh_sims_legacy','stardew-notes/wh_stardew_notes','mc-notes/wh_mc_notes','hytale-hype/wh_hytale_hype','echos-notes/wh_echos_notes','dbd-notes/wh_dbd_notes','acnh-design-notes/wh_acnh_design'].forEach(p=>{const[id,key]=p.split('/');gLoadText(id,key)});
+const sc=ls('wh_skyrim_char',null);
+if(sc){const d=document.getElementById('skyrim-char-display');if(d)d.textContent=`${sc.race||''} ${sc.build||''} — ${sc.name||'Unnamed'}`;if(document.getElementById('skyrim-char'))document.getElementById('skyrim-char').value=sc.name||'';if(document.getElementById('skyrim-race'))document.getElementById('skyrim-race').value=sc.race||'';if(document.getElementById('skyrim-build'))document.getElementById('skyrim-build').value=sc.build||''}
+svInit();renderSessions();renderOvStats();renderWeeklyGoals();
+</script>
+</body>
+</html>

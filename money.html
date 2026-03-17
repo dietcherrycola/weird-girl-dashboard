@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💰 Money — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.money-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:.8rem}
+@media(max-width:700px){.money-summary{grid-template-columns:1fr}}
+.money-stat{background:white;border:1px solid var(--cbr);border-radius:10px;padding:9px 11px;box-shadow:var(--shadow)}
+.ms-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--tmut);margin-bottom:3px}
+.ms-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:700}
+.ms-sub{font-size:9px;color:var(--tmut);margin-top:1px}
+.wish-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:white;border:1px solid var(--cbr);border-radius:8px;font-size:11px;margin-bottom:4px}
+.wish-progress{flex:1;height:6px;background:rgba(192,57,43,.1);border-radius:3px;overflow:hidden}
+.wish-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .3s}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+<div class="page-title">💰 Money Tracker</div>
+
+<div class="money-summary" style="margin-top:1rem">
+  <div class="money-stat"><div class="ms-label">Monthly income</div><div class="ms-val" style="color:var(--green)" id="life-school-pay">$1,005</div><div class="ms-sub" id="life-school-sub">→ $1,500 from Aug 12</div></div>
+  <div class="money-stat"><div class="ms-label">Side hustle</div><div class="ms-val" style="color:var(--gold)" id="total-hustle">$0</div><div class="ms-sub">YouTube, Etsy, UGC</div></div>
+  <div class="money-stat"><div class="ms-label">Beauty fund</div><div class="ms-val" style="color:var(--ch)" id="beauty-fund">$0</div><div class="ms-sub">saved toward treatments</div></div>
+</div>
+
+<div class="g2">
+  <div class="card"><div class="ct"><div class="ci">💸</div>Income streams<button class="btn btn-red ct-right" id="open-income-modal" style="font-size:11px;padding:4px 10px">+ Add</button></div><div id="income-list"></div></div>
+  <div class="card"><div class="ct"><div class="ci">✨</div>Beauty wishlist</div>
+    <div class="row"><input class="inp" id="wish-inp" placeholder="Treatment name..." style="flex:1"><input class="inp" id="wish-cost" placeholder="$" style="width:50px"><button class="btn btn-red" id="wish-add-btn">Add</button></div>
+    <div id="wish-list" style="margin-top:.5rem"></div>
+  </div>
+</div>
+<div class="card"><div class="ct"><div class="ci">🗺</div>Financial roadmap</div><div id="money-roadmap"></div></div>
+
+</div>
+
+<!-- INCOME MODAL -->
+<div class="mo" id="income-modal">
+  <div class="modal"><div class="modal-title">Log income</div>
+    <div class="fr"><label class="fl">Source</label><input class="inp inp-full" id="inc-source" placeholder="e.g. Etsy sale, brand deal..." /></div>
+    <div class="fgrid2">
+      <div class="fr"><label class="fl">Amount ($)</label><input class="inp inp-full" id="inc-amt" type="number" /></div>
+      <div class="fr"><label class="fl">Category</label><select class="sel inp-full" id="inc-cat"><option>YouTube</option><option>Etsy</option><option>UGC / Brand deal</option><option>Freelance</option><option>Other</option></select></div>
+    </div>
+    <div class="macts"><button class="btn btn-outline" id="inc-cancel">Cancel</button><button class="btn btn-red" id="inc-save">Add income</button></div>
+  </div>
+</div>
+
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('money');
+
+let incomeLog=ls(K.income,[]);
+let wishlist=ls(K.wishlist,[{name:'Electrolysis session (PCOS jaw)',cost:150,saved:0},{name:'Medical grade facial',cost:200,saved:0},{name:'Weekly blowout x4',cost:160,saved:0},{name:'Wax appointment',cost:65,saved:0}]);
+function getSchoolPay(){const now=new Date();return now>=new Date(2026,7,12)?1500:1005}
+function updatePay(){const p=getSchoolPay();document.getElementById('life-school-pay').textContent='$'+p.toLocaleString();document.getElementById('life-school-sub').textContent=p===1500?'monthly paycheck':'→ $1,500 from Aug 12'}
+updatePay();
+
+function renderIncome(){const list=document.getElementById('income-list');if(!list)return;list.innerHTML='';const pay=getSchoolPay();[{source:'Job (school para)',amt:pay,cat:'Primary',color:'#27ae60'},...incomeLog.slice(0,10)].forEach(item=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:8px;padding:6px 9px;background:white;border:1px solid var(--cbr);border-radius:8px;font-size:11px;margin-bottom:4px';e.innerHTML=`<div style="width:6px;height:6px;border-radius:50%;background:${item.color||'#2980b9'};flex-shrink:0"></div><span style="font-weight:500;flex:1">${item.source}</span><span style="font-size:10px;color:var(--tmut)">${item.cat}</span><span style="font-weight:500;color:var(--green)">$${item.amt}</span>`;list.appendChild(e)});document.getElementById('total-hustle').textContent='$'+incomeLog.reduce((a,b)=>a+b.amt,0)}
+
+function renderWishlist(){const list=document.getElementById('wish-list');if(!list)return;list.innerHTML='';wishlist.forEach((w,i)=>{const pct=Math.min(100,Math.round(w.saved/w.cost*100));const e=document.createElement('div');e.className='wish-item';e.innerHTML=`<span style="flex:1;font-weight:500">${w.name}</span><span style="font-size:10px;color:var(--tmut);margin-right:4px">$${w.saved}/$${w.cost}</span><div class="wish-progress"><div class="wish-fill" style="width:${pct}%"></div></div><button class="btn-sm primary" style="font-size:9px;padding:2px 6px;margin-left:5px" onclick="addToWish(${i})">+$5</button><button class="btn-del" onclick="delWish(${i})">×</button>`;list.appendChild(e)});document.getElementById('beauty-fund').textContent='$'+wishlist.reduce((a,b)=>a+b.saved,0)}
+window.addToWish=i=>{wishlist[i].saved=Math.min(wishlist[i].cost,wishlist[i].saved+5);ss(K.wishlist,wishlist);renderWishlist()};
+window.delWish=i=>{wishlist.splice(i,1);ss(K.wishlist,wishlist);renderWishlist()};
+document.getElementById('wish-add-btn').onclick=()=>{const n=document.getElementById('wish-inp').value.trim(),c=parseFloat(document.getElementById('wish-cost').value)||50;if(!n)return;wishlist.push({name:n,cost:c,saved:0});ss(K.wishlist,wishlist);document.getElementById('wish-inp').value='';document.getElementById('wish-cost').value='';renderWishlist()};
+
+const incomeModal=document.getElementById('income-modal');
+document.getElementById('open-income-modal').onclick=()=>incomeModal.classList.add('open');
+document.getElementById('inc-cancel').onclick=()=>incomeModal.classList.remove('open');
+incomeModal.onclick=e=>{if(e.target===incomeModal)incomeModal.classList.remove('open')};
+document.getElementById('inc-save').onclick=()=>{const source=document.getElementById('inc-source').value.trim(),amt=parseFloat(document.getElementById('inc-amt').value)||0;if(!source)return;incomeLog.push({source,amt,cat:document.getElementById('inc-cat').value,color:'#2980b9'});ss(K.income,incomeLog);renderIncome();incomeModal.classList.remove('open');document.getElementById('inc-source').value='';document.getElementById('inc-amt').value=''};
+
+renderIncome();renderWishlist();
+
+[{phase:'Now',action:'$1,005/mo job · bumps to $1,500 Aug 12 · survive & build',color:'#e67e22'},{phase:'Soon',action:'UGC brand deals · $50–200/video',color:'#f0a500'},{phase:'Q3 2026',action:'Etsy shop + first doll sales',color:'#27ae60'},{phase:'Q4 2026',action:'YouTube monetization threshold',color:'#2980b9'},{phase:'2027',action:'Patreon for mods · YouTube ad rev',color:'#8e44ad'},{phase:'Goal',action:'$3,000+/mo · beauty fund funded',color:'#c0392b'}].forEach(r=>{const e=document.createElement('div');e.style.cssText='display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--cbr);align-items:center;font-size:11px';e.innerHTML=`<span style="font-size:10px;font-weight:500;color:${r.color};min-width:68px;flex-shrink:0">${r.phase}</span><span>${r.action}</span>`;document.getElementById('money-roadmap').appendChild(e)});
+</script>
+</body>
+</html>

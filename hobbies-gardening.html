@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>🌱 Gardening — Weird Girl Dashboard</title><link rel="stylesheet" href="shared.css">
+<style>.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tmut);text-decoration:none;margin-bottom:1rem;padding:5px 12px;border-radius:20px;border:1px solid var(--cbr);background:white;transition:all .15s}.back-link:hover{background:var(--chp);color:var(--ch)}
+.gn{background:white;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:.9rem 1rem;margin-bottom:.9rem;position:relative;overflow:hidden}
+.gn::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#3a8c4e,#7ac47a)}
+.gn-t{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:#3a8c4e;margin-bottom:.6rem;display:flex;align-items:center;gap:6px}
+.gn-g2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}@media(max-width:700px){.gn-g2{grid-template-columns:1fr}}
+.gi-add{display:flex;gap:5px;align-items:center;margin-top:.4rem;flex-wrap:wrap}
+.gi-inp{border:1.5px solid rgba(0,0,0,.1);border-radius:7px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;outline:none;flex:1}.gi-inp:focus{border-color:#3a8c4e}
+.gi-btn{font-size:11px;padding:4px 10px;border-radius:7px;border:1.5px solid rgba(0,0,0,.1);background:white;cursor:pointer;color:#3a8c4e;font-family:'DM Sans',sans-serif;font-weight:600}.gi-btn:hover{background:#eafaf1;border-color:#3a8c4e}
+.gi-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:11px;padding:0 3px}.gi-del:hover{color:var(--ch)}
+.gi-save{width:100%;margin-top:.4rem;padding:5px;border:none;border-radius:8px;background:#3a8c4e;color:white;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer}
+textarea.gi-area{width:100%;border:1.5px solid rgba(0,0,0,.1);border-radius:8px;padding:6px 9px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;resize:none;height:80px;outline:none}.gi-area:focus{border-color:#3a8c4e}
+.gi{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid rgba(0,0,0,.07);border-radius:7px;font-size:11px;margin-bottom:3px;background:white}
+.plant-card{background:white;border:1px solid rgba(58,140,78,.15);border-radius:10px;padding:8px 10px;margin-bottom:5px;font-size:11px}
+.tip-card{display:flex;gap:8px;padding:7px 9px;background:#eafaf1;border:1px solid rgba(58,140,78,.15);border-radius:8px;margin-bottom:5px;font-size:11px}
+</style></head><body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+<a href="hobbies.html" class="back-link">← Back to Hobbies</a>
+<div style="text-align:center;margin-bottom:1.2rem"><div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#3a8c4e">🌱 Gardening</div><div style="font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Growing things is growing yourself</div></div>
+
+<!-- BEGINNER GUIDE -->
+<div class="gn"><div class="gn-t">🌿 Beginner's guide</div>
+<div id="beginner-guide"></div></div>
+
+<!-- MY PLANTS -->
+<div class="gn"><div class="gn-t">🌿 My plants</div>
+<div class="gi-add" style="margin-bottom:.5rem"><input class="gi-inp" id="plant-name" placeholder="Plant name..."><select class="gi-inp" id="plant-type" style="flex:none;width:90px"><option>Indoor</option><option>Outdoor</option><option>Herb</option><option>Veggie</option><option>Flower</option><option>Succulent</option></select><input class="gi-inp" id="plant-notes" placeholder="Notes..." style="flex:2"><button class="gi-btn" onclick="addPlant()">+</button></div>
+<div id="plant-list"></div></div>
+
+<div class="gn-g2">
+  <div class="gn"><div class="gn-t">🛒 Garden wishlist</div><div id="garden-wish"></div><div class="gi-add"><input class="gi-inp" id="gw-inp" placeholder="Plant or supply..."><button class="gi-btn" onclick="gAdd('garden-wish','gw-inp','wh_garden_wishlist')">+</button></div></div>
+  <div class="gn"><div class="gn-t">🧰 Supplies needed</div><div id="garden-supplies"></div><div class="gi-add"><input class="gi-inp" id="gs-inp" placeholder="Supply..."><button class="gi-btn" onclick="gAdd('garden-supplies','gs-inp','wh_garden_supplies')">+</button></div></div>
+</div>
+
+<!-- SEASONAL PLANTING -->
+<div class="gn"><div class="gn-t">📅 Seasonal planting schedule (Arkansas Zone 7b/8a)</div><div id="seasonal"></div></div>
+
+<!-- JOURNAL -->
+<div class="gn"><div class="gn-t">📓 Garden journal</div>
+<textarea class="gi-area" id="garden-journal" placeholder="Observations, what's growing, what died, lessons learned..." style="height:120px"></textarea>
+<button class="gi-save" onclick="ss('wh_garden_journal',document.getElementById('garden-journal').value)">Save journal</button></div>
+
+<div class="gn"><div class="gn-t">📝 Beginner notes & questions</div>
+<textarea class="gi-area" id="garden-notes" placeholder="Things to research, questions for the garden center..." style="height:80px"></textarea>
+<button class="gi-save" onclick="ss('wh_garden_notes',document.getElementById('garden-notes').value)">Save notes</button></div>
+</div>
+
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('hobbies');
+
+// Lists
+function gRender(c,k){const el=document.getElementById(c);if(!el)return;const items=ls(k,[]);el.innerHTML='';if(!items.length){el.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic;opacity:.7">Nothing yet</div>';return}items.forEach((t,i)=>{const txt=typeof t==='string'?t:t.text||'';const e=document.createElement('div');e.className='gi';e.innerHTML='<span style="flex:1">'+txt+'</span><button class="gi-del" onclick="gDel(\''+c+'\',\''+k+'\','+i+')">×</button>';el.appendChild(e)})}
+window.gAdd=(c,iid,k)=>{const inp=document.getElementById(iid);if(!inp)return;const v=inp.value.trim();if(!v)return;const items=ls(k,[]);items.push(v);ss(k,items);inp.value='';gRender(c,k)};
+window.gDel=(c,k,i)=>{const items=ls(k,[]);items.splice(i,1);ss(k,items);gRender(c,k)};
+gRender('garden-wish','wh_garden_wishlist');gRender('garden-supplies','wh_garden_supplies');
+
+// Plants
+let plants=ls('wh_garden_plants',[]);
+function renderPlants(){const c=document.getElementById('plant-list');if(!c)return;c.innerHTML='';if(!plants.length){c.innerHTML='<div style="text-align:center;padding:.8rem;color:var(--tmut);font-size:10px;font-style:italic">No plants yet — start your garden!</div>';return}
+plants.forEach((p,i)=>{const e=document.createElement('div');e.className='plant-card';e.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start"><div><span style="font-weight:700;color:#3a8c4e">'+p.name+'</span> <span style="font-size:9px;padding:1px 6px;border-radius:20px;background:#eafaf1;color:#3a8c4e">'+p.type+'</span></div><button class="gi-del" onclick="delPlant('+i+')">×</button></div>'+(p.notes?'<div style="font-size:9px;color:var(--tmut);margin-top:3px;font-style:italic">'+p.notes+'</div>':'');c.appendChild(e)})}
+window.addPlant=()=>{const n=document.getElementById('plant-name').value.trim();if(!n)return;plants.push({name:n,type:document.getElementById('plant-type').value,notes:document.getElementById('plant-notes').value.trim()});ss('wh_garden_plants',plants);document.getElementById('plant-name').value='';document.getElementById('plant-notes').value='';renderPlants()};
+window.delPlant=i=>{plants.splice(i,1);ss('wh_garden_plants',plants);renderPlants()};
+renderPlants();
+
+// Beginner guide
+[{t:'Start small — 3-5 plants max',d:'Don\'t overwhelm yourself. Herbs are perfect starters (basil, mint, rosemary).'},{t:'Know your zone',d:'You\'re in Arkansas, USDA Zone 7b/8a. This tells you what grows when.'},{t:'Sunlight is everything',d:'Most veggies need 6-8 hours of direct sun. Observe your space before planting.'},{t:'Water consistently, not constantly',d:'Most plants prefer deep watering 2-3x/week over daily sprinkles.'},{t:'Good soil = good plants',d:'Buy quality potting mix for containers. Amend garden soil with compost.'},{t:'Read the plant tag',d:'It tells you sun needs, spacing, water frequency, and when to plant. Trust the tag.'},{t:'Container gardening is valid',d:'No yard? No problem. Most things grow great in pots on a patio or balcony.'},{t:'Don\'t be afraid of failure',d:'Every gardener kills plants. It\'s how you learn. The plant store will have more.'}].forEach(tip=>{const e=document.createElement('div');e.className='tip-card';e.innerHTML='<span style="font-size:14px;flex-shrink:0">🌿</span><div><div style="font-weight:600">'+tip.t+'</div><div style="font-size:9px;color:var(--tmut);margin-top:1px">'+tip.d+'</div></div>';document.getElementById('beginner-guide').appendChild(e)});
+
+// Seasonal
+[{season:'🌸 Spring (Mar-May)',plants:'Tomatoes, peppers, herbs, squash, beans, cucumbers. Start seeds indoors in March, transplant after last frost (~April 10).'},{season:'☀️ Summer (Jun-Aug)',plants:'Keep watering! Harvest tomatoes, squash, herbs. Plant fall crops in late July: beans, cucumbers for fall harvest.'},{season:'🍂 Fall (Sep-Nov)',plants:'Lettuce, spinach, kale, broccoli, carrots, radishes. These love cool weather. Plant by mid-September.'},{season:'❄️ Winter (Dec-Feb)',plants:'Plan next year! Order seeds in January. Start indoor herbs. Clean and prep tools. Dream big.'}].forEach(s=>{const e=document.createElement('div');e.style.cssText='padding:8px 10px;background:white;border:1px solid rgba(58,140,78,.1);border-radius:8px;margin-bottom:5px;font-size:11px';e.innerHTML='<div style="font-weight:700;color:#3a8c4e;margin-bottom:3px">'+s.season+'</div><div style="line-height:1.5">'+s.plants+'</div>';document.getElementById('seasonal').appendChild(e)});
+
+// Load text areas
+document.getElementById('garden-journal').value=ls('wh_garden_journal','')||'';
+document.getElementById('garden-notes').value=ls('wh_garden_notes','')||'';
+</script></body></html>

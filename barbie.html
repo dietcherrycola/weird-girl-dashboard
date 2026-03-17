@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎀 Barbie Empire — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* standalone page — header visible */
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#e91e8c;--pink-light:#fce4f3;--pink-dark:#a01060;
+  --cream:#fff9fc;--white:#ffffff;
+  --gold:#c9a84c;--gold-light:#fef9e7;
+  --red:#c0392b;--red-light:#fde8e8;
+  --green:#27ae60;--green-light:#eafaf1;
+  --blue:#2980b9;--blue-light:#e8f4fd;
+  --purple:#8e44ad;--purple-light:#f3eafb;
+  --teal:#16a085;--teal-light:#e0f5f0;
+  --orange:#e67e22;--orange-light:#fef3e7;
+  --border:rgba(233,30,140,0.15);
+  --text:#1a0a0a;--muted:#7a3060;
+  --shadow:0 2px 12px rgba(233,30,140,0.08);
+  --shadow-lg:0 8px 32px rgba(233,30,140,0.13);
+}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh}
+
+/* ====== HEADER ====== */
+.barbie-header{
+  background:linear-gradient(135deg,#e91e8c 0%,#c0392b 40%,#e91e8c 70%,#f06292 100%);
+  padding:1.2rem 1.5rem .9rem;
+  box-shadow:0 4px 20px rgba(233,30,140,.3);
+}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.barbie-logo{font-family:'Fredoka One',cursive;font-size:1.6rem;color:white;letter-spacing:1px;text-shadow:2px 2px 0 rgba(0,0,0,.15)}
+.barbie-logo span{font-size:.85rem;font-family:'DM Sans',sans-serif;font-weight:300;opacity:.85;display:block;letter-spacing:3px;text-transform:uppercase}
+.header-divider{width:1px;height:40px;background:rgba(255,255,255,.3);margin:0 .5rem}
+.header-tagline{color:rgba(255,255,255,.9);font-size:.75rem;font-weight:400;font-style:italic;max-width:200px;line-height:1.4}
+
+/* ====== JOB NAV ====== */
+.job-nav{max-width:1200px;margin:0 auto;padding:.7rem 1rem .4rem;display:flex;gap:6px;flex-wrap:wrap}
+.job-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:25px;
+  border:2px solid var(--border);background:white;
+  cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:500;
+  color:var(--muted);transition:all .2s;white-space:nowrap;
+}
+.job-btn:hover{border-color:var(--pink);color:var(--pink);background:var(--pink-light)}
+.job-btn.active{background:var(--pink);color:white;border-color:var(--pink-dark);box-shadow:0 2px 8px rgba(233,30,140,.25)}
+.job-btn .job-emoji{font-size:14px}
+
+/* ====== PAGES ====== */
+.job-page{display:none;animation:fadeIn .2s ease}
+.job-page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.db{max-width:1200px;margin:0 auto;padding:1rem 1rem 4rem}
+.page-hero{
+  background:linear-gradient(135deg,var(--pink-light),white);
+  border:1px solid var(--border);border-radius:20px;
+  padding:1.2rem 1.5rem;margin-bottom:1rem;
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.hero-emoji{font-size:2.5rem}
+.hero-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--pink-dark)}
+.hero-sub{font-size:.75rem;color:var(--muted);margin-top:2px;line-height:1.5}
+
+/* ====== CARDS ====== */
+.card{
+  background:white;border:1px solid var(--border);border-radius:16px;
+  padding:1rem 1.1rem;position:relative;overflow:hidden;margin-bottom:.9rem;
+  box-shadow:var(--shadow);
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink-dark),var(--pink))}
+.card.gold-acc::before{background:linear-gradient(90deg,#a07828,var(--gold))}
+.card.green-acc::before{background:linear-gradient(90deg,#1a6b3c,var(--green))}
+.card.blue-acc::before{background:linear-gradient(90deg,#1a4a6b,var(--blue))}
+.card.purple-acc::before{background:linear-gradient(90deg,#4a1a6b,var(--purple))}
+.card.teal-acc::before{background:linear-gradient(90deg,#0a4a3c,var(--teal))}
+.card.orange-acc::before{background:linear-gradient(90deg,#7a3a0a,var(--orange))}
+.card.red-acc::before{background:linear-gradient(90deg,#7b1c14,var(--red))}
+
+.ct{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--pink-dark);margin-bottom:.75rem;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ci{width:22px;height:22px;background:var(--pink-light);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.ct-right{margin-left:auto}
+
+/* ====== LAYOUT ====== */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:.9rem}
+.gfull{margin-bottom:.9rem}
+@media(max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+/* ====== INPUTS ====== */
+.inp{border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--text);background:white;outline:none;transition:border .15s}
+.inp:focus{border-color:var(--pink)}
+.inp-full{width:100%}
+.sel{border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--text);background:white;outline:none;cursor:pointer}
+textarea.inp{resize:none}
+.row{display:flex;gap:6px;align-items:center;margin-bottom:.5rem;flex-wrap:wrap}
+.fl{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:3px;display:block;font-weight:600}
+
+/* ====== BUTTONS ====== */
+.btn{border:none;border-radius:10px;padding:7px 14px;font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600;transition:all .15s}
+.btn-pink{background:var(--pink);color:white}.btn-pink:hover{background:var(--pink-dark)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{background:#1a6b3c}
+.btn-blue{background:var(--blue);color:white}.btn-blue:hover{background:#1a4a6b}
+.btn-gold{background:var(--gold);color:white}.btn-gold:hover{background:#a07828}
+.btn-purple{background:var(--purple);color:white}.btn-purple:hover{background:#4a1a6b}
+.btn-outline{background:white;color:var(--pink);border:1.5px solid var(--border)}.btn-outline:hover{background:var(--pink-light)}
+.bsm{font-size:10px;padding:3px 9px;border-radius:6px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--pink);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}
+.bsm:hover{background:var(--pink-light)}
+.bsm.active{background:var(--pink);color:white;border-color:var(--pink-dark)}
+.bdel{background:none;border:none;cursor:pointer;color:#ccc;font-size:11px;padding:0 3px;transition:color .15s}.bdel:hover{color:var(--red)}
+.tag{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:600;white-space:nowrap}
+.sdiv{height:1px;background:var(--border);margin:.7rem 0}
+.empty-s{text-align:center;padding:1.5rem;color:var(--muted);font-size:11px;font-style:italic;opacity:.7}
+
+/* ====== STAT CARDS ====== */
+.stat-card{background:white;border:1px solid var(--border);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow)}
+.stat-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px}
+.stat-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--pink-dark)}
+.stat-sub{font-size:9px;color:var(--muted);margin-top:2px}
+
+/* ====== KANBAN ====== */
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:.9rem}
+@media(max-width:900px){.kanban{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.kanban{grid-template-columns:1fr}}
+.kanban-col{background:var(--pink-light);border:1px solid var(--border);border-radius:14px;padding:.8rem}
+.kanban-title{font-size:11px;font-weight:700;color:var(--pink-dark);margin-bottom:.6rem;display:flex;align-items:center;gap:5px}
+.kanban-count{background:var(--pink);color:white;font-size:9px;border-radius:20px;padding:1px 7px}
+.kitem{background:white;border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-size:11px;cursor:pointer;transition:all .15s;margin-bottom:5px;box-shadow:var(--shadow)}
+.kitem:hover{border-color:var(--pink);box-shadow:var(--shadow-lg)}
+.kitem-title{font-weight:600;color:var(--text);margin-bottom:3px}
+.kitem-meta{font-size:9px;color:var(--muted)}
+
+/* ====== CHECKLIST ====== */
+.checklist-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px}
+.checklist-item:last-child{border-bottom:none}
+.check-box{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s}
+.check-box.done{background:var(--green);border-color:var(--green);color:white;font-size:9px}
+.checklist-text{flex:1;line-height:1.4}
+.checklist-text.done-text{text-decoration:line-through;opacity:.5}
+
+/* ====== STUDENT LIST ====== */
+.student-card{background:white;border:1px solid var(--border);border-radius:12px;padding:9px 11px;margin-bottom:6px;transition:all .15s}
+.student-card:hover{border-color:var(--pink);box-shadow:var(--shadow)}
+.student-name{font-size:12px;font-weight:700;color:var(--pink-dark)}
+.student-notes{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+/* ====== PIPELINE STEPS ====== */
+.pipeline{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:.8rem}
+.pipe-step{flex:1;min-width:80px;padding:8px 6px;border-radius:10px;border:2px solid var(--border);background:white;cursor:pointer;text-align:center;font-size:10px;font-weight:600;color:var(--muted);transition:all .15s}
+.pipe-step.done{border-color:var(--green);background:var(--green-light);color:var(--green)}
+.pipe-step.current{border-color:var(--pink);background:var(--pink-light);color:var(--pink-dark)}
+.pipe-arrow{align-self:center;font-size:10px;color:var(--muted);flex-shrink:0}
+
+/* ====== MONEY / INCOME ====== */
+.money-card{background:white;border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:5px;display:flex;align-items:center;gap:8px;font-size:11px}
+.money-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.money-source{font-weight:600;flex:1}
+.money-amount{font-weight:700;color:var(--green)}
+
+/* ====== BRAND DEAL TRACKER ====== */
+.deal-card{background:white;border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:6px}
+.deal-brand{font-size:12px;font-weight:700;color:var(--pink-dark)}
+.deal-meta{font-size:9px;color:var(--muted);margin-top:2px}
+.deal-status{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex-shrink:0}
+
+/* ====== IDEA CARDS ====== */
+.idea-item{background:white;border:1px solid var(--border);border-radius:10px;padding:8px 10px;margin-bottom:5px;font-size:11px;display:flex;align-items:flex-start;gap:6px}
+.idea-dot{width:6px;height:6px;border-radius:50%;background:var(--pink);flex-shrink:0;margin-top:4px}
+
+/* ====== PROGRESS BAR ====== */
+.prog-track{height:8px;background:rgba(233,30,140,.07);border-radius:4px;overflow:hidden;margin-top:4px}
+.prog-fill{height:100%;border-radius:4px;transition:width .4s}
+
+/* ====== MODAL ====== */
+.mo{display:none;position:fixed;inset:0;background:rgba(26,10,10,.55);z-index:500;align-items:center;justify-content:center;padding:1rem}
+.mo.open{display:flex}
+.modal{background:var(--cream);border-radius:20px;padding:1.4rem;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;border:1px solid var(--border);box-shadow:var(--shadow-lg)}
+.modal-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--pink-dark);margin-bottom:1rem}
+.fr{margin-bottom:.65rem}
+.fgrid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.macts{display:flex;gap:6px;margin-top:1rem;justify-content:flex-end}
+
+/* ====== VIDEO MODAL ====== */
+.video-steps{display:flex;flex-direction:column;gap:5px;margin:.7rem 0}
+.vstep{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;border:1.5px solid var(--border);font-size:11px;background:white;transition:all .15s;cursor:pointer}
+.vstep.done{background:var(--green-light);border-color:var(--green)}
+.vstep-icon{font-size:14px;flex-shrink:0}
+.vstep-label{flex:1;font-weight:500}
+.vstep-cb{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;transition:all .15s}
+.vstep.done .vstep-cb{background:var(--green);border-color:var(--green);color:white}
+
+/* ====== ETSY ====== */
+.listing-card{background:white;border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:6px}
+.listing-title{font-size:12px;font-weight:700;color:var(--text)}
+.listing-meta{font-size:9px;color:var(--muted);margin-top:2px;display:flex;gap:6px;flex-wrap:wrap}
+
+/* ====== PROJECT TRACKER ====== */
+.project-card{background:white;border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:7px;transition:all .15s}
+.project-card:hover{border-color:var(--pink);box-shadow:var(--shadow)}
+.project-name{font-size:12px;font-weight:700;color:var(--text)}
+.project-status{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:600}
+
+/* ====== TABS (inner) ====== */
+.itab-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:.8rem;padding:.4rem .5rem;background:var(--pink-light);border-radius:12px}
+.itab-btn{font-size:10px;padding:4px 11px;border-radius:20px;border:none;background:transparent;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s;white-space:nowrap}
+.itab-btn:hover{color:var(--pink)}
+.itab-btn.active{background:var(--pink);color:white}
+.itab-content{display:none}.itab-content.active{display:block}
+
+/* ====== SCHOOL SPECIFIC ====== */
+.motor-card{background:white;border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:5px;display:flex;gap:8px;align-items:flex-start}
+.motor-emoji{font-size:18px;flex-shrink:0}
+.motor-name{font-size:12px;font-weight:600;color:var(--text)}
+.motor-desc{font-size:9px;color:var(--muted);margin-top:2px}
+
+.game-card{background:white;border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:5px;cursor:pointer;transition:all .15s}
+.game-card:hover{border-color:var(--pink);box-shadow:var(--shadow)}
+
+/* ====== SCROLLBAR ====== */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(233,30,140,.2);border-radius:2px}
+
+/* Standalone barbie overrides */
+#page-barbie .barbie-header{display:block!important}
+.itab-content{display:none}.itab-content.active{display:block}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db" id="page-barbie">
+<!-- HEADER -->
+<div class="barbie-header">
+  <div class="header-inner">
+    <div class="barbie-logo">🎀 Barbie<span>has a job for every day of the week</span></div>
+    <div class="header-divider"></div>
+    <div class="header-tagline">Shan's career & creative empire dashboard · Spring 2026</div>
+    <div style="margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,.2);border-radius:10px;padding:5px 12px;font-size:10px;color:white;font-weight:500">💰 Total this month: <span id="header-total" style="font-weight:700">$0</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- JOB NAV -->
+<div class="job-nav">
+  <button class="job-btn active" onclick="goJob('school')"><span class="job-emoji">🍎</span> School</button>
+  <button class="job-btn" onclick="goJob('youtube')"><span class="job-emoji">🎬</span> YouTube</button>
+  <button class="job-btn" onclick="goJob('modding')"><span class="job-emoji">🎮</span> Modding</button>
+  <button class="job-btn" onclick="goJob('etsy')"><span class="job-emoji">🛍️</span> Etsy</button>
+  <button class="job-btn" onclick="goJob('dolls')"><span class="job-emoji">🎀</span> Dolls</button>
+  <button class="job-btn" onclick="goJob('baddie')"><span class="job-emoji">💅</span> Baddie</button>
+  <button class="job-btn" onclick="goJob('streaming')"><span class="job-emoji">📺</span> Streaming</button>
+  <button class="job-btn" onclick="goJob('money')"><span class="job-emoji">💸</span> Empire Money</button>
+</div>
+
+<!-- ===================== SCHOOL ===================== -->
+<div class="job-page active" id="job-school">
+<div class="db">
+  <div class="page-hero">
+    <div class="hero-emoji">🍎</div>
+    <div>
+      <div class="hero-title">Para-educator & Music Movement Teacher</div>
+      <div class="hero-sub">Preschool–1st Grade · Gross motor, music, movement, and magic ✨</div>
+    </div>
+  </div>
+
+  <div class="itab-row">
+    <button class="itab-btn active" onclick="showSchoolTab('today')">☀️ Today</button>
+    <button class="itab-btn" onclick="showSchoolTab('students')">👧 Students</button>
+    <button class="itab-btn" onclick="showSchoolTab('motor')">🏃 Gross Motor</button>
+    <button class="itab-btn" onclick="showSchoolTab('games')">🎲 Games</button>
+    <button class="itab-btn" onclick="showSchoolTab('extras')">🧚 Extras</button>
+  </div>
+
+  <!-- TODAY -->
+  <div class="itab-content active" id="stab-today">
+    <div class="g3">
+      <div class="card pink-acc">
+        <div class="ct"><div class="ci">📅</div>Today's focus</div>
+        <textarea class="inp inp-full" id="school-today-focus" placeholder="What's the theme or lesson today?..." style="height:60px"></textarea>
+        <button class="btn btn-pink" style="width:100%;margin-top:.5rem" onclick="saveSchoolFocus()">Save focus</button>
+      </div>
+      <div class="card green-acc">
+        <div class="ct"><div class="ci">🎵</div>Music & movement plan</div>
+        <textarea class="inp inp-full" id="school-music-plan" placeholder="Songs, movements, instruments..." style="height:60px"></textarea>
+        <button class="btn btn-green" style="width:100%;margin-top:.5rem" onclick="saveSchoolMusic()">Save plan</button>
+      </div>
+      <div class="card gold-acc">
+        <div class="ct"><div class="ci">📋</div>Today's checklist</div>
+        <div id="school-checklist"></div>
+        <div class="row" style="margin-top:.5rem"><input class="inp" id="school-check-inp" placeholder="Add a task..." style="flex:1"><button class="btn btn-gold" onclick="addSchoolCheck()">+</button></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">⚡</div>Quick student notes</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:.5rem">Flag anything from today</div>
+        <textarea class="inp inp-full" id="school-quick-notes" placeholder="Who had a tough day, who was shining, anything to remember..." style="height:80px"></textarea>
+        <button class="btn btn-pink" style="margin-top:.4rem" onclick="saveQuickNotes()">Save notes ✓</button>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">💌</div>Fairy notes & surprises</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:.5rem">Little magic ideas for the classroom</div>
+        <div id="fairy-notes-list"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="fairy-note-inp" placeholder="e.g. Leave a tiny letter from the book fairies..." style="flex:1"><button class="btn btn-pink" onclick="addFairyNote()">Add</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENTS -->
+  <div class="itab-content" id="stab-students">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:.7rem">
+      <button class="btn btn-pink" onclick="openMo('student-modal')">+ Add student</button>
+    </div>
+    <div class="g2">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--pink-dark);margin-bottom:.5rem">👧 Student roster & notes</div>
+        <div id="student-list"></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🎯</div>Focus areas this week</div>
+        <div id="focus-areas-list"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="focus-area-inp" placeholder="e.g. sharing, emotional regulation..." style="flex:1"><button class="btn btn-pink" onclick="addFocusArea()">Add</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROSS MOTOR -->
+  <div class="itab-content" id="stab-motor">
+    <div class="card">
+      <div class="ct"><div class="ci">🏃</div>Gross motor skill library</div>
+      <div style="display:flex;gap:5px;margin-bottom:.7rem;flex-wrap:wrap" id="motor-filter-btns">
+        <button class="bsm active" onclick="filterMotor('all',this)">All</button>
+        <button class="bsm" onclick="filterMotor('balance',this)">Balance</button>
+        <button class="bsm" onclick="filterMotor('coordination',this)">Coordination</button>
+        <button class="bsm" onclick="filterMotor('strength',this)">Strength</button>
+        <button class="bsm" onclick="filterMotor('spatial',this)">Spatial</button>
+        <button class="bsm" onclick="filterMotor('rhythm',this)">Rhythm</button>
+      </div>
+      <div id="motor-skills-list"></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">🎯</div>Working on this week</div>
+      <div id="motor-this-week"></div>
+      <div class="row" style="margin-top:.4rem"><input class="inp" id="motor-week-inp" placeholder="Skill or activity to focus on..." style="flex:1"><button class="btn btn-pink" onclick="addMotorWeek()">Add</button></div>
+    </div>
+  </div>
+
+  <!-- GAMES -->
+  <div class="itab-content" id="stab-games">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:.7rem">
+      <button class="btn btn-pink" onclick="openMo('game-modal')">+ Add a game</button>
+    </div>
+    <div class="g2">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--pink-dark);margin-bottom:.5rem">🎲 My invented games</div>
+        <div id="invented-games"></div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--pink-dark);margin-bottom:.5rem">✅ Go-to classics</div>
+        <div id="classic-games"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTRAS / MAGIC -->
+  <div class="itab-content" id="stab-extras">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">🧚</div>Fairy notes vault</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:.5rem">Tiny magical notes for the kids — from book fairies, classroom gnomes, etc.</div>
+        <div id="fairy-vault"></div>
+        <button class="btn btn-pink" style="margin-top:.5rem;font-size:10px" onclick="openMo('fairy-modal')">+ Create a fairy note</button>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🎅</div>Elf on the shelf ideas</div>
+        <div id="elf-ideas"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="elf-inp" placeholder="New elf idea..." style="flex:1"><button class="btn btn-pink" onclick="addElfIdea()">Add</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">✨</div>Fun things to do for the school</div>
+      <div id="school-fun-list"></div>
+      <div class="row" style="margin-top:.4rem"><input class="inp" id="school-fun-inp" placeholder="A fun thing to do or plan..." style="flex:1"><select class="sel" id="school-fun-cat" style="max-width:110px"><option>Seasonal</option><option>Weekly</option><option>Special</option><option>Ongoing</option></select><button class="btn btn-pink" onclick="addSchoolFun()">Add</button></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ===================== YOUTUBE ===================== -->
+<div class="job-page" id="job-youtube">
+<div class="db">
+  <div class="page-hero">
+    <div class="hero-emoji">🎬</div>
+    <div>
+      <div class="hero-title">Weird Girl General Store</div>
+      <div class="hero-sub">Film analysis · anthropology · culture · the things that made us weird 🌙</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px">
+      <div class="stat-card" style="min-width:80px;text-align:center"><div class="stat-label">Subscribers</div><div class="stat-val" style="font-size:18px;color:var(--pink)" id="yt-subs">0</div></div>
+      <div class="stat-card" style="min-width:80px;text-align:center"><div class="stat-label">Revenue</div><div class="stat-val" style="font-size:18px;color:var(--green)" id="yt-rev">$0</div></div>
+    </div>
+  </div>
+
+  <div class="itab-row">
+    <button class="itab-btn active" onclick="showYTTab('pipeline')">🎞️ Pipeline</button>
+    <button class="itab-btn" onclick="showYTTab('ideas')">💡 Ideas</button>
+    <button class="itab-btn" onclick="showYTTab('journals')">📓 Film Journals</button>
+    <button class="itab-btn" onclick="showYTTab('money')">💰 Money</button>
+  </div>
+
+  <!-- PIPELINE / KANBAN -->
+  <div class="itab-content active" id="yttab-pipeline">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:.7rem;gap:6px">
+      <button class="btn btn-pink" onclick="openMo('video-modal')">+ New video</button>
+    </div>
+    <div class="kanban" id="yt-kanban"></div>
+    <!-- VIDEO DETAIL MODAL trigger area -->
+    <div id="yt-video-detail-area"></div>
+  </div>
+
+  <!-- IDEAS -->
+  <div class="itab-content" id="yttab-ideas">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">🎬</div>Film analysis ideas</div>
+        <div id="yt-ideas-film"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="yt-idea-film-inp" placeholder="Movie or topic idea..." style="flex:1"><button class="btn btn-pink" onclick="addYTIdea('film')">Add</button></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">👗</div>Other video ideas</div>
+        <div id="yt-ideas-other"></div>
+        <div class="row" style="margin-top:.4rem">
+          <input class="inp" id="yt-idea-other-inp" placeholder="GRWM, vlog, collab idea..." style="flex:1">
+          <select class="sel" id="yt-idea-other-cat"><option>GRWM</option><option>Vlog</option><option>Skill</option><option>Collab</option><option>Other</option></select>
+          <button class="btn btn-pink" onclick="addYTIdea('other')">Add</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">🔥</div>Trending angle board — topics that are hot right now</div>
+      <div id="yt-trending"></div>
+      <div class="row" style="margin-top:.4rem"><input class="inp" id="yt-trend-inp" placeholder="Trending topic or angle worth covering..." style="flex:1"><button class="btn btn-pink" onclick="addYTTrend()">Add</button></div>
+    </div>
+  </div>
+
+  <!-- JOURNALS -->
+  <div class="itab-content" id="yttab-journals">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:.7rem">
+      <button class="btn btn-pink" onclick="openMo('journal-modal')">+ New journal entry</button>
+    </div>
+    <div class="g2">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--pink-dark);margin-bottom:.5rem">📓 Film analysis journals</div>
+        <div id="journal-list"></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">📝</div>Research notes</div>
+        <textarea class="inp inp-full" id="yt-research-notes" placeholder="Ongoing research, rabbit holes, interesting angles..." style="height:140px"></textarea>
+        <button class="btn btn-pink" style="margin-top:.4rem;width:100%" onclick="saveResearchNotes()">Save notes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- YT MONEY -->
+  <div class="itab-content" id="yttab-money">
+    <div class="g4">
+      <div class="stat-card"><div class="stat-label">Ad revenue</div><div class="stat-val" style="color:var(--green)" id="yt-ad-rev">$0</div><div class="stat-sub">this month</div></div>
+      <div class="stat-card"><div class="stat-label">Brand deals</div><div class="stat-val" style="color:var(--gold)" id="yt-brand-rev">$0</div><div class="stat-sub">this month</div></div>
+      <div class="stat-card"><div class="stat-label">Patreon</div><div class="stat-val" style="color:var(--purple)" id="yt-patreon-rev">$0</div><div class="stat-sub">monthly</div></div>
+      <div class="stat-card"><div class="stat-label">Merch</div><div class="stat-val" style="color:var(--pink)" id="yt-merch-rev">$0</div><div class="stat-sub">this month</div></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">🤝</div>Brand deals tracker <button class="btn btn-pink ct-right" style="font-size:10px;padding:3px 9px" onclick="openMo('deal-modal')">+ New deal</button></div>
+        <div id="yt-deals"></div>
+      </div>
+      <div class="card purple-acc">
+        <div class="ct"><div class="ci" style="background:var(--purple-light)">💜</div>Patreon tiers</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:.6rem">Plan your tiers before you launch</div>
+        <div id="patreon-tiers"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="patreon-tier-inp" placeholder="Tier name..." style="flex:1"><input class="inp" id="patreon-tier-price" placeholder="$/mo" style="width:60px"><button class="btn btn-purple" onclick="addPatreonTier()">Add</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">💡</div>All monetization streams — YouTube</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem" id="yt-monetization-grid"></div>
+    </div>
+    <div class="card green-acc">
+      <div class="ct"><div class="ci" style="background:var(--green-light)">💵</div>Log income <button class="bsm ct-right" style="font-size:9px" onclick="openMo('income-modal-yt')">+ Log it</button></div>
+      <div id="yt-income-log"></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ===================== MODDING ===================== -->
+<div class="job-page" id="job-modding">
+<div class="db">
+  <div class="page-hero">
+    <div class="hero-emoji">🎮</div>
+    <div>
+      <div class="hero-title">Game Modding Studio</div>
+      <div class="hero-sub">Sims 4 · Minecraft · Hytale · Stardew Valley · Skyrim 🔧</div>
+    </div>
+  </div>
+
+  <div class="itab-row">
+    <button class="itab-btn active" onclick="showModTab('projects')">🗂️ Projects</button>
+    <button class="itab-btn" onclick="showModTab('ideas')">💡 Ideas</button>
+    <button class="itab-btn" onclick="showModTab('workflow')">⚙️ Workflow</button>
+    <button class="itab-btn" onclick="showModTab('money')">💰 Money</button>
+  </div>
+
+  <div class="itab-content active" id="modtab-projects">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem;flex-wrap:wrap;gap:6px">
+      <div style="display:flex;gap:5px;flex-wrap:wrap" id="mod-game-filter">
+        <button class="bsm active" onclick="filterMods('all',this)">All games</button>
+        <button class="bsm" onclick="filterMods('sims4',this)">Sims 4</button>
+        <button class="bsm" onclick="filterMods('minecraft',this)">Minecraft</button>
+        <button class="bsm" onclick="filterMods('hytale',this)">Hytale</button>
+        <button class="bsm" onclick="filterMods('stardew',this)">Stardew</button>
+        <button class="bsm" onclick="filterMods('skyrim',this)">Skyrim</button>
+      </div>
+      <button class="btn btn-pink" onclick="openMo('mod-project-modal')">+ New project</button>
+    </div>
+    <div id="mod-projects-list"></div>
+  </div>
+
+  <div class="itab-content" id="modtab-ideas">
+    <div class="g2">
+      <div class="card"><div class="ct"><div class="ci">🎮</div>Sims 4 mod ideas</div><div id="mod-ideas-sims4"></div><div class="row" style="margin-top:.4rem"><input class="inp" id="mod-idea-sims4-inp" placeholder="CAS item, lot trait, career mod..." style="flex:1"><button class="btn btn-pink" onclick="addModIdea('sims4')">Add</button></div></div>
+      <div class="card"><div class="ct"><div class="ci">⛏️</div>Minecraft mod ideas</div><div id="mod-ideas-minecraft"></div><div class="row" style="margin-top:.4rem"><input class="inp" id="mod-idea-minecraft-inp" placeholder="Biome, mob, mechanic idea..." style="flex:1"><button class="btn btn-pink" onclick="addModIdea('minecraft')">Add</button></div></div>
+    </div>
+    <div class="g3">
+      <div class="card"><div class="ct"><div class="ci">🌲</div>Hytale</div><div id="mod-ideas-hytale"></div><div class="row" style="margin-top:.4rem"><input class="inp" id="mod-idea-hytale-inp" placeholder="Idea..." style="flex:1"><button class="btn btn-pink" onclick="addModIdea('hytale')">Add</button></div></div>
+      <div class="card"><div class="ct"><div class="ci">🌾</div>Stardew Valley</div><div id="mod-ideas-stardew"></div><div class="row" style="margin-top:.4rem"><input class="inp" id="mod-idea-stardew-inp" placeholder="Idea..." style="flex:1"><button class="btn btn-pink" onclick="addModIdea('stardew')">Add</button></div></div>
+      <div class="card"><div class="ct"><div class="ci">🗡️</div>Skyrim</div><div id="mod-ideas-skyrim"></div><div class="row" style="margin-top:.4rem"><input class="inp" id="mod-idea-skyrim-inp" placeholder="Idea..." style="flex:1"><button class="btn btn-pink" onclick="addModIdea('skyrim')">Add</button></div></div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="modtab-workflow">
+    <div class="card">
+      <div class="ct"><div class="ci">⚙️</div>Universal mod workflow</div>
+      <div style="display:flex;flex-direction:column;gap:5px" id="mod-workflow-steps"></div>
+    </div>
+    <div class="g2">
+      <div class="card blue-acc">
+        <div class="ct"><div class="ci" style="background:var(--blue-light)">📚</div>Learning resources</div>
+        <div id="mod-resources"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="mod-resource-inp" placeholder="Tool, tutorial, course..." style="flex:1"><button class="btn btn-blue" onclick="addModResource()">Add</button></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🛠️</div>Tools & software</div>
+        <div id="mod-tools-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="modtab-money">
+    <div class="g4">
+      <div class="stat-card"><div class="stat-label">Patreon</div><div class="stat-val" style="color:var(--purple)" id="mod-patreon">$0</div><div class="stat-sub">monthly</div></div>
+      <div class="stat-card"><div class="stat-label">Mod sales</div><div class="stat-val" style="color:var(--green)" id="mod-sales">$0</div><div class="stat-sub">this month</div></div>
+      <div class="stat-card"><div class="stat-label">Commissions</div><div class="stat-val" style="color:var(--gold)" id="mod-commissions">$0</div><div class="stat-sub">this month</div></div>
+      <div class="stat-card"><div class="stat-label">YouTube crossover</div><div class="stat-val" style="color:var(--pink)" id="mod-yt">$0</div><div class="stat-sub">from mod content</div></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">💡</div>All monetization streams — Modding</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem" id="mod-monetization-grid"></div>
+    </div>
+    <div class="card green-acc">
+      <div class="ct"><div class="ci" style="background:var(--green-light)">💵</div>Log income <button class="bsm ct-right" onclick="openMo('income-modal-mod')">+ Log it</button></div>
+      <div id="mod-income-log"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===================== ETSY ===================== -->
+<div class="job-page" id="job-etsy">
+<div class="db">
+  <div class="page-hero">
+    <div class="hero-emoji">🛍️</div>
+    <div>
+      <div class="hero-title">Weird Girl General Store — Etsy</div>
+      <div class="hero-sub">Dolls · prints · digital downloads · handmade chaos ✨</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <div class="stat-card" style="min-width:80px;text-align:center"><div class="stat-label">Sales</div><div class="stat-val" style="font-size:18px;color:var(--green)" id="etsy-sales">0</div></div>
+      <div class="stat-card" style="min-width:80px;text-align:center"><div class="stat-label">Revenue</div><div class="stat-val" style="font-size:18px;color:var(--gold)" id="etsy-rev">$0</div></div>
+    </div>
+  </div>
+
+  <div class="itab-row">
+    <button class="itab-btn active" onclick="showEtsyTab('shop')">🏪 Shop overview</button>
+    <button class="itab-btn" onclick="showEtsyTab('listings')">📦 Listings</button>
+    <button class="itab-btn" onclick="showEtsyTab('orders')">📬 Orders</button>
+    <button class="itab-btn" onclick="showEtsyTab('planner')">📋 Business planner</button>
+    <button class="itab-btn" onclick="showEtsyTab('money')">💰 Money</button>
+  </div>
+
+  <div class="itab-content active" id="etsytab-shop">
+    <div class="g3">
+      <div class="stat-card"><div class="stat-label">Shop views</div><div class="stat-val" id="etsy-views">0</div><div class="stat-sub">this month</div></div>
+      <div class="stat-card"><div class="stat-label">Conversion rate</div><div class="stat-val" id="etsy-conversion">0%</div><div class="stat-sub">views → sales</div></div>
+      <div class="stat-card"><div class="stat-label">Avg order value</div><div class="stat-val" id="etsy-aov">$0</div><div class="stat-sub">per sale</div></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">🎯</div>This month's goals</div>
+        <div id="etsy-goals"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="etsy-goal-inp" placeholder="e.g. List 5 new items, make first sale..." style="flex:1"><button class="btn btn-pink" onclick="addEtsyGoal()">Add</button></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">📢</div>Shop announcements & notes</div>
+        <textarea class="inp inp-full" id="etsy-shop-notes" placeholder="Vacation mode dates, announcements, things to update..." style="height:100px"></textarea>
+        <button class="btn btn-pink" style="margin-top:.4rem" onclick="saveEtsyNotes()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="etsytab-listings">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem;flex-wrap:wrap;gap:6px">
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="bsm active" onclick="filterListings('all',this)">All</button>
+        <button class="bsm" onclick="filterListings('active',this)">Active</button>
+        <button class="bsm" onclick="filterListings('draft',this)">Drafts</button>
+        <button class="bsm" onclick="filterListings('sold_out',this)">Sold out</button>
+      </div>
+      <button class="btn btn-pink" onclick="openMo('listing-modal')">+ New listing</button>
+    </div>
+    <div id="etsy-listings-list"></div>
+  </div>
+
+  <div class="itab-content" id="etsytab-orders">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:.7rem">
+      <button class="btn btn-pink" onclick="openMo('order-modal')">+ Log order</button>
+    </div>
+    <div id="etsy-orders-list"></div>
+  </div>
+
+  <div class="itab-content" id="etsytab-planner">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">📋</div>ADHD-friendly shop checklist</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:.5rem">The baseline things your shop needs — check off as you do them</div>
+        <div id="etsy-planner-checklist"></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">📸</div>Photo & listing to-do</div>
+        <div id="etsy-photo-todo"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="etsy-photo-inp" placeholder="e.g. Photo the pink barbie lot..." style="flex:1"><button class="btn btn-pink" onclick="addEtsyPhoto()">Add</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">📅</div>Content & shop calendar</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:.5rem">Plan seasonal listings, sales, and shop updates</div>
+      <div id="etsy-calendar"></div>
+      <div class="row" style="margin-top:.4rem"><input class="inp" id="etsy-cal-inp" placeholder="e.g. Halloween listings live..." style="flex:1"><input class="inp" id="etsy-cal-date" type="date" style="max-width:130px"><button class="btn btn-pink" onclick="addEtsyCal()">Add</button></div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="etsytab-money">
+    <div class="g4">
+      <div class="stat-card"><div class="stat-label">Gross revenue</div><div class="stat-val" style="color:var(--green)" id="etsy-gross">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Etsy fees (~6.5%)</div><div class="stat-val" style="color:var(--red)" id="etsy-fees">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Net profit</div><div class="stat-val" style="color:var(--gold)" id="etsy-net">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Best seller</div><div class="stat-val" style="font-size:13px;color:var(--pink)" id="etsy-best">—</div></div>
+    </div>
+    <div class="card green-acc">
+      <div class="ct"><div class="ci" style="background:var(--green-light)">💵</div>Log a sale <button class="bsm ct-right" onclick="openMo('income-modal-etsy')">+ Log it</button></div>
+      <div id="etsy-income-log"></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">💡</div>All monetization streams — Etsy</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem" id="etsy-monetization-grid"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===================== DOLLS ===================== -->
+<div class="job-page" id="job-dolls">
+<div class="db">
+  <div class="page-hero">
+    <div class="hero-emoji">🧸</div>
+    <div>
+      <div class="hero-title">Doll & Stuffed Animal Restoration</div>
+      <div class="hero-sub">Custom restorations · OOAK · rehab · making ugly beautiful again 🌹</div>
+    </div>
+  </div>
+
+  <div class="itab-row">
+    <button class="itab-btn active" onclick="showDollTab('projects')">🎀 Projects</button>
+    <button class="itab-btn" onclick="showDollTab('supplies')">🧰 Supplies</button>
+    <button class="itab-btn" onclick="showDollTab('techniques')">✏️ Techniques</button>
+    <button class="itab-btn" onclick="showDollTab('gallery')">📸 Before/After</button>
+    <button class="itab-btn" onclick="showDollTab('content')">🎬 Content Ideas</button>
+    <button class="itab-btn" onclick="showDollTab('money')">💰 Money</button>
+  </div>
+
+  <div class="itab-content active" id="dolltab-projects">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem;flex-wrap:wrap;gap:6px">
+      <div style="display:flex;gap:5px">
+        <button class="bsm active" onclick="filterDolls('all',this)">All</button>
+        <button class="bsm" onclick="filterDolls('in_progress',this)">In progress</button>
+        <button class="bsm" onclick="filterDolls('queue',this)">Queue</button>
+        <button class="bsm" onclick="filterDolls('done',this)">Done</button>
+        <button class="bsm" onclick="filterDolls('listed',this)">Listed</button>
+      </div>
+      <button class="btn btn-pink" onclick="openMo('doll-modal')">+ New project</button>
+    </div>
+    <div id="doll-projects-list"></div>
+  </div>
+
+  <div class="itab-content" id="dolltab-supplies">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">🧴</div>Supplies inventory</div>
+        <div id="doll-supplies"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="supply-inp" placeholder="Supply name..." style="flex:1"><select class="sel" id="supply-status"><option>Have it</option><option>Need to buy</option><option>Running low</option></select><button class="btn btn-pink" onclick="addSupply()">Add</button></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🛒</div>Shopping list</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:.5rem">Things marked "Need to buy" will auto-appear here</div>
+        <div id="doll-shopping-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="dolltab-techniques">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">✏️</div>Restoration steps — standard workflow</div>
+        <div id="doll-workflow"></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🎨</div>Techniques & tips vault</div>
+        <div id="doll-techniques"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="technique-inp" placeholder="Tip or technique..." style="flex:1"><button class="btn btn-pink" onclick="addTechnique()">Add</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">📚</div>Tutorials & references to revisit</div>
+      <div id="doll-references"></div>
+      <div class="row" style="margin-top:.4rem"><input class="inp" id="doll-ref-inp" placeholder="Tutorial name or URL..." style="flex:1"><button class="btn btn-pink" onclick="addDollRef()">Add</button></div>
+    </div>
+  </div>
+
+  <!-- BEFORE/AFTER GALLERY -->
+  <div class="itab-content" id="dolltab-gallery">
+    <div class="card pink-acc">
+      <div class="ct"><div class="ci">📸</div>Before / After Gallery<span style="font-size:9px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;margin-left:6px">Track your transformations!</span></div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:.7rem;font-style:italic">Log each restoration to see your progress over time. These make AMAZING content — every entry here is a potential YouTube video or TikTok.</div>
+      <div class="row">
+        <input class="inp" id="gallery-name" placeholder="Doll/item name..." style="flex:1">
+        <select class="sel" id="gallery-type"><option>Doll</option><option>Stuffed animal</option><option>Barbie</option><option>Monster High</option><option>Other</option></select>
+      </div>
+      <div class="g2" style="margin-top:.4rem;margin-bottom:0">
+        <div><label class="fl">Before condition</label><textarea class="inp inp-full" id="gallery-before" placeholder="Matted hair, missing eye, yellowed, stained..." style="height:50px;resize:none"></textarea></div>
+        <div><label class="fl">After / what you did</label><textarea class="inp inp-full" id="gallery-after" placeholder="Rerooted, repainted face, new outfit..." style="height:50px;resize:none"></textarea></div>
+      </div>
+      <div class="row" style="margin-top:.4rem">
+        <select class="sel" id="gallery-difficulty"><option>Easy</option><option>Medium</option><option>Hard</option><option>Nightmare</option></select>
+        <select class="sel" id="gallery-rating"><option value="5">⭐⭐⭐⭐⭐ Amazing</option><option value="4">⭐⭐⭐⭐ Great</option><option value="3">⭐⭐⭐ Decent</option><option value="2">⭐⭐ Meh</option><option value="1">⭐ Learning moment</option></select>
+        <button class="btn btn-pink" onclick="addGalleryEntry()">Add to gallery</button>
+      </div>
+      <div id="doll-gallery-list" style="margin-top:.7rem"></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">🏆</div>Gallery stats</div>
+      <div class="g4" id="gallery-stats"></div>
+    </div>
+  </div>
+
+  <!-- CONTENT IDEAS -->
+  <div class="itab-content" id="dolltab-content">
+    <div class="card">
+      <div class="ct"><div class="ci">🎬</div>Doll content ideas<span style="font-size:9px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;margin-left:6px">Every restoration is a video!</span></div>
+      <div id="doll-content-ideas"></div>
+      <div class="row" style="margin-top:.4rem">
+        <input class="inp" id="doll-content-inp" placeholder="Video/TikTok idea..." style="flex:1">
+        <select class="sel" id="doll-content-type"><option>Restoration timelapse</option><option>Before/after reveal</option><option>Tutorial</option><option>Thrift haul</option><option>ASMR cleaning</option><option>Story time</option><option>Other</option></select>
+        <button class="btn btn-pink" onclick="addDollContent()">Add</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">🔥</div>Content that performs well in doll restoration</div>
+      <div id="doll-content-tips"></div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="dolltab-money">
+    <div class="g4">
+      <div class="stat-card"><div class="stat-label">Sales</div><div class="stat-val" style="color:var(--green)" id="doll-sales-val">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Commissions</div><div class="stat-val" style="color:var(--gold)" id="doll-comm-val">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Supplies spent</div><div class="stat-val" style="color:var(--red)" id="doll-supplies-spent">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Net profit</div><div class="stat-val" style="color:var(--pink)" id="doll-net">$0</div></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">💡</div>All monetization streams — Dolls</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem" id="doll-monetization-grid"></div>
+    </div>
+    <div class="card green-acc">
+      <div class="ct"><div class="ci" style="background:var(--green-light)">💵</div>Log income <button class="bsm ct-right" onclick="openMo('income-modal-doll')">+ Log it</button></div>
+      <div id="doll-income-log"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===================== BADDIE ===================== -->
+<div class="job-page" id="job-baddie">
+<div class="db">
+  <div class="page-hero">
+    <div class="hero-emoji">💅</div>
+    <div>
+      <div class="hero-title">Hot for a Living</div>
+      <div class="hero-sub">TikTok · Instagram · UGC · being that girl · monetizing the baddie era 🔥</div>
+    </div>
+  </div>
+
+  <div class="itab-row">
+    <button class="itab-btn active" onclick="showBaddieTab('content')">📱 Content plan</button>
+    <button class="itab-btn" onclick="showBaddieTab('aesthetic')">✨ Aesthetic</button>
+    <button class="itab-btn" onclick="showBaddieTab('ugc')">🤝 UGC & Deals</button>
+    <button class="itab-btn" onclick="showBaddieTab('growth')">📈 Growth</button>
+    <button class="itab-btn" onclick="showBaddieTab('money')">💰 Money</button>
+  </div>
+
+  <div class="itab-content active" id="baddietab-content">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">📅</div>Weekly content plan</div>
+        <div id="baddie-weekly"></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">💡</div>Content ideas bank</div>
+        <div id="baddie-ideas"></div>
+        <div class="row" style="margin-top:.4rem">
+          <input class="inp" id="baddie-idea-inp" placeholder="GRWM, OOTD, day in my life..." style="flex:1">
+          <select class="sel" id="baddie-idea-platform"><option>TikTok</option><option>Instagram</option><option>Both</option><option>YouTube Short</option></select>
+          <button class="btn btn-pink" onclick="addBaddieIdea()">Add</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">🎬</div>Content pipeline — TikTok & Instagram</div>
+      <div class="kanban" id="baddie-kanban"></div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="baddietab-aesthetic">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">🎨</div>Brand aesthetic notes</div>
+        <textarea class="inp inp-full" id="baddie-aesthetic-notes" placeholder="Colors, vibes, fonts, outfits, filter presets, your girl aesthetic... describe the version of you that lives on the internet" style="height:120px"></textarea>
+        <button class="btn btn-pink" style="margin-top:.4rem" onclick="saveBaddieAesthetic()">Save</button>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🔗</div>Inspo accounts & references</div>
+        <div id="baddie-inspo"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="baddie-inspo-inp" placeholder="@username or aesthetic reference..." style="flex:1"><button class="btn btn-pink" onclick="addBaddieInspo()">Add</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">💄</div>Treatments & glow-up tracker</div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:.5rem">Things you want to do or have done for the content era</div>
+      <div id="baddie-treatments"></div>
+      <div class="row" style="margin-top:.4rem"><input class="inp" id="baddie-treatment-inp" placeholder="e.g. Blowout, wax, nails, skin treatment..." style="flex:1"><select class="sel" id="baddie-treatment-status"><option>Want to do</option><option>Booked</option><option>Done</option></select><button class="btn btn-pink" onclick="addBaddieTreatment()">Add</button></div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="baddietab-ugc">
+    <div class="card">
+      <div class="ct"><div class="ci">🤝</div>UGC brand deals tracker <button class="btn btn-pink ct-right" style="font-size:10px;padding:3px 9px" onclick="openMo('ugc-deal-modal')">+ New deal</button></div>
+      <div id="ugc-deals-list"></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">📧</div>Pitch templates</div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:.5rem">Save your best pitch scripts here</div>
+        <div id="ugc-pitch-templates"></div>
+        <button class="btn btn-pink" style="margin-top:.4rem;font-size:10px" onclick="openMo('pitch-modal')">+ Save a pitch template</button>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🎯</div>Dream brand wishlist</div>
+        <div id="baddie-brands-wishlist"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="baddie-brand-inp" placeholder="Brand you want to work with..." style="flex:1"><button class="btn btn-pink" onclick="addBaddieBrand()">Add</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="baddietab-growth">
+    <div class="g4">
+      <div class="stat-card"><div class="stat-label">TikTok followers</div><div class="stat-val" style="color:var(--pink)" id="baddie-tiktok-f">0</div></div>
+      <div class="stat-card"><div class="stat-label">Instagram followers</div><div class="stat-val" style="color:var(--pink)" id="baddie-ig-f">0</div></div>
+      <div class="stat-card"><div class="stat-label">Best performing post</div><div class="stat-val" style="font-size:12px;color:var(--gold)" id="baddie-best-post">—</div></div>
+      <div class="stat-card"><div class="stat-label">Avg views</div><div class="stat-val" style="color:var(--purple)" id="baddie-avg-views">0</div></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">📈</div>Growth goals & milestones</div>
+        <div id="baddie-milestones"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="baddie-milestone-inp" placeholder="e.g. 1k followers, first viral video..." style="flex:1"><button class="btn btn-pink" onclick="addBaddieMilestone()">Add</button></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">📝</div>Posting schedule</div>
+        <div id="baddie-schedule"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="baddietab-money">
+    <div class="g4">
+      <div class="stat-card"><div class="stat-label">UGC deals</div><div class="stat-val" style="color:var(--green)" id="baddie-ugc-rev">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Brand deals</div><div class="stat-val" style="color:var(--gold)" id="baddie-brand-rev">$0</div></div>
+      <div class="stat-card"><div class="stat-label">TikTok Creator Fund</div><div class="stat-val" style="color:var(--pink)" id="baddie-fund-rev">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Affiliate links</div><div class="stat-val" style="color:var(--purple)" id="baddie-aff-rev">$0</div></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">💡</div>All monetization streams — Baddie</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem" id="baddie-monetization-grid"></div>
+    </div>
+    <div class="card green-acc">
+      <div class="ct"><div class="ci" style="background:var(--green-light)">💵</div>Log income <button class="bsm ct-right" onclick="openMo('income-modal-baddie')">+ Log it</button></div>
+      <div id="baddie-income-log"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===================== STREAMING ===================== -->
+<div class="job-page" id="job-streaming">
+<div class="db">
+  <div class="page-hero">
+    <div class="hero-emoji">📺</div>
+    <div>
+      <div class="hero-title">Twitch Streamer</div>
+      <div class="hero-sub">Live gaming · variety · weird girl energy · building a community 🎮</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+      <div class="stat-card" style="min-width:80px;text-align:center"><div class="stat-label">Followers</div><div class="stat-val" style="font-size:18px;color:var(--purple)" id="twitch-followers">0</div></div>
+      <div class="stat-card" style="min-width:80px;text-align:center"><div class="stat-label">Subscribers</div><div class="stat-val" style="font-size:18px;color:var(--pink)" id="twitch-subs-count">0</div></div>
+    </div>
+  </div>
+
+  <div class="itab-row">
+    <button class="itab-btn active" onclick="showStreamTab('schedule')">📅 Schedule</button>
+    <button class="itab-btn" onclick="showStreamTab('games')">🎮 Games to stream</button>
+    <button class="itab-btn" onclick="showStreamTab('setup')">🖥️ Setup & overlays</button>
+    <button class="itab-btn" onclick="showStreamTab('community')">💜 Community</button>
+    <button class="itab-btn" onclick="showStreamTab('money')">💰 Money</button>
+  </div>
+
+  <div class="itab-content active" id="streamtab-schedule">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">📅</div>Weekly stream schedule</div>
+        <div id="stream-schedule"></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🎯</div>Next stream plan</div>
+        <div class="fr"><label class="fl">Game / content</label><input class="inp inp-full" id="stream-next-game" placeholder="What are you playing?"></div>
+        <div class="fr"><label class="fl">Date & time</label><input class="inp inp-full" id="stream-next-date" placeholder="e.g. Saturday 7pm CST"></div>
+        <div class="fr"><label class="fl">Stream title / vibe</label><input class="inp inp-full" id="stream-next-title" placeholder="e.g. First playthrough Stardew Valley 🌾"></div>
+        <div class="fr"><label class="fl">Goals for this stream</label><textarea class="inp inp-full" id="stream-next-goals" placeholder="Viewer count goal, game progress, things to try..." style="height:50px"></textarea></div>
+        <button class="btn btn-pink" style="width:100%" onclick="saveNextStream()">Save stream plan</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">📊</div>Stream log history</div>
+      <div id="stream-log"></div>
+      <button class="btn btn-pink" style="margin-top:.5rem;font-size:10px" onclick="openMo('stream-log-modal')">+ Log a stream</button>
+    </div>
+  </div>
+
+  <div class="itab-content" id="streamtab-games">
+    <div class="g3">
+      <div class="card">
+        <div class="ct"><div class="ci">🔥</div>Playing now / soon</div>
+        <div id="stream-games-current"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="stream-game-current-inp" placeholder="Game title..." style="flex:1"><button class="btn btn-pink" onclick="addStreamGame('current')">Add</button></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">📋</div>Backlog to stream</div>
+        <div id="stream-games-backlog"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="stream-game-backlog-inp" placeholder="Game title..." style="flex:1"><button class="btn btn-pink" onclick="addStreamGame('backlog')">Add</button></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">💡</div>Content series ideas</div>
+        <div id="stream-series"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="stream-series-inp" placeholder="e.g. Comfort game Sundays, first playthroughs..." style="flex:1"><button class="btn btn-pink" onclick="addStreamSeries()">Add</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="streamtab-setup">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">🖥️</div>Tech & setup checklist</div>
+        <div id="stream-setup-checklist"></div>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🎨</div>Overlay & branding ideas</div>
+        <textarea class="inp inp-full" id="stream-overlay-notes" placeholder="Overlay ideas, color palette, emote ideas, channel points ideas, vibe references..." style="height:100px"></textarea>
+        <button class="btn btn-pink" style="margin-top:.4rem" onclick="saveOverlayNotes()">Save notes</button>
+        <div class="ct" style="margin-top:.7rem"><div class="ci">📌</div>To do for setup</div>
+        <div id="stream-setup-todo"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="stream-setup-inp" placeholder="Setup task..." style="flex:1"><button class="btn btn-pink" onclick="addStreamSetup()">Add</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="streamtab-community">
+    <div class="g2">
+      <div class="card">
+        <div class="ct"><div class="ci">💜</div>Community notes</div>
+        <textarea class="inp inp-full" id="stream-community-notes" placeholder="Channel point ideas, chat commands, mods you trust, community rules, raid targets..." style="height:100px"></textarea>
+        <button class="btn btn-pink" style="margin-top:.4rem" onclick="saveCommunityNotes()">Save</button>
+      </div>
+      <div class="card">
+        <div class="ct"><div class="ci">🎉</div>Sub & raid goals</div>
+        <div id="stream-goals"></div>
+        <div class="row" style="margin-top:.4rem"><input class="inp" id="stream-goal-inp" placeholder="e.g. 50 followers, Affiliate status..." style="flex:1"><button class="btn btn-pink" onclick="addStreamGoal()">Add</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">📢</div>Social posting schedule for stream promotion</div>
+      <div id="stream-promo-plan"></div>
+    </div>
+  </div>
+
+  <div class="itab-content" id="streamtab-money">
+    <div class="g4">
+      <div class="stat-card"><div class="stat-label">Subscriptions</div><div class="stat-val" style="color:var(--purple)" id="twitch-sub-rev">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Bits & donations</div><div class="stat-val" style="color:var(--gold)" id="twitch-bits-rev">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Sponsorships</div><div class="stat-val" style="color:var(--green)" id="twitch-sponsor-rev">$0</div></div>
+      <div class="stat-card"><div class="stat-label">Affiliate links</div><div class="stat-val" style="color:var(--pink)" id="twitch-aff-rev">$0</div></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">💡</div>All monetization streams — Streaming</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem" id="stream-monetization-grid"></div>
+    </div>
+    <div class="card green-acc">
+      <div class="ct"><div class="ci" style="background:var(--green-light)">💵</div>Log income <button class="bsm ct-right" onclick="openMo('income-modal-stream')">+ Log it</button></div>
+      <div id="stream-income-log"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===================== EMPIRE MONEY ===================== -->
+<div class="job-page" id="job-money">
+<div class="db">
+  <div class="page-hero">
+    <div class="hero-emoji">💸</div>
+    <div>
+      <div class="hero-title">The Weird Girl General Store Empire</div>
+      <div class="hero-sub">All your income streams in one place · syncs with your life dashboard 💰</div>
+    </div>
+  </div>
+  <div class="g4" style="margin-bottom:.9rem">
+    <div class="stat-card"><div class="stat-label">Total this month</div><div class="stat-val" style="color:var(--green)" id="empire-total">$0</div></div>
+    <div class="stat-card"><div class="stat-label">School job</div><div class="stat-val" style="color:var(--gold)" id="empire-school">$1,005</div><div class="stat-sub" id="empire-school-sub">→ $1,500 from Aug 12</div></div>
+    <div class="stat-card"><div class="stat-label">Side hustle total</div><div class="stat-val" style="color:var(--pink)" id="empire-hustle">$0</div></div>
+    <div class="stat-card"><div class="stat-label">Beauty fund saved</div><div class="stat-val" style="color:var(--purple)" id="empire-beauty">$0</div></div>
+  </div>
+  <div class="card">
+    <div class="ct"><div class="ci">📊</div>Income by stream — this month</div>
+    <div id="empire-breakdown"></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><div class="ci">🗺️</div>Financial roadmap</div>
+      <div id="empire-roadmap"></div>
+    </div>
+    <div class="card">
+      <div class="ct"><div class="ci">🎯</div>Income goals</div>
+      <div id="empire-goals"></div>
+      <div class="row" style="margin-top:.4rem"><input class="inp" id="empire-goal-inp" placeholder="e.g. First $500 month from Etsy..." style="flex:1"><button class="btn btn-pink" onclick="addEmpireGoal()">Add</button></div>
+    </div>
+  </div>
+  <div class="card blue-acc">
+    <div class="ct"><div class="ci" style="background:var(--blue-light)">🔗</div>Synced with life dashboard</div>
+    <div style="font-size:10px;color:var(--muted);line-height:1.6">All income logged here automatically syncs to your Weird Girl Life Dashboard money tab. Your life dashboard shows your total monthly income including your school paycheck.</div>
+    <div style="margin-top:.7rem;display:flex;gap:8px;flex-wrap:wrap" id="sync-status-row"></div>
+  </div>
+</div>
+</div>
+
+<!-- ===================== MODALS ===================== -->
+<!-- Student -->
+<div class="mo" id="student-modal"><div class="modal">
+  <div class="modal-title">Add student</div>
+  <div class="fr"><label class="fl">Name / nickname</label><input class="inp inp-full" id="sm-name" placeholder="Student's name..."></div>
+  <div class="fr"><label class="fl">Grade</label><select class="sel inp-full" id="sm-grade"><option>Preschool</option><option>PreK</option><option>Kindergarten</option><option>1st Grade</option></select></div>
+  <div class="fr"><label class="fl">Working on / needs support with</label><textarea class="inp inp-full" id="sm-needs" style="height:60px;resize:none" placeholder="Gross motor, social, emotional regulation, language..."></textarea></div>
+  <div class="fr"><label class="fl">Strengths / loves</label><textarea class="inp inp-full" id="sm-strengths" style="height:44px;resize:none" placeholder="What lights them up?"></textarea></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('student-modal')">Cancel</button><button class="btn btn-pink" onclick="saveStudent()">Add student</button></div>
+</div></div>
+
+<!-- Game -->
+<div class="mo" id="game-modal"><div class="modal">
+  <div class="modal-title">Add a game</div>
+  <div class="fr"><label class="fl">Game name</label><input class="inp inp-full" id="gm-name" placeholder="What's the game called?"></div>
+  <div class="fr"><label class="fl">Type</label><select class="sel inp-full" id="gm-type"><option>Invented</option><option>Classic go-to</option></select></div>
+  <div class="fr"><label class="fl">Skills it builds</label><input class="inp inp-full" id="gm-skills" placeholder="e.g. Balance, turn-taking, spatial awareness..."></div>
+  <div class="fr"><label class="fl">How to play</label><textarea class="inp inp-full" id="gm-how" style="height:70px;resize:none" placeholder="Brief instructions..."></textarea></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('game-modal')">Cancel</button><button class="btn btn-pink" onclick="saveGame()">Add game</button></div>
+</div></div>
+
+<!-- Fairy note -->
+<div class="mo" id="fairy-modal"><div class="modal">
+  <div class="modal-title">🧚 Create a fairy note</div>
+  <div class="fr"><label class="fl">From (character)</label><input class="inp inp-full" id="fm-from" placeholder="e.g. The Library Fairy, Story Gnome..."></div>
+  <div class="fr"><label class="fl">Message</label><textarea class="inp inp-full" id="fm-message" style="height:80px;resize:none" placeholder="Write a magical little note..."></textarea></div>
+  <div class="fr"><label class="fl">Best for</label><select class="sel inp-full" id="fm-occasion"><option>Anytime</option><option>After a hard day</option><option>Celebration</option><option>Seasonal</option><option>Elf on the shelf</option></select></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('fairy-modal')">Cancel</button><button class="btn btn-pink" onclick="saveFairyNote()">Save note ✨</button></div>
+</div></div>
+
+<!-- Video -->
+<div class="mo" id="video-modal"><div class="modal">
+  <div class="modal-title">New YouTube video</div>
+  <div class="fr"><label class="fl">Title / concept</label><input class="inp inp-full" id="vm-title" placeholder="e.g. Why Heathers is a feminist masterpiece..."></div>
+  <div class="fr"><label class="fl">Type</label><select class="sel inp-full" id="vm-type"><option>Film analysis</option><option>GRWM</option><option>Vlog</option><option>Doll restoration</option><option>Modding</option><option>Collab</option><option>Other</option></select></div>
+  <div class="fr"><label class="fl">Notes / angle</label><textarea class="inp inp-full" id="vm-notes" style="height:52px;resize:none" placeholder="Key argument, hook, unique angle..."></textarea></div>
+  <div class="fr"><label class="fl">Target upload date</label><input class="inp inp-full" id="vm-date" type="date"></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('video-modal')">Cancel</button><button class="btn btn-pink" onclick="saveVideo()">Add to pipeline</button></div>
+</div></div>
+
+<!-- Journal -->
+<div class="mo" id="journal-modal"><div class="modal">
+  <div class="modal-title">New film journal entry</div>
+  <div class="fr"><label class="fl">Film / topic</label><input class="inp inp-full" id="jm-film" placeholder="Movie or cultural topic..."></div>
+  <div class="fr"><label class="fl">Main thesis / argument</label><textarea class="inp inp-full" id="jm-thesis" style="height:60px;resize:none" placeholder="What's your central argument or angle?"></textarea></div>
+  <div class="fr"><label class="fl">Key themes & talking points</label><textarea class="inp inp-full" id="jm-themes" style="height:60px;resize:none" placeholder="Bullet points of key ideas..."></textarea></div>
+  <div class="fr"><label class="fl">Sources / references to look up</label><textarea class="inp inp-full" id="jm-sources" style="height:44px;resize:none"></textarea></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('journal-modal')">Cancel</button><button class="btn btn-pink" onclick="saveJournal()">Save journal entry</button></div>
+</div></div>
+
+<!-- Brand deal -->
+<div class="mo" id="deal-modal"><div class="modal">
+  <div class="modal-title">Log a brand deal</div>
+  <div class="fr"><label class="fl">Brand name</label><input class="inp inp-full" id="dm-brand" placeholder="Brand..."></div>
+  <div class="fr"><label class="fl">Amount</label><input class="inp inp-full" id="dm-amount" type="number" placeholder="$0"></div>
+  <div class="fr"><label class="fl">Deliverables</label><textarea class="inp inp-full" id="dm-deliverables" style="height:44px;resize:none" placeholder="What they want from you..."></textarea></div>
+  <div class="fr"><label class="fl">Status</label><select class="sel inp-full" id="dm-status"><option>Pitched</option><option>Negotiating</option><option>Confirmed</option><option>Delivered</option><option>Paid</option></select></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('deal-modal')">Cancel</button><button class="btn btn-pink" onclick="saveDeal()">Save deal</button></div>
+</div></div>
+
+<!-- Mod project -->
+<div class="mo" id="mod-project-modal"><div class="modal">
+  <div class="modal-title">New mod project</div>
+  <div class="fr"><label class="fl">Project name</label><input class="inp inp-full" id="mpm-name" placeholder="e.g. Weird Barbie CAS pack..."></div>
+  <div class="fr"><label class="fl">Game</label><select class="sel inp-full" id="mpm-game"><option>Sims 4</option><option>Minecraft</option><option>Hytale</option><option>Stardew Valley</option><option>Skyrim</option></select></div>
+  <div class="fr"><label class="fl">Description</label><textarea class="inp inp-full" id="mpm-desc" style="height:60px;resize:none" placeholder="What does this mod do?"></textarea></div>
+  <div class="fr"><label class="fl">Status</label><select class="sel inp-full" id="mpm-status"><option>Idea</option><option>Learning</option><option>In progress</option><option>Testing</option><option>Released</option></select></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('mod-project-modal')">Cancel</button><button class="btn btn-pink" onclick="saveModProject()">Add project</button></div>
+</div></div>
+
+<!-- Doll project -->
+<div class="mo" id="doll-modal"><div class="modal">
+  <div class="modal-title">New doll / stuffed animal project</div>
+  <div class="fr"><label class="fl">Item description</label><input class="inp inp-full" id="doll-name" placeholder="e.g. 1990s Barbie lot, plush bunny..."></div>
+  <div class="fr"><label class="fl">Type</label><select class="sel inp-full" id="doll-type"><option>Restoration</option><option>Custom / OOAK</option><option>Stuffed animal</option><option>Commission</option><option>Lot to clean & sell</option></select></div>
+  <div class="fr"><label class="fl">What needs doing</label><textarea class="inp inp-full" id="doll-todo" style="height:60px;resize:none" placeholder="Hair, reroot, repaint, clean, restuff..."></textarea></div>
+  <div class="fr"><label class="fl">Estimated sell price</label><input class="inp inp-full" id="doll-price" type="number" placeholder="$0"></div>
+  <div class="fr"><label class="fl">Status</label><select class="sel inp-full" id="doll-status"><option>Queue</option><option>In progress</option><option>Done</option><option>Listed</option><option>Sold</option></select></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('doll-modal')">Cancel</button><button class="btn btn-pink" onclick="saveDollProject()">Add project</button></div>
+</div></div>
+
+<!-- Listing -->
+<div class="mo" id="listing-modal"><div class="modal">
+  <div class="modal-title">New Etsy listing</div>
+  <div class="fr"><label class="fl">Listing title</label><input class="inp inp-full" id="lm-title" placeholder="e.g. 1990s Barbie Lot of 5 — cleaned & restored..."></div>
+  <div class="fr"><label class="fl">Category</label><select class="sel inp-full" id="lm-cat"><option>Doll / toy</option><option>Print / art</option><option>Digital download</option><option>Handmade</option><option>Vintage</option></select></div>
+  <div class="fr"><label class="fl">Price</label><input class="inp inp-full" id="lm-price" type="number" placeholder="$0"></div>
+  <div class="fr"><label class="fl">Status</label><select class="sel inp-full" id="lm-status"><option>Draft</option><option>Active</option><option>Sold out</option></select></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('listing-modal')">Cancel</button><button class="btn btn-pink" onclick="saveListing()">Add listing</button></div>
+</div></div>
+
+<!-- Order -->
+<div class="mo" id="order-modal"><div class="modal">
+  <div class="modal-title">Log an order</div>
+  <div class="fr"><label class="fl">Item sold</label><input class="inp inp-full" id="om-item" placeholder="What sold?"></div>
+  <div class="fr"><label class="fl">Sale price</label><input class="inp inp-full" id="om-price" type="number" placeholder="$0"></div>
+  <div class="fr"><label class="fl">Status</label><select class="sel inp-full" id="om-status"><option>New</option><option>Shipped</option><option>Delivered</option><option>Issue</option></select></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('order-modal')">Cancel</button><button class="btn btn-pink" onclick="saveOrder()">Log order</button></div>
+</div></div>
+
+<!-- UGC deal -->
+<div class="mo" id="ugc-deal-modal"><div class="modal">
+  <div class="modal-title">Log a UGC deal</div>
+  <div class="fr"><label class="fl">Brand</label><input class="inp inp-full" id="ugc-brand" placeholder="Brand name..."></div>
+  <div class="fr"><label class="fl">Rate</label><input class="inp inp-full" id="ugc-rate" type="number" placeholder="$0"></div>
+  <div class="fr"><label class="fl">Deliverable</label><input class="inp inp-full" id="ugc-deliverable" placeholder="e.g. 2x 30sec TikTok videos..."></div>
+  <div class="fr"><label class="fl">Deadline</label><input class="inp inp-full" id="ugc-deadline" type="date"></div>
+  <div class="fr"><label class="fl">Status</label><select class="sel inp-full" id="ugc-status"><option>Pitched</option><option>Confirmed</option><option>In production</option><option>Delivered</option><option>Paid</option></select></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('ugc-deal-modal')">Cancel</button><button class="btn btn-pink" onclick="saveUGCDeal()">Save deal</button></div>
+</div></div>
+
+<!-- Pitch template -->
+<div class="mo" id="pitch-modal"><div class="modal">
+  <div class="modal-title">Save pitch template</div>
+  <div class="fr"><label class="fl">Template name</label><input class="inp inp-full" id="pt-name" placeholder="e.g. Cold outreach, follow-up..."></div>
+  <div class="fr"><label class="fl">Pitch script</label><textarea class="inp inp-full" id="pt-script" style="height:100px;resize:none" placeholder="Your pitch message..."></textarea></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('pitch-modal')">Cancel</button><button class="btn btn-pink" onclick="savePitch()">Save template</button></div>
+</div></div>
+
+<!-- Stream log -->
+<div class="mo" id="stream-log-modal"><div class="modal">
+  <div class="modal-title">Log a stream</div>
+  <div class="fr"><label class="fl">Game / content</label><input class="inp inp-full" id="sl-game" placeholder="What did you stream?"></div>
+  <div class="fr"><label class="fl">Date</label><input class="inp inp-full" id="sl-date" type="date"></div>
+  <div class="fr"><label class="fl">Duration</label><input class="inp inp-full" id="sl-duration" placeholder="e.g. 2 hours"></div>
+  <div class="fr"><label class="fl">Peak viewers</label><input class="inp inp-full" id="sl-viewers" type="number" placeholder="0"></div>
+  <div class="fr"><label class="fl">Notes / highlights</label><textarea class="inp inp-full" id="sl-notes" style="height:52px;resize:none" placeholder="What went well, moments to clip, ideas for next time..."></textarea></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('stream-log-modal')">Cancel</button><button class="btn btn-pink" onclick="saveStreamLog()">Log stream</button></div>
+</div></div>
+
+<!-- Generic income modals (one per section) -->
+<div class="mo" id="income-modal-yt"><div class="modal"><div class="modal-title">Log YouTube income</div>
+  <div class="fr"><label class="fl">Source</label><select class="sel inp-full" id="inc-yt-source"><option>Ad revenue</option><option>Brand deal</option><option>Patreon</option><option>Merch</option><option>Affiliate</option><option>Super Chat</option><option>Other</option></select></div>
+  <div class="fr"><label class="fl">Amount ($)</label><input class="inp inp-full" id="inc-yt-amt" type="number" placeholder="0"></div>
+  <div class="fr"><label class="fl">Notes</label><input class="inp inp-full" id="inc-yt-notes" placeholder="Optional details..."></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('income-modal-yt')">Cancel</button><button class="btn btn-pink" onclick="logIncome('yt')">Log income</button></div>
+</div></div>
+<div class="mo" id="income-modal-mod"><div class="modal"><div class="modal-title">Log modding income</div>
+  <div class="fr"><label class="fl">Source</label><select class="sel inp-full" id="inc-mod-source"><option>Patreon</option><option>Mod sale</option><option>Commission</option><option>YouTube (mod content)</option><option>Ko-fi</option><option>Other</option></select></div>
+  <div class="fr"><label class="fl">Amount ($)</label><input class="inp inp-full" id="inc-mod-amt" type="number" placeholder="0"></div>
+  <div class="fr"><label class="fl">Notes</label><input class="inp inp-full" id="inc-mod-notes" placeholder="Optional details..."></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('income-modal-mod')">Cancel</button><button class="btn btn-pink" onclick="logIncome('mod')">Log income</button></div>
+</div></div>
+<div class="mo" id="income-modal-etsy"><div class="modal"><div class="modal-title">Log Etsy income</div>
+  <div class="fr"><label class="fl">Source</label><select class="sel inp-full" id="inc-etsy-source"><option>Sale</option><option>Digital download</option><option>Custom order</option><option>Other</option></select></div>
+  <div class="fr"><label class="fl">Amount ($)</label><input class="inp inp-full" id="inc-etsy-amt" type="number" placeholder="0"></div>
+  <div class="fr"><label class="fl">Notes</label><input class="inp inp-full" id="inc-etsy-notes" placeholder="Item sold..."></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('income-modal-etsy')">Cancel</button><button class="btn btn-pink" onclick="logIncome('etsy')">Log income</button></div>
+</div></div>
+<div class="mo" id="income-modal-doll"><div class="modal"><div class="modal-title">Log doll income</div>
+  <div class="fr"><label class="fl">Source</label><select class="sel inp-full" id="inc-doll-source"><option>Etsy sale</option><option>Commission</option><option>Local sale</option><option>Other</option></select></div>
+  <div class="fr"><label class="fl">Amount ($)</label><input class="inp inp-full" id="inc-doll-amt" type="number" placeholder="0"></div>
+  <div class="fr"><label class="fl">Notes</label><input class="inp inp-full" id="inc-doll-notes" placeholder="Item sold..."></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('income-modal-doll')">Cancel</button><button class="btn btn-pink" onclick="logIncome('doll')">Log income</button></div>
+</div></div>
+<div class="mo" id="income-modal-baddie"><div class="modal"><div class="modal-title">Log baddie income</div>
+  <div class="fr"><label class="fl">Source</label><select class="sel inp-full" id="inc-baddie-source"><option>UGC deal</option><option>Brand deal</option><option>TikTok Creator Fund</option><option>Affiliate links</option><option>Instagram bonus</option><option>Other</option></select></div>
+  <div class="fr"><label class="fl">Amount ($)</label><input class="inp inp-full" id="inc-baddie-amt" type="number" placeholder="0"></div>
+  <div class="fr"><label class="fl">Notes</label><input class="inp inp-full" id="inc-baddie-notes" placeholder="Optional..."></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('income-modal-baddie')">Cancel</button><button class="btn btn-pink" onclick="logIncome('baddie')">Log income</button></div>
+</div></div>
+<div class="mo" id="income-modal-stream"><div class="modal"><div class="modal-title">Log streaming income</div>
+  <div class="fr"><label class="fl">Source</label><select class="sel inp-full" id="inc-stream-source"><option>Subscriptions</option><option>Bits</option><option>Donations</option><option>Sponsorship</option><option>Affiliate</option><option>Other</option></select></div>
+  <div class="fr"><label class="fl">Amount ($)</label><input class="inp inp-full" id="inc-stream-amt" type="number" placeholder="0"></div>
+  <div class="fr"><label class="fl">Notes</label><input class="inp inp-full" id="inc-stream-notes" placeholder="Optional..."></div>
+  <div class="macts"><button class="btn btn-outline" onclick="closeMo('income-modal-stream')">Cancel</button><button class="btn btn-pink" onclick="logIncome('stream')">Log income</button></div>
+</div></div>
+</div>
+
+<!-- ===================== HOBBIES ===================== -->
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('barbie');
+
+// Make the barbie page visible (it's display:none by default from .page class)
+
+
+// Modal helpers (used by HTML onclick handlers)
+window.openMo=id=>{const el=document.getElementById(id);if(el)el.classList.add('open')};
+window.closeMo=id=>{const el=document.getElementById(id);if(el)el.classList.remove('open')};
+document.querySelectorAll('.mo').forEach(mo=>{mo.onclick=e=>{if(e.target===mo)mo.classList.remove('open')}});
+
+// Barbie init guard
+let _barbieInited=false;
+
+function initBarbie(){
+  if(_barbieInited)return;
+  _barbieInited=true;
+  updateHeaderTotal();
+  renderSchoolChecklist();renderFairyNotesList();renderStudents();renderFocusAreas();
+  renderMotorSkills();renderMotorWeek();renderGames();renderElfIdeas();renderSchoolFun();renderFairyVault();
+  renderYTKanban();renderYTIdeas();renderYTTrends();renderJournals();renderYTDeals();renderPatreonTiers();renderBIncomeLog();
+  renderModProjects();renderModIdeas();renderModWorkflow();renderModResources();renderModTools();
+  renderEtsyListings();renderEtsyOrders();renderEtsyGoals();renderEtsyPlannerChecklist();renderEtsyPhotos();renderEtsyCal();updateEtsyStats();
+  renderDollProjects("all");renderDollSupplies();renderDollWorkflow();renderDollTechniques();renderDollRefs();
+  renderBaddieIdeas();renderBaddieInspo();renderBaddieTreatments();renderUGCDeals();renderPitches();renderBaddieBrands();renderBaddieMilestones();renderBaddieSchedule();renderBaddieWeekly();renderBaddieKanban();
+  renderStreamGames();renderStreamSeries();renderStreamGoals();renderStreamLog();renderStreamSchedule();renderStreamSetupChecklist();renderStreamPromo();
+  renderMonetizationGrids();renderEmpireRoadmap();renderEmpireGoals();
+}
+// ===== STORAGE =====
+const B={
+  school:'bb_school',students:'bb_students',games:'bb_games',fairy:'bb_fairy',elf:'bb_elf',schoolFun:'bb_sfun',motorWeek:'bb_motorwk',
+  ytVideos:'bb_ytvideos',ytIdeas:'bb_ytideas',ytTrends:'bb_yttrends',ytJournals:'bb_ytjournals',ytDeals:'bb_ytdeals',ytPatreon:'bb_ytpatreon',
+  modProjects:'bb_modprojects',modIdeas:'bb_modideas',modResources:'bb_modres',
+  etsyListings:'bb_listings',etsyOrders:'bb_orders',etsyGoals:'bb_etsygoals',
+  dollProjects:'bb_dolls',dollSupplies:'bb_dollsupplies',dollTechniques:'bb_techniques',dollRefs:'bb_dollrefs',
+  baddieContent:'bb_baddie',baddieIdeas:'bb_baddideas',baddieInspo:'bb_inspo',baddieTreatments:'bb_treatments',ugcDeals:'bb_ugcdeals',pitches:'bb_pitches',baddieBrands:'bb_brands',baddieMilestones:'bb_milestones',
+  streamGames:'bb_streamgames',streamSeries:'bb_streamseries',streamGoals:'bb_streamgoals',streamLog:'bb_streamlog',
+  income:'bb_income',
+  // sync key for life dashboard
+  lifeIncome:'wg_ic8'
+};
+const nowS=()=>new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+const fmtMoney=n=>n?'$'+parseFloat(n).toFixed(0):'$0';
+
+// ===== NAVIGATION =====
+window.goJob=id=>{
+  document.querySelectorAll('.job-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.job-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('job-'+id).classList.add('active');
+  document.querySelector(`.job-btn[onclick="goJob('${id}')"]`).classList.add('active');
+  if(id==='money')renderEmpireMoney();
+  updateHeaderTotal();
+};
+window.bOpenMo=id=>document.getElementById(id).classList.add('open');
+window.bCloseMo=id=>document.getElementById(id).classList.remove('open');
+document.querySelectorAll('#page-barbie .mo').forEach(mo=>mo.onclick=e=>{if(e.target===mo)mo.classList.remove('open')});
+
+function showTabGeneric(prefix,t){
+  document.querySelectorAll('[id^="'+prefix+'tab-"]').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('[onclick*="show'+prefix.charAt(0).toUpperCase()+prefix.slice(1)+'Tab"]').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById(prefix+'tab-'+t);if(el)el.classList.add('active');
+  const btn=document.querySelector(`[onclick="${'show'+prefix.charAt(0).toUpperCase()+prefix.slice(1)+'Tab'}('${t}')"]`);if(btn)btn.classList.add('active');
+}
+window.showSchoolTab=t=>showTabGeneric('s',t);
+window.showYTTab=t=>showTabGeneric('yt',t);
+window.showModTab=t=>showTabGeneric('mod',t);
+window.showEtsyTab=t=>showTabGeneric('etsy',t);
+window.showDollTab=t=>showTabGeneric('doll',t);
+window.showBaddieTab=t=>showTabGeneric('baddie',t);
+window.showStreamTab=t=>showTabGeneric('stream',t);
+
+// ===== INCOME ENGINE =====
+let bIncomeLog=ls(B.income,[]);
+function getIncomeBySection(section){return bIncomeLog.filter(i=>i.section===section).reduce((a,b)=>a+b.amount,0)}
+function getAllIncome(){return bIncomeLog.reduce((a,b)=>a+b.amount,0)}
+window.logIncome=section=>{
+  const amtEl=document.getElementById('inc-'+section+'-amt');
+  const sourceEl=document.getElementById('inc-'+section+'-source');
+  const notesEl=document.getElementById('inc-'+section+'-notes');
+  const amt=parseFloat(amtEl?.value)||0;if(!amt){amtEl?.focus();return}
+  const entry={section,source:sourceEl?.value||'Other',amount:amt,notes:notesEl?.value||'',date:nowS(),ts:Date.now()};
+  bIncomeLog.unshift(entry);ss(B.income,bIncomeLog);
+  // sync to life dashboard
+  syncToLifeDashboard(entry);
+  amtEl.value='';if(notesEl)notesEl.value='';
+  bCloseMo('income-modal-'+section);
+  renderBIncomeLog();updateHeaderTotal();
+};
+function syncToLifeDashboard(entry){
+  try{
+    let lifeLog=ls(B.lifeIncome,[]);
+    lifeLog.unshift({source:`${entry.section.toUpperCase()} — ${entry.source}`,amt:entry.amount,cat:entry.section,color:'#e91e8c'});
+    ss(B.lifeIncome,lifeLog);
+  }catch(e){}
+}
+function bGetSchoolPay(){const now=new Date();const aug12=new Date(2026,7,12);return now>=aug12?1500:1005}
+function updateHeaderTotal(){const t=getAllIncome()+bGetSchoolPay();document.getElementById('header-total').textContent=fmtMoney(t);const el=document.getElementById('empire-school');if(el)el.textContent=fmtMoney(bGetSchoolPay());const sub=document.getElementById('empire-school-sub');if(sub)sub.textContent=bGetSchoolPay()===1500?'monthly paycheck':'→ $1,500 from Aug 12'}
+function renderBIncomeLog(){
+  const sections=['yt','mod','etsy','doll','baddie','stream'];
+  sections.forEach(s=>{
+    const el=document.getElementById(s+'-income-log');if(!el)return;
+    const items=bIncomeLog.filter(i=>i.section===s);
+    if(!items.length){el.innerHTML='<div class="empty-s">No income logged yet</div>';return}
+    el.innerHTML='';items.slice(0,5).forEach(item=>{
+      const e=document.createElement('div');e.className='money-card';
+      e.innerHTML=`<div class="money-dot" style="background:var(--pink)"></div><div class="money-source">${item.source}${item.notes?' — <span style="font-weight:400;color:var(--muted)">${item.notes}</span>':''}</div><div style="font-size:9px;color:var(--muted)">${item.date}</div><div class="money-amount">${fmtMoney(item.amount)}</div>`;
+      el.appendChild(e);
+    });
+  });
+}
+
+// ===== MONETIZATION GRIDS =====
+const MONETIZATION={
+  yt:[{icon:'💰',name:'YouTube AdSense',desc:'Once monetized (1k subs + 4k hours)'},{icon:'🤝',name:'Brand deals',desc:'Sponsored integrations in videos'},{icon:'💜',name:'Patreon',desc:'Exclusive content, early access, BTS'},{icon:'👕',name:'Merch',desc:'Printful/Printify integration'},{icon:'🔗',name:'Affiliate links',desc:'Amazon, Book Depository, etc in description'},{icon:'💬',name:'Super Chats / Thanks',desc:'Viewer tips during premieres'}],
+  mod:[{icon:'💜',name:'Patreon',desc:'Early mod access, WIP updates, exclusive content'},{icon:'☕',name:'Ko-fi / donations',desc:'One-time tips from fans'},{icon:'📦',name:'Paid mod packs',desc:'Curated bundles on Gumroad or itch.io'},{icon:'🎮',name:'Commission mods',desc:'Custom mods made for specific clients'},{icon:'🎬',name:'YouTube content',desc:'Tutorials, showcases, mod reviews'},{icon:'🤝',name:'Studio partnerships',desc:'Paid work for indie game studios'}],
+  etsy:[{icon:'🎀',name:'Restored doll lots',desc:'Cleaned, repaired, photographed to sell'},{icon:'🎨',name:'OOAK customs',desc:'One-of-a-kind painted/rerooted pieces'},{icon:'🖼️',name:'Art prints',desc:'Digital designs printed on demand'},{icon:'💻',name:'Digital downloads',desc:'Printables, patterns, guides'},{icon:'✉️',name:'Made-to-order',desc:'Commissions for custom work'},{icon:'🎁',name:'Gift sets / bundles',desc:'Curated lots for higher AOV'}],
+  doll:[{icon:'🛍️',name:'Etsy sales',desc:'Restored and custom dolls'},{icon:'🤝',name:'Commissions',desc:'Custom restorations for clients'},{icon:'🎬',name:'YouTube/TikTok',desc:'Restoration content drives traffic'},{icon:'👩‍🏫',name:'Tutorials',desc:'Paid PDF or video guides on restoration'},{icon:'📦',name:'Supply bundles',desc:'Curated doll supply kits'},{icon:'🏪',name:'Local markets',desc:'Craft fairs, vintage markets'}],
+  baddie:[{icon:'🤝',name:'UGC creation',desc:'Create content for brands without needing big following'},{icon:'💸',name:'Brand deals',desc:'Sponsored posts once you have traction'},{icon:'🎵',name:'TikTok Creator Fund',desc:'Pay per view after 10k followers'},{icon:'🔗',name:'Affiliate links',desc:'LTK, Amazon storefront, brand affiliates'},{icon:'💄',name:'Brand ambassador',desc:'Ongoing relationship with a brand'},{icon:'👗',name:'Personal shopping',desc:'Curated style guides, Depop/Poshmark'}],
+  stream:[{icon:'⭐',name:'Twitch subscriptions',desc:'$2.50–$4.99 split per sub'},{icon:'💎',name:'Bits & donations',desc:'Direct tips from viewers'},{icon:'🤝',name:'Sponsorships',desc:'Paid integrations in streams'},{icon:'🔗',name:'Affiliate links',desc:'Gaming gear, peripherals, games'},{icon:'☕',name:'Ko-fi / StreamElements',desc:'Tip jar for non-Twitch supporters'},{icon:'📺',name:'VOD content',desc:'Clips to YouTube for ad revenue'}]
+};
+function renderMonetizationGrids(){
+  Object.entries(MONETIZATION).forEach(([key,items])=>{
+    const el=document.getElementById(key+'-monetization-grid');if(!el)return;el.innerHTML='';
+    items.forEach(item=>{
+      const e=document.createElement('div');
+      e.style.cssText='background:var(--pink-light);border:1px solid var(--border);border-radius:10px;padding:9px 11px;font-size:11px';
+      e.innerHTML=`<div style="font-size:16px;margin-bottom:4px">${item.icon}</div><div style="font-weight:700;color:var(--pink-dark)">${item.name}</div><div style="font-size:9px;color:var(--muted);margin-top:2px">${item.desc}</div>`;
+      el.appendChild(e);
+    });
+  });
+}
+
+// ===== SCHOOL =====
+let students=ls(B.students,[]);
+let schoolGames=ls(B.games,[]);
+let fairyNotes=ls(B.fairy,[]);
+let elfIdeas=ls(B.elf,['The elf moved the pencil cups around!','Elf left tiny footprints in glitter','Elf is reading a tiny book in the library corner','Elf got into the art supplies — tiny paintings left behind','Elf wrote a note saying she misses the kids']);
+let schoolFun=ls(B.schoolFun,[]);
+
+const MOTOR_SKILLS=[
+  {cat:'balance',emoji:'🧘',name:'Single-leg stance',desc:'Stand on one foot for 5-10 seconds. Great for proprioception.'},
+  {cat:'balance',emoji:'🚶',name:'Beam walking',desc:'Walk along a taped line or balance beam. Eyes forward!'},
+  {cat:'coordination',emoji:'🤲',name:'Clapping patterns',desc:'Repeat rhythmic clapping sequences. Builds bilateral coordination.'},
+  {cat:'coordination',emoji:'⚽',name:'Kicking a stationary ball',desc:'Kick toward a target with alternating feet.'},
+  {cat:'coordination',emoji:'🏀',name:'Bouncing & catching',desc:'Bounce a large ball and catch it. Progress to smaller balls.'},
+  {cat:'strength',emoji:'🐛',name:'Animal walks',desc:'Bear crawl, crab walk, inchworm. Full body strength & fun!'},
+  {cat:'strength',emoji:'🧗',name:'Climbing & hanging',desc:'Monkey bars, climbing walls. Upper body and core strength.'},
+  {cat:'spatial',emoji:'🎯',name:'Obstacle course',desc:'Over, under, through — spatial awareness and body mapping.'},
+  {cat:'spatial',emoji:'🔄',name:'Rolling and tumbling',desc:'Forward rolls on a mat. Body awareness and vestibular input.'},
+  {cat:'rhythm',emoji:'🥁',name:'Drum & stomp patterns',desc:'Follow a beat with hands and feet. Great for music movement sessions!'},
+  {cat:'rhythm',emoji:'💃',name:'Freeze dance',desc:'Move when music plays, freeze when it stops. Impulse control + rhythm.'},
+  {cat:'coordination',emoji:'🎪',name:'Scarf juggling',desc:'Toss and catch silk scarves — slow enough for little hands to track.'},
+];
+
+let motorFilterActive='all';
+let motorWeek=ls(B.motorWeek,[]);
+let schoolChecklist=ls(B.school,{checklist:[],focus:'',music:'',quickNotes:''});
+
+window.saveSchoolFocus=()=>{schoolChecklist.focus=document.getElementById('school-today-focus').value;ss(B.school,schoolChecklist)};
+window.saveSchoolMusic=()=>{schoolChecklist.music=document.getElementById('school-music-plan').value;ss(B.school,schoolChecklist)};
+window.saveQuickNotes=()=>{schoolChecklist.quickNotes=document.getElementById('school-quick-notes').value;ss(B.school,schoolChecklist)};
+window.addSchoolCheck=()=>{const v=document.getElementById('school-check-inp').value.trim();if(!v)return;schoolChecklist.checklist.push({text:v,done:false});ss(B.school,schoolChecklist);document.getElementById('school-check-inp').value='';renderSchoolChecklist()};
+function renderSchoolChecklist(){const c=document.getElementById('school-checklist');if(!c)return;c.innerHTML='';if(!schoolChecklist.checklist.length){c.innerHTML='<div class="empty-s">Add today\'s tasks</div>';return}schoolChecklist.checklist.forEach((item,i)=>{const e=document.createElement('div');e.className='checklist-item';e.innerHTML=`<div class="check-box ${item.done?'done':''}" onclick="toggleSchoolCheck(${i})">${item.done?'✓':''}</div><span class="checklist-text ${item.done?'done-text':''}">${item.text}</span><button class="bdel" onclick="removeSchoolCheck(${i})">×</button>`;c.appendChild(e)})}
+window.toggleSchoolCheck=i=>{schoolChecklist.checklist[i].done=!schoolChecklist.checklist[i].done;ss(B.school,schoolChecklist);renderSchoolChecklist()};
+window.removeSchoolCheck=i=>{schoolChecklist.checklist.splice(i,1);ss(B.school,schoolChecklist);renderSchoolChecklist()};
+
+window.addFairyNote=()=>{const v=document.getElementById('fairy-note-inp').value.trim();if(!v)return;fairyNotes.unshift({text:v,date:nowS()});ss(B.fairy,fairyNotes);document.getElementById('fairy-note-inp').value='';renderFairyNotesList()};
+function renderFairyNotesList(){const c=document.getElementById('fairy-notes-list');if(!c)return;c.innerHTML='';fairyNotes.slice(0,3).forEach((n,i)=>{const e=document.createElement('div');e.style.cssText='font-size:10px;padding:5px 8px;background:var(--pink-light);border-radius:8px;margin-bottom:3px;color:var(--pink-dark)';e.textContent='🧚 '+n.text;c.appendChild(e)})}
+
+window.saveStudent=()=>{const n=document.getElementById('sm-name').value.trim();if(!n)return;students.push({id:Date.now(),name:n,grade:document.getElementById('sm-grade').value,needs:document.getElementById('sm-needs').value,strengths:document.getElementById('sm-strengths').value});ss(B.students,students);renderStudents();bCloseMo('student-modal');['sm-name','sm-needs','sm-strengths'].forEach(id=>document.getElementById(id).value='')};
+function renderStudents(){const c=document.getElementById('student-list');if(!c)return;c.innerHTML='';if(!students.length){c.innerHTML='<div class="empty-s">No students added yet</div>';return}students.forEach((s,i)=>{const e=document.createElement('div');e.className='student-card';e.innerHTML=`<div style="display:flex;align-items:flex-start;gap:7px"><div style="flex:1"><div class="student-name">${s.name} <span class="tag" style="background:var(--pink-light);color:var(--pink-dark)">${s.grade}</span></div>${s.needs?`<div style="font-size:9px;font-weight:600;color:var(--muted);margin-top:3px">Working on: <span style="font-weight:400">${s.needs}</span></div>`:''} ${s.strengths?`<div style="font-size:9px;color:var(--green);margin-top:2px">✨ ${s.strengths}</div>`:''}</div><button class="bdel" onclick="removeStudent(${i})">×</button></div>`;c.appendChild(e)})}
+window.removeStudent=i=>{students.splice(i,1);ss(B.students,students);renderStudents()};
+
+let focusAreas=ls('bb_focusareas',[]);
+window.addFocusArea=()=>{const v=document.getElementById('focus-area-inp').value.trim();if(!v)return;focusAreas.push(v);ss('bb_focusareas',focusAreas);document.getElementById('focus-area-inp').value='';renderFocusAreas()};
+function renderFocusAreas(){const c=document.getElementById('focus-areas-list');if(!c)return;c.innerHTML='';if(!focusAreas.length){c.innerHTML='<div class="empty-s">No focus areas added</div>';return}focusAreas.forEach((f,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--pink-light);border-radius:7px;margin-bottom:3px;font-size:11px';e.innerHTML=`<div style="width:5px;height:5px;border-radius:50%;background:var(--pink);flex-shrink:0"></div><span style="flex:1">${f}</span><button class="bdel" onclick="removeFocusArea(${i})">×</button>`;c.appendChild(e)})}
+window.removeFocusArea=i=>{focusAreas.splice(i,1);ss('bb_focusareas',focusAreas);renderFocusAreas()};
+
+window.filterMotor=(cat,btn)=>{motorFilterActive=cat;document.querySelectorAll('#motor-filter-btns .bsm').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMotorSkills()};
+function renderMotorSkills(){const c=document.getElementById('motor-skills-list');if(!c)return;c.innerHTML='';const list=motorFilterActive==='all'?MOTOR_SKILLS:MOTOR_SKILLS.filter(s=>s.cat===motorFilterActive);list.forEach(s=>{const e=document.createElement('div');e.className='motor-card';e.innerHTML=`<div class="motor-emoji">${s.emoji}</div><div><div class="motor-name">${s.name} <span class="tag" style="background:var(--pink-light);color:var(--pink-dark)">${s.cat}</span></div><div class="motor-desc">${s.desc}</div></div>`;c.appendChild(e)})}
+
+window.addMotorWeek=()=>{const v=document.getElementById('motor-week-inp').value.trim();if(!v)return;motorWeek.push(v);ss(B.motorWeek,motorWeek);document.getElementById('motor-week-inp').value='';renderMotorWeek()};
+function renderMotorWeek(){const c=document.getElementById('motor-this-week');if(!c)return;c.innerHTML='';motorWeek.forEach((item,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--teal-light);border-radius:7px;margin-bottom:3px;font-size:11px;border:1px solid rgba(22,160,133,.2)';e.innerHTML=`<span>🎯</span><span style="flex:1">${item}</span><button class="bdel" onclick="removeMotorWeek(${i})">×</button>`;c.appendChild(e)})}
+window.removeMotorWeek=i=>{motorWeek.splice(i,1);ss(B.motorWeek,motorWeek);renderMotorWeek()};
+
+window.saveGame=()=>{const n=document.getElementById('gm-name').value.trim();if(!n)return;schoolGames.push({name:n,type:document.getElementById('gm-type').value,skills:document.getElementById('gm-skills').value,how:document.getElementById('gm-how').value,id:Date.now()});ss(B.games,schoolGames);renderGames();bCloseMo('game-modal');['gm-name','gm-skills','gm-how'].forEach(id=>document.getElementById(id).value='')};
+function renderGames(){
+  const inv=document.getElementById('invented-games'),cls=document.getElementById('classic-games');if(!inv||!cls)return;
+  inv.innerHTML='';cls.innerHTML='';
+  const myGames=schoolGames.filter(g=>g.type==='Invented');const clsGames=schoolGames.filter(g=>g.type==='Classic go-to');
+  [myGames,clsGames].forEach((arr,idx)=>{
+    const c=idx===0?inv:cls;
+    if(!arr.length){c.innerHTML='<div class="empty-s">'+(idx===0?'Add games you\'ve invented!':'Add go-to classics')+'</div>';return}
+    arr.forEach((g,i)=>{const e=document.createElement('div');e.className='game-card';e.innerHTML=`<div style="font-size:12px;font-weight:700;color:var(--text)">${g.name}</div><div style="font-size:9px;color:var(--green);margin-top:2px">${g.skills}</div>${g.how?`<div style="font-size:9px;color:var(--muted);margin-top:3px">${g.how}</div>`:''}<button class="bdel" style="position:absolute;top:6px;right:8px" onclick="removeGame(${i})">×</button>`;e.style.position='relative';c.appendChild(e)})
+  });
+}
+
+window.addElfIdea=()=>{const v=document.getElementById('elf-inp').value.trim();if(!v)return;elfIdeas.push(v);ss(B.elf,elfIdeas);document.getElementById('elf-inp').value='';renderElfIdeas()};
+function renderElfIdeas(){const c=document.getElementById('elf-ideas');if(!c)return;c.innerHTML='';elfIdeas.forEach((idea,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:flex-start;gap:6px;padding:5px 8px;background:var(--gold-light);border-radius:7px;margin-bottom:3px;font-size:11px;border:1px solid rgba(201,168,76,.2)';e.innerHTML=`<span>🎅</span><span style="flex:1">${idea}</span><button class="bdel" onclick="removeElf(${i})">×</button>`;c.appendChild(e)})}
+window.removeElf=i=>{elfIdeas.splice(i,1);ss(B.elf,elfIdeas);renderElfIdeas()};
+
+window.addSchoolFun=()=>{const v=document.getElementById('school-fun-inp').value.trim();if(!v)return;schoolFun.push({text:v,cat:document.getElementById('school-fun-cat').value});ss(B.schoolFun,schoolFun);document.getElementById('school-fun-inp').value='';renderSchoolFun()};
+function renderSchoolFun(){const c=document.getElementById('school-fun-list');if(!c)return;c.innerHTML='';if(!schoolFun.length){c.innerHTML='<div class="empty-s">Add fun things to do for the school!</div>';return}const catColor={Seasonal:'#f0a500',Weekly:'#27ae60',Special:'#e91e8c',Ongoing:'#2980b9'};schoolFun.forEach((item,i)=>{const col=catColor[item.cat]||'#888';const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:7px;padding:6px 8px;background:white;border:1px solid var(--border);border-radius:8px;margin-bottom:4px;font-size:11px';e.innerHTML=`<span class="tag" style="background:${col}18;color:${col};border:1px solid ${col}33">${item.cat}</span><span style="flex:1">${item.text}</span><button class="bdel" onclick="removeSchoolFun(${i})">×</button>`;c.appendChild(e)})}
+window.removeSchoolFun=i=>{schoolFun.splice(i,1);ss(B.schoolFun,schoolFun);renderSchoolFun()};
+
+window.saveFairyNote=()=>{const from=document.getElementById('fm-from').value.trim(),msg=document.getElementById('fm-message').value.trim();if(!msg)return;const vaultEl=document.getElementById('fairy-vault');const entry={from:from||'The Fairy',message:msg,occasion:document.getElementById('fm-occasion').value,date:nowS()};fairyNotes.push(entry);ss(B.fairy,fairyNotes);document.getElementById('fm-from').value='';document.getElementById('fm-message').value='';bCloseMo('fairy-modal');renderFairyVault()};
+function renderFairyVault(){const c=document.getElementById('fairy-vault');if(!c)return;c.innerHTML='';if(!fairyNotes.length){c.innerHTML='<div class="empty-s">No fairy notes yet ✨</div>';return}fairyNotes.forEach((n,i)=>{const e=document.createElement('div');e.style.cssText='background:var(--pink-light);border:1px solid var(--border);border-radius:10px;padding:9px 11px;margin-bottom:5px;font-size:11px;position:relative';e.innerHTML=`<div style="font-size:9px;font-weight:700;color:var(--pink-dark);margin-bottom:3px">From: ${n.from||'🧚'} · ${n.occasion||''}</div><div style="line-height:1.5;font-style:italic">"${n.message}"</div>`;c.appendChild(e)})}
+
+// ===== YOUTUBE =====
+let ytVideos=ls(B.ytVideos,[{id:1,title:'Why Heathers is a feminist masterpiece',type:'Film analysis',status:'idea',notes:'Gender, class, violence as metaphor. Start with the ending.',date:''},{id:2,title:'Get ready with me — spring reset era',type:'GRWM',status:'idea',notes:'Film while doing actual spring reset routine',date:''},{id:3,title:'First doll restoration — blind Barbie rescue',type:'Doll restoration',status:'filming',notes:'Already have the dolls. Just need good lighting.',date:''},{id:4,title:'Clueless as class anxiety text',type:'Film analysis',status:'scripting',notes:'Finished journal entry, need to finish bullet points',date:''}]);
+let ytIdeasFilm=ls('bb_ytidfilm',['The Craft (1996) — female rage and outsider identity','Jennifer\'s Body — male gaze commentary done right','But I\'m a Cheerleader — queer representation vs heteronormativity','Ginger Snaps — puberty as body horror masterpiece','Carrie (1976) — the original weird girl revenge fantasy']);
+let ytIdeasOther=ls('bb_ytidother',[]);
+let ytTrends=ls(B.ytTrends,[]);
+let ytJournals=ls(B.ytJournals,[]);
+let ytDeals=ls(B.ytDeals,[]);
+let ytPatreon=ls(B.ytPatreon,[{name:'Weird girl supporter',price:3,desc:'Early access + BTS updates'},{name:'Film theory club',price:7,desc:'Monthly deep-dive PDF + Discord access'},{name:'Weird girl inner circle',price:15,desc:'Everything above + monthly Q&A'}]);
+
+const YT_STAGES=['idea','research','scripting','filming','editing','thumbnail','posting'];
+const YT_STAGE_LABELS={idea:'💡 Ideas',research:'🔍 Research',scripting:'✍️ Script',filming:'🎬 Filming',editing:'✂️ Editing',thumbnail:'🖼️ Thumbnail',posting:'🚀 Posted'};
+const YT_STEPS=[{icon:'📓',label:'Film journal / idea research'},{icon:'•',label:'Bullet point outline'},{icon:'🎙️',label:'Record voiceover'},{icon:'🎬',label:'Collect clips & footage'},{icon:'✂️',label:'Edit video'},{icon:'📝',label:'Write description & tags'},{icon:'🖼️',label:'Create thumbnail'},{icon:'📲',label:'TikTok & Shorts repurposing'},{icon:'🚀',label:'Post & schedule'}];
+
+function renderYTKanban(){
+  const kb=document.getElementById('yt-kanban');if(!kb)return;kb.innerHTML='';
+  const cols=['idea','research','scripting','filming','editing','posting'];
+  const colLabels={idea:'💡 Idea',research:'🔍 Research',scripting:'✍️ Script',filming:'🎬 Filming',editing:'✂️ Editing',posting:'🚀 Posted'};
+  cols.forEach(status=>{
+    const col=document.createElement('div');col.className='kanban-col';
+    const items=ytVideos.filter(v=>v.status===status);
+    col.innerHTML=`<div class="kanban-title"><span>${colLabels[status]}</span><span class="kanban-count">${items.length}</span></div><div id="ytkb-${status}"></div>`;
+    kb.appendChild(col);
+    items.forEach(video=>{
+      const el=document.createElement('div');el.className='kitem';
+      const nextStatuses=cols.filter(s=>s!==status);
+      el.innerHTML=`<div class="kitem-title">${video.title}</div><div class="kitem-meta">${video.type}</div>${video.notes?`<div style="font-size:9px;color:var(--muted);margin-top:2px;font-style:italic">${video.notes}</div>`:''}<div style="display:flex;gap:3px;margin-top:5px;flex-wrap:wrap">${nextStatuses.slice(0,3).map(s=>`<button class="bsm" style="font-size:9px;padding:2px 5px" onclick="moveVideo(${video.id},'${s}')">→ ${s}</button>`).join('')}<button class="bsm" style="font-size:9px;padding:2px 5px;color:var(--muted)" onclick="openVideoSteps(${video.id})">📋 steps</button></div>`;
+      document.getElementById('ytkb-'+status).appendChild(el);
+    });
+  });
+}
+
+window.moveVideo=(id,status)=>{const i=ytVideos.findIndex(v=>v.id===id);if(i>=0){ytVideos[i].status=status;ss(B.ytVideos,ytVideos);renderYTKanban()}};
+window.openVideoSteps=id=>{
+  const video=ytVideos.find(v=>v.id===id);if(!video)return;
+  const area=document.getElementById('yt-video-detail-area');
+  if(!video.steps)video.steps={};
+  area.innerHTML=`<div class="card" style="border:2px solid var(--pink);margin-top:.5rem">
+    <div class="ct"><div class="ci">📋</div>Production checklist: <em>${video.title}</em></div>
+    <div class="video-steps">${YT_STEPS.map((step,i)=>`
+      <div class="vstep ${video.steps[i]?' done':''}" onclick="toggleVideoStep(${id},${i})">
+        <div class="vstep-icon">${step.icon}</div>
+        <div class="vstep-label">${step.label}</div>
+        <div class="vstep-cb">${video.steps[i]?'✓':''}</div>
+      </div>`).join('')}
+    </div>
+    <div style="text-align:right"><button class="bsm" onclick="document.getElementById('yt-video-detail-area').innerHTML=''">Close</button></div>
+  </div>`;
+};
+window.toggleVideoStep=(id,stepIdx)=>{const i=ytVideos.findIndex(v=>v.id===id);if(i<0)return;if(!ytVideos[i].steps)ytVideos[i].steps={};ytVideos[i].steps[stepIdx]=!ytVideos[i].steps[stepIdx];ss(B.ytVideos,ytVideos);openVideoSteps(id)};
+
+window.saveVideo=()=>{const t=document.getElementById('vm-title').value.trim();if(!t)return;ytVideos.push({id:Date.now(),title:t,type:document.getElementById('vm-type').value,notes:document.getElementById('vm-notes').value,status:'idea',steps:{}});ss(B.ytVideos,ytVideos);renderYTKanban();bCloseMo('video-modal');['vm-title','vm-notes'].forEach(id=>document.getElementById(id).value='')};
+
+window.addYTIdea=(type)=>{
+  if(type==='film'){const v=document.getElementById('yt-idea-film-inp').value.trim();if(!v)return;ytIdeasFilm.push(v);ss('bb_ytidfilm',ytIdeasFilm);document.getElementById('yt-idea-film-inp').value='';renderYTIdeas()}
+  else{const v=document.getElementById('yt-idea-other-inp').value.trim();if(!v)return;ytIdeasOther.push({text:v,cat:document.getElementById('yt-idea-other-cat').value});ss('bb_ytidother',ytIdeasOther);document.getElementById('yt-idea-other-inp').value='';renderYTIdeas()}
+};
+function renderYTIdeas(){
+  const cf=document.getElementById('yt-ideas-film'),co=document.getElementById('yt-ideas-other');
+  if(cf){cf.innerHTML='';ytIdeasFilm.forEach((idea,i)=>{const e=document.createElement('div');e.className='idea-item';e.innerHTML=`<div class="idea-dot"></div><span style="flex:1">${idea}</span><button class="bdel" onclick="removeYTIdeaFilm(${i})">×</button>`;cf.appendChild(e)})}
+  if(co){co.innerHTML='';ytIdeasOther.forEach((idea,i)=>{const e=document.createElement('div');e.className='idea-item';e.innerHTML=`<div class="idea-dot"></div><span style="flex:1">${idea.text} <span class="tag" style="background:var(--pink-light);color:var(--pink-dark)">${idea.cat}</span></span><button class="bdel" onclick="removeYTIdeaOther(${i})">×</button>`;co.appendChild(e)})}
+}
+window.removeYTIdeaFilm=i=>{ytIdeasFilm.splice(i,1);ss('bb_ytidfilm',ytIdeasFilm);renderYTIdeas()};
+window.removeYTIdeaOther=i=>{ytIdeasOther.splice(i,1);ss('bb_ytidother',ytIdeasOther);renderYTIdeas()};
+
+window.addYTTrend=()=>{const v=document.getElementById('yt-trend-inp').value.trim();if(!v)return;ytTrends.push(v);ss(B.ytTrends,ytTrends);document.getElementById('yt-trend-inp').value='';renderYTTrends()};
+function renderYTTrends(){const c=document.getElementById('yt-trending');if(!c)return;c.innerHTML='';ytTrends.forEach((t,i)=>{const e=document.createElement('div');e.className='idea-item';e.innerHTML=`<span style="font-size:14px">🔥</span><span style="flex:1">${t}</span><button class="bdel" onclick="removeYTTrend(${i})">×</button>`;c.appendChild(e)})}
+window.removeYTTrend=i=>{ytTrends.splice(i,1);ss(B.ytTrends,ytTrends);renderYTTrends()};
+
+window.saveJournal=()=>{const film=document.getElementById('jm-film').value.trim();if(!film)return;ytJournals.push({film,thesis:document.getElementById('jm-thesis').value,themes:document.getElementById('jm-themes').value,sources:document.getElementById('jm-sources').value,date:nowS()});ss(B.ytJournals,ytJournals);renderJournals();bCloseMo('journal-modal');['jm-film','jm-thesis','jm-themes','jm-sources'].forEach(id=>document.getElementById(id).value='')};
+function renderJournals(){const c=document.getElementById('journal-list');if(!c)return;c.innerHTML='';if(!ytJournals.length){c.innerHTML='<div class="empty-s">No film journals yet. Start one!</div>';return}ytJournals.forEach((j,i)=>{const e=document.createElement('div');e.style.cssText='background:white;border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:6px';e.innerHTML=`<div style="font-family:Playfair Display,serif;font-size:13px;font-weight:700;color:var(--pink-dark)">${j.film}</div><div style="font-size:9px;color:var(--muted);margin-top:2px">${j.date}</div>${j.thesis?`<div style="font-size:10px;color:var(--text);margin-top:5px;font-style:italic">${j.thesis}</div>`:''}<button class="bdel" style="float:right;margin-top:-20px" onclick="removeJournal(${i})">×</button>`;c.appendChild(e)})}
+window.removeJournal=i=>{ytJournals.splice(i,1);ss(B.ytJournals,ytJournals);renderJournals()};
+window.saveResearchNotes=()=>{ss('bb_ytresnotes',document.getElementById('yt-research-notes').value)};
+
+window.saveDeal=()=>{const brand=document.getElementById('dm-brand').value.trim();if(!brand)return;ytDeals.push({brand,amount:parseFloat(document.getElementById('dm-amount').value)||0,deliverables:document.getElementById('dm-deliverables').value,status:document.getElementById('dm-status').value,date:nowS()});ss(B.ytDeals,ytDeals);renderYTDeals();bCloseMo('deal-modal');['dm-brand','dm-amount','dm-deliverables'].forEach(id=>document.getElementById(id).value='')};
+function renderYTDeals(){const c=document.getElementById('yt-deals');if(!c)return;c.innerHTML='';if(!ytDeals.length){c.innerHTML='<div class="empty-s">No deals yet — pitch away!</div>';return}const statusColor={Pitched:'#888',Negotiating:var_orange='#e67e22',Confirmed:'#2980b9',Delivered:'#8e44ad',Paid:'#27ae60'};ytDeals.forEach((d,i)=>{const sc=statusColor[d.status]||'#888';const e=document.createElement('div');e.className='deal-card';e.innerHTML=`<div style="display:flex;align-items:flex-start;gap:8px"><div style="flex:1"><div class="deal-brand">${d.brand}</div><div class="deal-meta">${d.deliverables||''}</div></div><span class="deal-status" style="background:${sc}18;color:${sc};border:1px solid ${sc}33">${d.status}</span><div class="money-amount">${fmtMoney(d.amount)}</div></div>`;c.appendChild(e)})}
+
+window.addPatreonTier=()=>{const n=document.getElementById('patreon-tier-inp').value.trim(),p=parseFloat(document.getElementById('patreon-tier-price').value)||0;if(!n)return;ytPatreon.push({name:n,price:p});ss(B.ytPatreon,ytPatreon);document.getElementById('patreon-tier-inp').value='';document.getElementById('patreon-tier-price').value='';renderPatreonTiers()};
+function renderPatreonTiers(){const c=document.getElementById('patreon-tiers');if(!c)return;c.innerHTML='';ytPatreon.forEach((tier,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--purple-light);border:1px solid rgba(142,68,173,.2);border-radius:9px;margin-bottom:4px;font-size:11px';e.innerHTML=`<span style="font-size:14px">💜</span><div style="flex:1"><div style="font-weight:700;color:var(--purple)">${tier.name}</div>${tier.desc?`<div style="font-size:9px;color:var(--muted)">${tier.desc}</div>`:''}</div><div style="font-weight:700;color:var(--purple)">$${tier.price}/mo</div><button class="bdel" onclick="removePatreonTier(${i})">×</button>`;c.appendChild(e)})}
+window.removePatreonTier=i=>{ytPatreon.splice(i,1);ss(B.ytPatreon,ytPatreon);renderPatreonTiers()};
+
+// ===== MODDING =====
+let modProjects=ls(B.modProjects,[{id:1,name:'Weird Barbie CAS pack',game:'sims4',desc:'Custom accessories + facial hair + unconventional outfits',status:'Idea'},{id:2,name:'Cozy cottage biome expansion',game:'minecraft',desc:'New block types, plants, and mobs for an extended cottage aesthetic',status:'Learning'}]);
+let modIdeas=ls(B.modIdeas,{sims4:['Career — doll restorer / vintage curator','Trait: Perpetually Unfinished Projects (ADHD lol)','Aesthetic CAS pack: 90s Weird Kid'],minecraft:['Firefly lighting overhaul mod','Cozy furniture pack'],hytale:[],stardew:['More romanceable NPCs mod','Extended farm customization'],skyrim:['Follower that gives ADHD advice','Cozy house expansion']});
+let modResources=ls(B.modResources,['Sims 4 Studio (CAS modding)','Forge documentation (Minecraft)','PyTK (Stardew Valley modding)','Creation Kit (Skyrim)']);
+
+const MOD_WORKFLOW=[
+  {icon:'💡',label:'Concept & design — what does this mod DO and why is it fun?'},
+  {icon:'📚',label:'Learn the tools — watch tutorials, read docs for that specific game'},
+  {icon:'🛠️',label:'Set up dev environment — IDE, game mod tools, folder structure'},
+  {icon:'✏️',label:'Build a minimum version — get ONE feature working first'},
+  {icon:'🧪',label:'Playtest & iterate — does it work? Is it fun? Fix bugs'},
+  {icon:'📸',label:'Create screenshots & preview GIFs for release'},
+  {icon:'📦',label:'Package and upload — NexusMods, CurseForge, ModDB, itch.io'},
+  {icon:'📢',label:'Post about it — TikTok, YouTube, Reddit communities'},
+];
+const MOD_TOOLS={sims4:['Sims 4 Studio','GIMP / Photoshop for textures','Blender (for meshes)'],minecraft:['IntelliJ IDEA','Minecraft Forge or Fabric','Blockbench (3D models)'],hytale:['Hytale modding SDK (when available)','Unity experience helpful'],stardew:['SMAPI','PyTK / Json Assets','Visual Studio Code'],skyrim:['Bethesda Creation Kit','xEdit / SSEEdit','NifSkope']};
+
+function renderModWorkflow(){const c=document.getElementById('mod-workflow-steps');if(!c)return;c.innerHTML='';MOD_WORKFLOW.forEach((step,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:flex-start;gap:9px;padding:8px 11px;background:var(--pink-light);border-radius:9px;margin-bottom:4px;font-size:11px';e.innerHTML=`<span style="font-size:16px;flex-shrink:0">${step.icon}</span><div><span style="font-weight:600;color:var(--pink-dark)">Step ${i+1}: </span>${step.label}</div>`;c.appendChild(e)})}
+function renderModResources(){const c=document.getElementById('mod-resources');if(!c)return;c.innerHTML='';modResources.forEach((r,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--blue-light);border-radius:7px;margin-bottom:3px;font-size:11px;border:1px solid rgba(41,128,185,.15)';e.innerHTML=`<span>📚</span><span style="flex:1">${r}</span><button class="bdel" onclick="removeModResource(${i})">×</button>`;c.appendChild(e)})}
+window.addModResource=()=>{const v=document.getElementById('mod-resource-inp').value.trim();if(!v)return;modResources.push(v);ss(B.modResources,modResources);document.getElementById('mod-resource-inp').value='';renderModResources()};
+window.removeModResource=i=>{modResources.splice(i,1);ss(B.modResources,modResources);renderModResources()};
+
+function renderModTools(){const c=document.getElementById('mod-tools-list');if(!c)return;c.innerHTML='';Object.entries(MOD_TOOLS).forEach(([game,tools])=>{const div=document.createElement('div');div.style.marginBottom='.7rem';div.innerHTML=`<div style="font-size:10px;font-weight:700;color:var(--pink-dark);margin-bottom:3px;text-transform:capitalize">${game}</div>${tools.map(t=>`<div style="font-size:10px;color:var(--muted);padding:2px 0">• ${t}</div>`).join('')}`;c.appendChild(div)})}
+
+let modFilter='all';
+window.filterMods=(game,btn)=>{modFilter=game;document.querySelectorAll('#mod-game-filter .bsm').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderModProjects()};
+window.saveModProject=()=>{const n=document.getElementById('mpm-name').value.trim();if(!n)return;modProjects.push({id:Date.now(),name:n,game:document.getElementById('mpm-game').value.toLowerCase().replace(' ',''),desc:document.getElementById('mpm-desc').value,status:document.getElementById('mpm-status').value});ss(B.modProjects,modProjects);renderModProjects();bCloseMo('mod-project-modal');['mpm-name','mpm-desc'].forEach(id=>document.getElementById(id).value='')};
+function renderModProjects(){const c=document.getElementById('mod-projects-list');if(!c)return;c.innerHTML='';const list=modFilter==='all'?modProjects:modProjects.filter(p=>p.game===modFilter);if(!list.length){c.innerHTML='<div class="empty-s">No mod projects yet</div>';return}const statusColor={Idea:'#888',Learning:'#2980b9','In progress':'#e91e8c',Testing:'#f0a500',Released:'#27ae60'};const gameEmoji={sims4:'🏠',minecraft:'⛏️',hytale:'🌲',stardew:'🌾',skyrim:'🗡️'};list.forEach((p,i)=>{const sc=statusColor[p.status]||'#888';const e=document.createElement('div');e.className='project-card';e.innerHTML=`<div style="display:flex;align-items:flex-start;gap:8px"><span style="font-size:20px">${gameEmoji[p.game]||'🎮'}</span><div style="flex:1"><div class="project-name">${p.name}</div><div style="font-size:9px;color:var(--muted);margin-top:2px">${p.game}</div>${p.desc?`<div style="font-size:10px;color:var(--text);margin-top:4px">${p.desc}</div>`:''}</div><span class="project-status" style="background:${sc}18;color:${sc};border:1px solid ${sc}33">${p.status}</span><button class="bdel" onclick="removeModProject(${i})">×</button></div>`;c.appendChild(e)})}
+window.removeModProject=i=>{modProjects.splice(i,1);ss(B.modProjects,modProjects);renderModProjects()};
+
+window.addModIdea=(game)=>{const inp=document.getElementById(`mod-idea-${game}-inp`);const v=inp.value.trim();if(!v)return;modIdeas[game]=modIdeas[game]||[];modIdeas[game].push(v);ss(B.modIdeas,modIdeas);inp.value='';renderModIdeas()};
+function renderModIdeas(){['sims4','minecraft','hytale','stardew','skyrim'].forEach(game=>{const c=document.getElementById(`mod-ideas-${game}`);if(!c)return;c.innerHTML='';(modIdeas[game]||[]).forEach((idea,i)=>{const e=document.createElement('div');e.className='idea-item';e.innerHTML=`<div class="idea-dot"></div><span style="flex:1">${idea}</span><button class="bdel" onclick="removeModIdea('${game}',${i})">×</button>`;c.appendChild(e)})})}
+window.removeModIdea=(game,i)=>{modIdeas[game].splice(i,1);ss(B.modIdeas,modIdeas);renderModIdeas()};
+
+// ===== ETSY =====
+let etsyListings=ls(B.etsyListings,[]);
+let etsyOrders=ls(B.etsyOrders,[]);
+let etsyGoals=ls(B.etsyGoals,['Get first 10 listings live','Make first sale!','Get 5-star first review','Hit $100 in sales','Set up Shop Policies']);
+let etsyPhotos=ls('bb_etsyphoto',[]);
+let etsyCal=ls('bb_etsycal',[]);
+
+const ETSY_CHECKLIST=[
+  {text:'Write your shop bio & story',done:false},{text:'Upload a banner and profile photo',done:false},{text:'Set up your shop policies (shipping, returns, processing time)',done:false},{text:'List your first 5 items with 10-photo max each',done:false},{text:'Research keywords with eRank or Marmalead',done:false},{text:'Join Etsy seller Facebook groups',done:false},{text:'Set up free shipping threshold ($35+)',done:false},{text:'Enable "Message with order" auto-reply',done:false},{text:'Connect Instagram to shop',done:false},{text:'Add shop video',done:false},
+];
+let etsyPlannerChecklist=ls('bb_etsychk',ETSY_CHECKLIST);
+
+window.addEtsyGoal=()=>{const v=document.getElementById('etsy-goal-inp').value.trim();if(!v)return;etsyGoals.push({text:v,done:false});ss(B.etsyGoals,etsyGoals);document.getElementById('etsy-goal-inp').value='';renderEtsyGoals()};
+function renderEtsyGoals(){const c=document.getElementById('etsy-goals');if(!c)return;c.innerHTML='';etsyGoals.forEach((g,i)=>{const item=typeof g==='string'?{text:g,done:false}:g;const e=document.createElement('div');e.className='checklist-item';e.innerHTML=`<div class="check-box ${item.done?'done':''}" onclick="toggleEtsyGoal(${i})">${item.done?'✓':''}</div><span class="checklist-text ${item.done?'done-text':''}">${item.text}</span>`;c.appendChild(e)})}
+window.toggleEtsyGoal=i=>{if(typeof etsyGoals[i]==='string')etsyGoals[i]={text:etsyGoals[i],done:true};else etsyGoals[i].done=!etsyGoals[i].done;ss(B.etsyGoals,etsyGoals);renderEtsyGoals()};
+window.saveEtsyNotes=()=>{ss('bb_etsynotes',document.getElementById('etsy-shop-notes').value)};
+
+window.saveListing=()=>{const t=document.getElementById('lm-title').value.trim();if(!t)return;etsyListings.push({id:Date.now(),title:t,cat:document.getElementById('lm-cat').value,price:parseFloat(document.getElementById('lm-price').value)||0,status:document.getElementById('lm-status').value,date:nowS()});ss(B.etsyListings,etsyListings);renderEtsyListings();bCloseMo('listing-modal');['lm-title','lm-price'].forEach(id=>document.getElementById(id).value='')};
+let listingFilter='all';
+window.filterListings=(status,btn)=>{listingFilter=status;document.querySelectorAll('[onclick*="filterListings"]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderEtsyListings()};
+function renderEtsyListings(){const c=document.getElementById('etsy-listings-list');if(!c)return;c.innerHTML='';const list=listingFilter==='all'?etsyListings:etsyListings.filter(l=>l.status===listingFilter);if(!list.length){c.innerHTML='<div class="empty-s">No listings yet</div>';return}const statusColor={Active:'#27ae60',Draft:'#888',sold_out:'#c0392b'};list.forEach((l,i)=>{const sc=statusColor[l.status]||'#888';const e=document.createElement('div');e.className='listing-card';e.innerHTML=`<div style="display:flex;align-items:flex-start;gap:8px"><div style="flex:1"><div class="listing-title">${l.title}</div><div class="listing-meta"><span class="tag" style="background:var(--pink-light);color:var(--pink-dark)">${l.cat}</span><span style="color:var(--green);font-weight:600">$${l.price}</span></div></div><span class="project-status" style="background:${sc}18;color:${sc};border:1px solid ${sc}33">${l.status}</span><button class="bdel" onclick="removeListing(${i})">×</button></div>`;c.appendChild(e)})}
+window.removeListing=i=>{etsyListings.splice(i,1);ss(B.etsyListings,etsyListings);renderEtsyListings()};
+
+window.saveOrder=()=>{const item=document.getElementById('om-item').value.trim();if(!item)return;const price=parseFloat(document.getElementById('om-price').value)||0;etsyOrders.push({item,price,status:document.getElementById('om-status').value,date:nowS()});ss(B.etsyOrders,etsyOrders);document.getElementById('etsy-sales').textContent=etsyOrders.length;renderEtsyOrders();updateEtsyStats();bCloseMo('order-modal');['om-item','om-price'].forEach(id=>document.getElementById(id).value='')};
+function renderEtsyOrders(){const c=document.getElementById('etsy-orders-list');if(!c)return;c.innerHTML='';if(!etsyOrders.length){c.innerHTML='<div class="empty-s">No orders yet — the first one is coming!</div>';return}const statusColor={New:'#2980b9',Shipped:'#f0a500',Delivered:'#27ae60',Issue:'#c0392b'};etsyOrders.forEach((o,i)=>{const sc=statusColor[o.status]||'#888';const e=document.createElement('div');e.style.cssText='background:white;border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:5px;display:flex;align-items:center;gap:8px;font-size:11px';e.innerHTML=`<span style="font-size:14px">📦</span><div style="flex:1"><div style="font-weight:600">${o.item}</div><div style="font-size:9px;color:var(--muted)">${o.date}</div></div><span class="project-status" style="background:${sc}18;color:${sc};border:1px solid ${sc}33">${o.status}</span><div class="money-amount">$${o.price}</div>`;c.appendChild(e)})}
+function updateEtsyStats(){const gross=etsyOrders.reduce((a,b)=>a+b.price,0);const fees=gross*0.065;document.getElementById('etsy-gross').textContent=fmtMoney(gross);document.getElementById('etsy-fees').textContent=fmtMoney(fees);document.getElementById('etsy-net').textContent=fmtMoney(gross-fees);document.getElementById('etsy-rev').textContent=fmtMoney(gross);document.getElementById('etsy-sales').textContent=etsyOrders.length}
+
+function renderEtsyPlannerChecklist(){const c=document.getElementById('etsy-planner-checklist');if(!c)return;c.innerHTML='';etsyPlannerChecklist.forEach((item,i)=>{const e=document.createElement('div');e.className='checklist-item';e.innerHTML=`<div class="check-box ${item.done?'done':''}" onclick="toggleEtsyPlan(${i})">${item.done?'✓':''}</div><span class="checklist-text ${item.done?'done-text':''}">${item.text}</span>`;c.appendChild(e)})}
+window.toggleEtsyPlan=i=>{etsyPlannerChecklist[i].done=!etsyPlannerChecklist[i].done;ss('bb_etsychk',etsyPlannerChecklist);renderEtsyPlannerChecklist()};
+window.addEtsyPhoto=()=>{const v=document.getElementById('etsy-photo-inp').value.trim();if(!v)return;etsyPhotos.push({text:v,done:false});ss('bb_etsyphoto',etsyPhotos);document.getElementById('etsy-photo-inp').value='';renderEtsyPhotos()};
+function renderEtsyPhotos(){const c=document.getElementById('etsy-photo-todo');if(!c)return;c.innerHTML='';etsyPhotos.forEach((item,i)=>{const e=document.createElement('div');e.className='checklist-item';e.innerHTML=`<div class="check-box ${item.done?'done':''}" onclick="toggleEtsyPhoto(${i})">${item.done?'✓':''}</div><span class="checklist-text ${item.done?'done-text':''}">${item.text}</span><button class="bdel" onclick="removeEtsyPhoto(${i})">×</button>`;c.appendChild(e)})}
+window.toggleEtsyPhoto=i=>{etsyPhotos[i].done=!etsyPhotos[i].done;ss('bb_etsyphoto',etsyPhotos);renderEtsyPhotos()};
+window.removeEtsyPhoto=i=>{etsyPhotos.splice(i,1);ss('bb_etsyphoto',etsyPhotos);renderEtsyPhotos()};
+window.addEtsyCal=()=>{const v=document.getElementById('etsy-cal-inp').value.trim(),d=document.getElementById('etsy-cal-date').value;if(!v)return;etsyCal.push({text:v,date:d});ss('bb_etsycal',etsyCal);document.getElementById('etsy-cal-inp').value='';document.getElementById('etsy-cal-date').value='';renderEtsyCal()};
+function renderEtsyCal(){const c=document.getElementById('etsy-calendar');if(!c)return;c.innerHTML='';etsyCal.sort((a,b)=>a.date.localeCompare(b.date)).forEach((item,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:8px;padding:6px 9px;background:white;border:1px solid var(--border);border-radius:8px;margin-bottom:4px;font-size:11px';e.innerHTML=`<span style="font-size:14px">📅</span><span style="flex:1">${item.text}</span>${item.date?`<span style="font-size:9px;color:var(--muted)">${item.date}</span>`:''}<button class="bdel" onclick="removeEtsyCal(${i})">×</button>`;c.appendChild(e)})}
+window.removeEtsyCal=i=>{etsyCal.splice(i,1);ss('bb_etsycal',etsyCal);renderEtsyCal()};
+
+// ===== DOLLS =====
+let dollProjects=ls(B.dollProjects,[{id:1,name:'1990s Barbie lot of 6',type:'Lot to clean & sell',todo:'Wash hair, clean bodies, re-string one',price:45,status:'Queue'},{id:2,name:'Plush bunny commission',type:'Commission',todo:'Re-stuff, new button eyes, clean',price:35,status:'In progress'}]);
+let dollSupplies=ls(B.dollSupplies,[{name:'MSC sealer spray',status:'Need to buy'},{name:'Acrylic paints (face painting set)',status:'Have it'},{name:'Doll stand assortment',status:'Have it'},{name:'Needle felting kit',status:'Need to buy'},{name:'Re-rooting needle',status:'Need to buy'},{name:'Doll hair fibers (various)',status:'Need to buy'}]);
+let dollTechniques=ls(B.dollTechniques,['Matte face sealant BEFORE any painting — prevents smearing','Hair washing: cold water + lots of conditioner, detangle when wet','Eye repaints: seal first, thin layers of acrylic, final gloss coat','For knots in doll hair: fabric softener + warm water soak overnight','Needle felting for stuffed animals: go slow, felt in one direction']);
+let dollRefs=ls(B.dollRefs,['Doll Planet YouTube — best restoration tutorials','Reddit r/Barbie — community help and ID help','Dollasticdesigns — OOAK inspiration']);
+
+const DOLL_WORKFLOW=[{icon:'🔍',step:'Assess condition — hair, body, face, joints'},{ icon:'🛁',step:'Clean body with mild soap and warm water'},{icon:'💇',step:'Hair wash, detangle, and style/dry'},{icon:'🎨',step:'Face restoration — seal, repaint, seal again'},{icon:'🪄',step:'Any custom work — reroot, repaint, OOAK modifications'},{icon:'📸',step:'Photography — good lighting, multiple angles'},{icon:'📦',step:'List on Etsy with SEO-optimized title and description'},{icon:'📬',step:'Packaging — tissue paper, branded message, safe shipping'}];
+
+window.filterDolls=(status,btn)=>{document.querySelectorAll('[onclick*="filterDolls"]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderDollProjects(status)};
+window.saveDollProject=()=>{const n=document.getElementById('doll-name').value.trim();if(!n)return;dollProjects.push({id:Date.now(),name:n,type:document.getElementById('doll-type').value,todo:document.getElementById('doll-todo').value,price:parseFloat(document.getElementById('doll-price').value)||0,status:document.getElementById('doll-status').value});ss(B.dollProjects,dollProjects);renderDollProjects('all');bCloseMo('doll-modal');['doll-name','doll-todo','doll-price'].forEach(id=>document.getElementById(id).value='')};
+function renderDollProjects(filterStatus){const c=document.getElementById('doll-projects-list');if(!c)return;c.innerHTML='';const list=!filterStatus||filterStatus==='all'?dollProjects:dollProjects.filter(p=>p.status.toLowerCase().replace(' ','_')===filterStatus);if(!list.length){c.innerHTML='<div class="empty-s">No projects in this status</div>';return}const statusColor={Queue:'#888','In progress':'#e91e8c',Done:'#27ae60',Listed:'#2980b9',Sold:'#f0a500'};list.forEach((p,i)=>{const sc=statusColor[p.status]||'#888';const e=document.createElement('div');e.className='project-card';e.innerHTML=`<div style="display:flex;align-items:flex-start;gap:8px"><span style="font-size:20px">🎀</span><div style="flex:1"><div class="project-name">${p.name}</div><div style="font-size:9px;color:var(--muted);margin-top:2px">${p.type}</div>${p.todo?`<div style="font-size:10px;color:var(--text);margin-top:4px">To do: ${p.todo}</div>`:''}</div>${p.price?`<div style="font-weight:700;color:var(--green);font-size:12px">$${p.price}</div>`:''}<span class="project-status" style="background:${sc}18;color:${sc};border:1px solid ${sc}33">${p.status}</span><button class="bdel" onclick="removeDollProject(${i})">×</button></div>`;c.appendChild(e)})}
+window.removeDollProject=i=>{dollProjects.splice(i,1);ss(B.dollProjects,dollProjects);renderDollProjects('all')};
+
+window.addSupply=()=>{const n=document.getElementById('supply-inp').value.trim();if(!n)return;dollSupplies.push({name:n,status:document.getElementById('supply-status').value});ss(B.dollSupplies,dollSupplies);document.getElementById('supply-inp').value='';renderDollSupplies()};
+function renderDollSupplies(){const c=document.getElementById('doll-supplies'),shop=document.getElementById('doll-shopping-list');if(!c)return;c.innerHTML='';if(shop)shop.innerHTML='';dollSupplies.forEach((s,i)=>{const statusColor={'Have it':'#27ae60','Need to buy':'#c0392b','Running low':'#f0a500'}[s.status]||'#888';const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:7px;padding:5px 8px;background:white;border:1px solid var(--border);border-radius:7px;margin-bottom:3px;font-size:11px';e.innerHTML=`<span style="flex:1">${s.name}</span><span class="tag" style="background:${statusColor}18;color:${statusColor};border:1px solid ${statusColor}33">${s.status}</span><button class="bdel" onclick="removeSupply(${i})">×</button>`;c.appendChild(e);if(shop&&s.status==='Need to buy'){const se=document.createElement('div');se.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--red-light);border-radius:7px;margin-bottom:3px;font-size:11px;border:1px solid rgba(192,57,43,.2)';se.innerHTML=`<span>🛒</span><span>${s.name}</span>`;shop.appendChild(se)}})};
+window.removeSupply=i=>{dollSupplies.splice(i,1);ss(B.dollSupplies,dollSupplies);renderDollSupplies()};
+
+function renderDollWorkflow(){const c=document.getElementById('doll-workflow');if(!c)return;c.innerHTML='';DOLL_WORKFLOW.forEach((step,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:flex-start;gap:9px;padding:7px 10px;background:var(--pink-light);border-radius:9px;margin-bottom:4px;font-size:11px';e.innerHTML=`<span style="font-size:16px;flex-shrink:0">${step.icon}</span><span><strong>${i+1}.</strong> ${step.step}</span>`;c.appendChild(e)})}
+window.addTechnique=()=>{const v=document.getElementById('technique-inp').value.trim();if(!v)return;dollTechniques.push(v);ss(B.dollTechniques,dollTechniques);document.getElementById('technique-inp').value='';renderDollTechniques()};
+function renderDollTechniques(){const c=document.getElementById('doll-techniques');if(!c)return;c.innerHTML='';dollTechniques.forEach((t,i)=>{const e=document.createElement('div');e.className='idea-item';e.innerHTML=`<span style="font-size:14px">💡</span><span style="flex:1">${t}</span><button class="bdel" onclick="removeTechnique(${i})">×</button>`;c.appendChild(e)})}
+window.removeTechnique=i=>{dollTechniques.splice(i,1);ss(B.dollTechniques,dollTechniques);renderDollTechniques()};
+window.addDollRef=()=>{const v=document.getElementById('doll-ref-inp').value.trim();if(!v)return;dollRefs.push(v);ss(B.dollRefs,dollRefs);document.getElementById('doll-ref-inp').value='';renderDollRefs()};
+function renderDollRefs(){const c=document.getElementById('doll-references');if(!c)return;c.innerHTML='';dollRefs.forEach((r,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--blue-light);border-radius:7px;margin-bottom:3px;font-size:11px;border:1px solid rgba(41,128,185,.15)';e.innerHTML=`<span>📚</span><span style="flex:1">${r}</span><button class="bdel" onclick="removeDollRef(${i})">×</button>`;c.appendChild(e)})}
+window.removeDollRef=i=>{dollRefs.splice(i,1);ss(B.dollRefs,dollRefs);renderDollRefs()};
+
+// ===== BADDIE =====
+let baddieIdeas=ls(B.baddieIdeas,[{text:'GRWM getting ready for school on a good brain day',platform:'TikTok'},{text:'Day in the life of a para-educator + content creator',platform:'Both'},{text:'OOTD: professional but make it weird girl',platform:'Instagram'},{text:'Get ready with me for a lazy content day at home',platform:'TikTok'}]);
+let baddieInspo=ls(B.baddieInspo,[]);
+let baddieTreatments=ls(B.baddieTreatments,[{name:'Weekly blowout',status:'Want to do'},{name:'Wax appointment',status:'Want to do'},{name:'Gel nails',status:'Want to do'},{name:'Electrolysis (PCOS jaw)',status:'Want to do'}]);
+let ugcDeals=ls(B.ugcDeals,[]);
+let pitches=ls(B.pitches,[]);
+let baddieBrands=ls(B.baddieBrands,['e.l.f. cosmetics','NYX Professional','Amazon beauty','SHEIN','Tarte Cosmetics','ColourPop']);
+let baddieMilestones=ls(B.baddieMilestones,[{text:'Post first TikTok',done:false},{text:'Hit 100 followers',done:false},{text:'First UGC deal',done:false},{text:'1,000 followers',done:false},{text:'First brand deal',done:false},{text:'10,000 followers',done:false}]);
+const BADDIE_SCHEDULE=[{day:'Monday',task:'Film content for the week — batch day'},{day:'Tuesday',task:'Edit + post 1 TikTok'},{day:'Wednesday',task:'Post Instagram story / reel'},{day:'Thursday',task:'Engage with comments, DMs, explore page'},{day:'Friday',task:'Post 1-2 TikToks'},{day:'Sat/Sun',task:'Film casual content, B-roll, try new ideas'}];
+
+window.addBaddieIdea=()=>{const v=document.getElementById('baddie-idea-inp').value.trim();if(!v)return;baddieIdeas.push({text:v,platform:document.getElementById('baddie-idea-platform').value});ss(B.baddieIdeas,baddieIdeas);document.getElementById('baddie-idea-inp').value='';renderBaddieIdeas()};
+function renderBaddieIdeas(){const c=document.getElementById('baddie-ideas');if(!c)return;c.innerHTML='';baddieIdeas.forEach((idea,i)=>{const platColor={TikTok:'#e91e8c',Instagram:'#e67e22',Both:'#8e44ad','YouTube Short':'#c0392b'}[idea.platform]||'#888';const e=document.createElement('div');e.className='idea-item';e.innerHTML=`<div class="idea-dot"></div><span style="flex:1">${idea.text} <span class="tag" style="background:${platColor}18;color:${platColor}">${idea.platform}</span></span><button class="bdel" onclick="removeBaddieIdea(${i})">×</button>`;c.appendChild(e)})}
+window.removeBaddieIdea=i=>{baddieIdeas.splice(i,1);ss(B.baddieIdeas,baddieIdeas);renderBaddieIdeas()};
+
+window.saveBaddieAesthetic=()=>{ss('bb_aesthetic',document.getElementById('baddie-aesthetic-notes').value)};
+window.addBaddieInspo=()=>{const v=document.getElementById('baddie-inspo-inp').value.trim();if(!v)return;baddieInspo.push(v);ss(B.baddieInspo,baddieInspo);document.getElementById('baddie-inspo-inp').value='';renderBaddieInspo()};
+function renderBaddieInspo(){const c=document.getElementById('baddie-inspo');if(!c)return;c.innerHTML='';baddieInspo.forEach((item,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--pink-light);border-radius:7px;margin-bottom:3px;font-size:11px';e.innerHTML=`<span>✨</span><span style="flex:1">${item}</span><button class="bdel" onclick="removeBaddieInspo(${i})">×</button>`;c.appendChild(e)})}
+window.removeBaddieInspo=i=>{baddieInspo.splice(i,1);ss(B.baddieInspo,baddieInspo);renderBaddieInspo()};
+
+window.addBaddieTreatment=()=>{const n=document.getElementById('baddie-treatment-inp').value.trim();if(!n)return;baddieTreatments.push({name:n,status:document.getElementById('baddie-treatment-status').value});ss(B.baddieTreatments,baddieTreatments);document.getElementById('baddie-treatment-inp').value='';renderBaddieTreatments()};
+function renderBaddieTreatments(){const c=document.getElementById('baddie-treatments');if(!c)return;c.innerHTML='';const statusColor={'Want to do':'#888',Booked:'#2980b9',Done:'#27ae60'};baddieTreatments.forEach((t,i)=>{const sc=statusColor[t.status]||'#888';const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:7px;padding:6px 9px;background:white;border:1px solid var(--border);border-radius:9px;margin-bottom:4px;font-size:11px';e.innerHTML=`<span>💄</span><span style="flex:1">${t.name}</span><span class="tag" style="background:${sc}18;color:${sc};border:1px solid ${sc}33">${t.status}</span><button class="bdel" onclick="removeBaddieTreatment(${i})">×</button>`;c.appendChild(e)})}
+window.removeBaddieTreatment=i=>{baddieTreatments.splice(i,1);ss(B.baddieTreatments,baddieTreatments);renderBaddieTreatments()};
+
+window.saveUGCDeal=()=>{const brand=document.getElementById('ugc-brand').value.trim();if(!brand)return;ugcDeals.push({brand,rate:parseFloat(document.getElementById('ugc-rate').value)||0,deliverable:document.getElementById('ugc-deliverable').value,deadline:document.getElementById('ugc-deadline').value,status:document.getElementById('ugc-status').value,date:nowS()});ss(B.ugcDeals,ugcDeals);renderUGCDeals();bCloseMo('ugc-deal-modal');['ugc-brand','ugc-rate','ugc-deliverable'].forEach(id=>document.getElementById(id).value='')};
+function renderUGCDeals(){const c=document.getElementById('ugc-deals-list');if(!c)return;c.innerHTML='';if(!ugcDeals.length){c.innerHTML='<div class="empty-s">No UGC deals yet. Start pitching! 💪</div>';return}const statusColor={Pitched:'#888',Confirmed:'#2980b9','In production':'#f0a500',Delivered:'#8e44ad',Paid:'#27ae60'};ugcDeals.forEach((d,i)=>{const sc=statusColor[d.status]||'#888';const e=document.createElement('div');e.className='deal-card';e.innerHTML=`<div style="display:flex;align-items:flex-start;gap:8px"><div style="flex:1"><div class="deal-brand">${d.brand}</div><div class="deal-meta">${d.deliverable||''} ${d.deadline?'· Due: '+d.deadline:''}</div></div><span class="deal-status" style="background:${sc}18;color:${sc};border:1px solid ${sc}33">${d.status}</span><div class="money-amount">${fmtMoney(d.rate)}</div></div>`;c.appendChild(e)})}
+
+window.savePitch=()=>{const n=document.getElementById('pt-name').value.trim(),s=document.getElementById('pt-script').value.trim();if(!n)return;pitches.push({name:n,script:s});ss(B.pitches,pitches);document.getElementById('pt-name').value='';document.getElementById('pt-script').value='';bCloseMo('pitch-modal');renderPitches()};
+function renderPitches(){const c=document.getElementById('ugc-pitch-templates');if(!c)return;c.innerHTML='';if(!pitches.length){c.innerHTML='<div class="empty-s">Save your best pitch templates here</div>';return}pitches.forEach((p,i)=>{const e=document.createElement('div');e.style.cssText='background:var(--pink-light);border:1px solid var(--border);border-radius:10px;padding:9px 11px;margin-bottom:5px;cursor:pointer;font-size:11px';e.innerHTML=`<div style="font-weight:700;color:var(--pink-dark);margin-bottom:4px">${p.name}</div><div style="font-size:10px;color:var(--muted);white-space:pre-wrap;max-height:60px;overflow:hidden">${p.script}</div>`;c.appendChild(e)})}
+
+window.addBaddieBrand=()=>{const v=document.getElementById('baddie-brand-inp').value.trim();if(!v)return;baddieBrands.push(v);ss(B.baddieBrands,baddieBrands);document.getElementById('baddie-brand-inp').value='';renderBaddieBrands()};
+function renderBaddieBrands(){const c=document.getElementById('baddie-brands-wishlist');if(!c)return;c.innerHTML='';baddieBrands.forEach((b,i)=>{const e=document.createElement('div');e.style.cssText='display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:var(--pink-light);border-radius:20px;margin:3px;font-size:10px;font-weight:600;color:var(--pink-dark)';e.innerHTML=`<span>✨</span>${b}<button class="bdel" onclick="removeBaddieBrand(${i})" style="color:var(--pink-dark)">×</button>`;c.appendChild(e)})}
+window.removeBaddieBrand=i=>{baddieBrands.splice(i,1);ss(B.baddieBrands,baddieBrands);renderBaddieBrands()};
+
+window.addBaddieMilestone=()=>{const v=document.getElementById('baddie-milestone-inp').value.trim();if(!v)return;baddieMilestones.push({text:v,done:false});ss(B.baddieMilestones,baddieMilestones);document.getElementById('baddie-milestone-inp').value='';renderBaddieMilestones()};
+function renderBaddieMilestones(){const c=document.getElementById('baddie-milestones');if(!c)return;c.innerHTML='';baddieMilestones.forEach((m,i)=>{const e=document.createElement('div');e.className='checklist-item';e.innerHTML=`<div class="check-box ${m.done?'done':''}" onclick="toggleBaddieMilestone(${i})">${m.done?'✓':''}</div><span class="checklist-text ${m.done?'done-text':''}">${m.text}</span>`;c.appendChild(e)})}
+window.toggleBaddieMilestone=i=>{baddieMilestones[i].done=!baddieMilestones[i].done;ss(B.baddieMilestones,baddieMilestones);renderBaddieMilestones()};
+
+function renderBaddieSchedule(){const c=document.getElementById('baddie-schedule');if(!c)return;c.innerHTML='';BADDIE_SCHEDULE.forEach(s=>{const e=document.createElement('div');e.style.cssText='display:flex;gap:9px;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px';e.innerHTML=`<span style="font-weight:700;color:var(--pink);min-width:75px;flex-shrink:0">${s.day}</span><span>${s.task}</span>`;c.appendChild(e)})}
+function renderBaddieWeekly(){const c=document.getElementById('baddie-weekly');if(!c)return;c.innerHTML='';['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].forEach(day=>{const e=document.createElement('div');e.style.cssText='display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);align-items:center;font-size:11px';e.innerHTML=`<span style="font-weight:700;color:var(--pink);min-width:75px;flex-shrink:0">${day}</span><input class="inp" placeholder="What are you posting / filming today?" style="flex:1;font-size:10px;padding:4px 7px">`;c.appendChild(e)})}
+function renderBaddieKanban(){const kb=document.getElementById('baddie-kanban');if(!kb)return;kb.innerHTML='';const cols=['idea','filming','editing','posted'];const colLabels={idea:'💡 Idea',filming:'🎬 Filming',editing:'✂️ Editing',posted:'✅ Posted'};cols.forEach(status=>{const col=document.createElement('div');col.className='kanban-col';col.innerHTML=`<div class="kanban-title"><span>${colLabels[status]}</span></div><div id="bkb-${status}"></div>`;kb.appendChild(col)});}
+
+// ===== STREAMING =====
+let streamGames=ls(B.streamGames,{current:['Stardew Valley','Animal Crossing: New Horizons'],backlog:['Skyrim (modded)','The Sims 4','Minecraft','Cult of the Lamb','Spiritfarer']});
+let streamSeries=ls(B.streamSeries,['Comfort game Sundays — cozy low-stress games','First playthrough Fridays — blind playthroughs only','Modding showcase streams']);
+let streamGoals=ls(B.streamGoals,[{text:'Set up OBS and do a test stream',done:false},{text:'50 Twitch followers',done:false},{text:'Twitch Affiliate (75 followers + 500 min broadcast)',done:false},{text:'First $1 from bits/subs',done:false},{text:'Regular streaming schedule for 1 month',done:false},{text:'100 followers',done:false}]);
+let streamLog=ls(B.streamLog,[]);
+let streamSetupTodo=ls('bb_streamsetup',['Download and configure OBS','Set up scenes: starting soon, main, BRB, ending','Create a Twitch account and fill in bio','Pick a channel name and branding','Set up basic overlay or find a free template','Test audio levels — mic and game audio separate','Do one private test stream before going live']);
+
+const STREAM_SCHEDULE=[{day:'Wednesday',time:'7pm–9pm CST',game:'TBD'},{day:'Saturday',time:'2pm–5pm CST',game:'TBD'}];
+const STREAM_PROMO=[{platform:'TikTok',task:'Post "going live in 1 hour" clip'},{ platform:'Twitter/X',task:'Tweet going live with stream link'},{platform:'Instagram',task:'Story with countdown sticker'},{platform:'Discord',task:'Ping server if you have one'}];
+
+window.addStreamGame=(type)=>{const inp=document.getElementById(`stream-game-${type}-inp`);const v=inp.value.trim();if(!v)return;streamGames[type]=streamGames[type]||[];streamGames[type].push(v);ss(B.streamGames,streamGames);inp.value='';renderStreamGames()};
+function renderStreamGames(){['current','backlog'].forEach(type=>{const c=document.getElementById(`stream-games-${type}`);if(!c)return;c.innerHTML='';(streamGames[type]||[]).forEach((g,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 8px;background:white;border:1px solid var(--border);border-radius:7px;margin-bottom:3px;font-size:11px';e.innerHTML=`<span>🎮</span><span style="flex:1">${g}</span><button class="bdel" onclick="removeStreamGame('${type}',${i})">×</button>`;c.appendChild(e)})})}
+window.removeStreamGame=(type,i)=>{streamGames[type].splice(i,1);ss(B.streamGames,streamGames);renderStreamGames()};
+
+window.addStreamSeries=()=>{const v=document.getElementById('stream-series-inp').value.trim();if(!v)return;streamSeries.push(v);ss(B.streamSeries,streamSeries);document.getElementById('stream-series-inp').value='';renderStreamSeries()};
+function renderStreamSeries(){const c=document.getElementById('stream-series');if(!c)return;c.innerHTML='';streamSeries.forEach((s,i)=>{const e=document.createElement('div');e.className='idea-item';e.innerHTML=`<div class="idea-dot"></div><span style="flex:1">${s}</span><button class="bdel" onclick="removeStreamSeries(${i})">×</button>`;c.appendChild(e)})}
+window.removeStreamSeries=i=>{streamSeries.splice(i,1);ss(B.streamSeries,streamSeries);renderStreamSeries()};
+
+window.addStreamGoal=()=>{const v=document.getElementById('stream-goal-inp').value.trim();if(!v)return;streamGoals.push({text:v,done:false});ss(B.streamGoals,streamGoals);document.getElementById('stream-goal-inp').value='';renderStreamGoals()};
+function renderStreamGoals(){const c=document.getElementById('stream-goals');if(!c)return;c.innerHTML='';streamGoals.forEach((g,i)=>{const e=document.createElement('div');e.className='checklist-item';e.innerHTML=`<div class="check-box ${g.done?'done':''}" onclick="toggleStreamGoal(${i})">${g.done?'✓':''}</div><span class="checklist-text ${g.done?'done-text':''}">${g.text}</span>`;c.appendChild(e)})}
+window.toggleStreamGoal=i=>{streamGoals[i].done=!streamGoals[i].done;ss(B.streamGoals,streamGoals);renderStreamGoals()};
+
+window.saveNextStream=()=>{ss('bb_nextstream',{game:document.getElementById('stream-next-game').value,date:document.getElementById('stream-next-date').value,title:document.getElementById('stream-next-title').value,goals:document.getElementById('stream-next-goals').value})};
+window.saveOverlayNotes=()=>{ss('bb_overlaynotes',document.getElementById('stream-overlay-notes').value)};
+window.saveCommunityNotes=()=>{ss('bb_commnotes',document.getElementById('stream-community-notes').value)};
+
+window.saveStreamLog=()=>{const game=document.getElementById('sl-game').value.trim();if(!game)return;streamLog.unshift({game,date:document.getElementById('sl-date').value,duration:document.getElementById('sl-duration').value,viewers:parseInt(document.getElementById('sl-viewers').value)||0,notes:document.getElementById('sl-notes').value});ss(B.streamLog,streamLog);renderStreamLog();bCloseMo('stream-log-modal');['sl-game','sl-date','sl-duration','sl-viewers','sl-notes'].forEach(id=>document.getElementById(id).value='')};
+function renderStreamLog(){const c=document.getElementById('stream-log');if(!c)return;c.innerHTML='';if(!streamLog.length){c.innerHTML='<div class="empty-s">No streams logged yet — first one\'s coming soon!</div>';return}streamLog.slice(0,10).forEach((s,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:white;border:1px solid var(--border);border-radius:9px;margin-bottom:5px;font-size:11px';e.innerHTML=`<span style="font-size:16px">📺</span><div style="flex:1"><div style="font-weight:700">${s.game}</div><div style="font-size:9px;color:var(--muted);margin-top:2px">${s.date||''} ${s.duration?'· '+s.duration:''} ${s.viewers?'· Peak: '+s.viewers+' viewers':''}</div>${s.notes?`<div style="font-size:9px;color:var(--text);margin-top:3px;font-style:italic">${s.notes}</div>`:''}</div>`;c.appendChild(e)})}
+
+function renderStreamSchedule(){const c=document.getElementById('stream-schedule');if(!c)return;c.innerHTML='';STREAM_SCHEDULE.forEach(s=>{const e=document.createElement('div');e.style.cssText='display:flex;gap:9px;padding:8px 11px;background:var(--purple-light);border:1px solid rgba(142,68,173,.2);border-radius:9px;margin-bottom:5px;font-size:11px;align-items:center';e.innerHTML=`<span>📅</span><div style="flex:1"><div style="font-weight:700;color:var(--purple)">${s.day}</div><div style="font-size:9px;color:var(--muted)">${s.time}</div></div><input class="inp" placeholder="Game..." value="${s.game!=='TBD'?s.game:''}" style="max-width:150px;font-size:10px">`;c.appendChild(e)})}
+
+function renderStreamSetupChecklist(){const c=document.getElementById('stream-setup-checklist');if(!c)return;c.innerHTML='';streamSetupTodo.forEach((item,i)=>{const e=document.createElement('div');e.className='checklist-item';const done=typeof item==='object'?item.done:false;const text=typeof item==='object'?item.text:item;e.innerHTML=`<div class="check-box ${done?'done':''}" onclick="toggleStreamSetup(${i})">${done?'✓':''}</div><span class="checklist-text ${done?'done-text':''}">${text}</span>`;c.appendChild(e)})}
+window.toggleStreamSetup=i=>{if(typeof streamSetupTodo[i]==='string')streamSetupTodo[i]={text:streamSetupTodo[i],done:true};else streamSetupTodo[i].done=!streamSetupTodo[i].done;ss('bb_streamsetup',streamSetupTodo);renderStreamSetupChecklist()};
+
+window.addStreamSetup=()=>{const v=document.getElementById('stream-setup-inp').value.trim();if(!v)return;streamSetupTodo.push({text:v,done:false});ss('bb_streamsetup',streamSetupTodo);document.getElementById('stream-setup-inp').value='';renderStreamSetupChecklist()};
+
+function renderStreamPromo(){const c=document.getElementById('stream-promo-plan');if(!c)return;c.innerHTML='';STREAM_PROMO.forEach(s=>{const e=document.createElement('div');e.style.cssText='display:flex;gap:8px;padding:6px 9px;background:white;border:1px solid var(--border);border-radius:8px;margin-bottom:4px;font-size:11px;align-items:center';e.innerHTML=`<span class="tag" style="background:var(--purple-light);color:var(--purple);border:1px solid rgba(142,68,173,.2)">${s.platform}</span><span>${s.task}</span>`;c.appendChild(e)})}
+
+// ===== EMPIRE MONEY =====
+function renderEmpireMoney(){
+  const sections={youtube:'YouTube',modding:'Modding',etsy:'Etsy',dolls:'Dolls',baddie:'Baddie',streaming:'Streaming'};
+  const sectionKeys={youtube:'yt',modding:'mod',etsy:'etsy',dolls:'doll',baddie:'baddie',streaming:'stream'};
+  const colors={youtube:'#c0392b',modding:'#8e44ad',etsy:'#f0a500',dolls:'#e91e8c',baddie:'#e67e22',streaming:'#2980b9'};
+  const c=document.getElementById('empire-breakdown');if(!c)return;c.innerHTML='';
+  let total=0;
+  Object.entries(sections).forEach(([key,label])=>{
+    const sk=sectionKeys[key];
+    const amt=getIncomeBySection(sk);
+    total+=amt;
+    const pct=amt>0?Math.min(100,Math.round(amt/Math.max(getAllIncome(),1)*100)):0;
+    const e=document.createElement('div');e.style.cssText='margin-bottom:.7rem';
+    e.innerHTML=`<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="font-weight:700">${label}</span><span style="font-weight:700;color:${colors[key]}">${fmtMoney(amt)}</span></div><div style="height:10px;background:rgba(233,30,140,.07);border-radius:5px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${colors[key]};border-radius:5px;transition:width .4s"></div></div>`;
+    c.appendChild(e);
+  });
+  document.getElementById('empire-total').textContent=fmtMoney(total+bGetSchoolPay());
+  document.getElementById('empire-hustle').textContent=fmtMoney(total);
+  // sync status row
+  const sr=document.getElementById('sync-status-row');if(sr){sr.innerHTML='<span style="font-size:10px;color:var(--green);background:var(--green-light);border:1px solid rgba(39,174,96,.2);padding:4px 10px;border-radius:20px;">✓ Auto-syncing to Weird Girl Life Dashboard money tab</span>'}
+}
+
+function renderEmpireRoadmap(){const c=document.getElementById('empire-roadmap');if(!c)return;[{phase:'Now (2026)',action:'School paycheck $1,005/mo · bumps to $1,500 on Aug 12 · Learn the tools',color:'#e67e22'},{phase:'Q2 2026',action:'First Etsy sales + UGC deals · $100–300/mo side hustle',color:'#f0a500'},{phase:'Q3 2026',action:'YouTube monetization threshold · doll sales growing',color:'#27ae60'},{phase:'Q4 2026',action:'Twitch Affiliate · brand deals rolling in · $500–1k/mo hustle',color:'#2980b9'},{phase:'2027',action:'Patreon + mod income + YouTube ads · $1k+ side hustle',color:'#8e44ad'},{phase:'Dream',action:'Full creative living · $3k+/mo · all your jobs are your passion',color:'#e91e8c'}].forEach(r=>{const e=document.createElement('div');e.style.cssText='display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);align-items:center;font-size:11px';e.innerHTML=`<span style="font-size:10px;font-weight:700;color:${r.color};min-width:90px;flex-shrink:0">${r.phase}</span><span>${r.action}</span>`;c.appendChild(e)})}
+
+let empireGoals=ls('bb_empgoals',[]);
+window.addEmpireGoal=()=>{const v=document.getElementById('empire-goal-inp').value.trim();if(!v)return;empireGoals.push({text:v,done:false});ss('bb_empgoals',empireGoals);document.getElementById('empire-goal-inp').value='';renderEmpireGoals()};
+function renderEmpireGoals(){const c=document.getElementById('empire-goals');if(!c)return;c.innerHTML='';empireGoals.forEach((g,i)=>{const e=document.createElement('div');e.className='checklist-item';e.innerHTML=`<div class="check-box ${g.done?'done':''}" onclick="toggleEmpireGoal(${i})">${g.done?'✓':''}</div><span class="checklist-text ${g.done?'done-text':''}">${g.text}</span>`;c.appendChild(e)})}
+window.toggleEmpireGoal=i=>{empireGoals[i].done=!empireGoals[i].done;ss('bb_empgoals',empireGoals);renderEmpireGoals()};
+
+// ===== INIT =====
+// Restore saved text fields
+document.getElementById('school-today-focus').value=schoolChecklist.focus||'';
+document.getElementById('school-music-plan').value=schoolChecklist.music||'';
+document.getElementById('school-quick-notes').value=schoolChecklist.quickNotes||'';
+document.getElementById('yt-research-notes').value=ls('bb_ytresnotes','');
+document.getElementById('etsy-shop-notes').value=ls('bb_etsynotes','');
+document.getElementById('baddie-aesthetic-notes').value=ls('bb_aesthetic','');
+document.getElementById('stream-overlay-notes').value=ls('bb_overlaynotes','');
+document.getElementById('stream-community-notes').value=ls('bb_commnotes','');
+
+renderSchoolChecklist();renderFairyNotesList();renderStudents();renderFocusAreas();
+renderMotorSkills();renderMotorWeek();renderGames();renderElfIdeas();renderSchoolFun();renderFairyVault();
+renderYTKanban();renderYTIdeas();renderYTTrends();renderJournals();renderYTDeals();renderPatreonTiers();renderBIncomeLog();
+renderModProjects();renderModIdeas();renderModWorkflow();renderModResources();renderModTools();
+renderEtsyListings();renderEtsyOrders();renderEtsyGoals();renderEtsyPlannerChecklist();renderEtsyPhotos();renderEtsyCal();updateEtsyStats();
+renderDollProjects('all');renderDollSupplies();renderDollWorkflow();renderDollTechniques();renderDollRefs();
+renderBaddieIdeas();renderBaddieInspo();renderBaddieTreatments();renderUGCDeals();renderPitches();renderBaddieBrands();renderBaddieMilestones();renderBaddieSchedule();renderBaddieWeekly();renderBaddieKanban();
+renderStreamGames();renderStreamSeries();renderStreamGoals();renderStreamLog();renderStreamSchedule();renderStreamSetupChecklist();renderStreamPromo();
+renderMonetizationGrids();
+renderEmpireRoadmap();renderEmpireGoals();
+
+// ===== BEFORE/AFTER GALLERY =====
+let dollGallery=ls('bb_doll_gallery',[]);
+function renderDollGallery(){
+  const list=document.getElementById('doll-gallery-list');if(!list)return;list.innerHTML='';
+  if(!dollGallery.length){list.innerHTML='<div class="empty-s">No restorations logged yet — your first before/after is going to be 🔥</div>';return}
+  dollGallery.forEach((g,i)=>{
+    const diffColors={Easy:'var(--green)',Medium:'var(--gold)',Hard:'var(--orange)',Nightmare:'var(--red)'};
+    const stars='⭐'.repeat(parseInt(g.rating)||3);
+    const e=document.createElement('div');
+    e.style.cssText='background:white;border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:8px;position:relative';
+    e.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div><div style="font-size:12px;font-weight:700;color:var(--pink-dark)">${g.name}</div><div style="font-size:9px;color:var(--muted)">${g.type} · ${g.date} · <span style="color:${diffColors[g.difficulty]||'var(--muted)'}">${g.difficulty}</span></div></div>
+        <div style="display:flex;gap:4px;align-items:center"><span style="font-size:10px">${stars}</span><button class="bdel" onclick="delGallery(${i})">✕</button></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:var(--red-light);border:1px solid rgba(192,57,43,.15);border-radius:8px;padding:6px 8px"><div style="font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:var(--red);font-weight:700;margin-bottom:3px">Before</div><div style="font-size:10px;line-height:1.4">${g.before}</div></div>
+        <div style="background:var(--green-light);border:1px solid rgba(39,174,96,.15);border-radius:8px;padding:6px 8px"><div style="font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:var(--green);font-weight:700;margin-bottom:3px">After</div><div style="font-size:10px;line-height:1.4">${g.after}</div></div>
+      </div>
+    `;
+    list.appendChild(e);
+  });
+  // Stats
+  const stats=document.getElementById('gallery-stats');if(!stats)return;
+  const total=dollGallery.length;
+  const avgRating=total?(dollGallery.reduce((a,b)=>a+parseInt(b.rating||3),0)/total).toFixed(1):0;
+  const hardest=dollGallery.filter(g=>g.difficulty==='Hard'||g.difficulty==='Nightmare').length;
+  stats.innerHTML=`
+    <div class="stat-card"><div class="stat-label">Total restorations</div><div class="stat-val" style="color:var(--pink)">${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Avg rating</div><div class="stat-val" style="color:var(--gold)">${avgRating}⭐</div></div>
+    <div class="stat-card"><div class="stat-label">Hard/Nightmare</div><div class="stat-val" style="color:var(--orange)">${hardest}</div></div>
+    <div class="stat-card"><div class="stat-label">Content potential</div><div class="stat-val" style="color:var(--green)">${total} videos</div></div>
+  `;
+}
+window.addGalleryEntry=()=>{
+  const name=document.getElementById('gallery-name').value.trim();if(!name)return;
+  dollGallery.unshift({name,type:document.getElementById('gallery-type').value,before:document.getElementById('gallery-before').value.trim(),after:document.getElementById('gallery-after').value.trim(),difficulty:document.getElementById('gallery-difficulty').value,rating:document.getElementById('gallery-rating').value,date:new Date().toLocaleDateString()});
+  ss('bb_doll_gallery',dollGallery);
+  ['gallery-name','gallery-before','gallery-after'].forEach(id=>document.getElementById(id).value='');
+  renderDollGallery();
+  addDone('Doll restoration: '+name+' 🧸');
+};
+window.delGallery=i=>{dollGallery.splice(i,1);ss('bb_doll_gallery',dollGallery);renderDollGallery()};
+renderDollGallery();
+
+// ===== DOLL CONTENT IDEAS =====
+let dollContentIdeas=ls('bb_doll_content',[]);
+function renderDollContentIdeas(){
+  const list=document.getElementById('doll-content-ideas');if(!list)return;list.innerHTML='';
+  if(!dollContentIdeas.length){list.innerHTML='<div class="empty-s">Every restoration is a video waiting to happen ✨</div>';return}
+  dollContentIdeas.forEach((c,i)=>{
+    const typeColors={'Restoration timelapse':'var(--pink)','Before/after reveal':'var(--green)','Tutorial':'var(--blue)','Thrift haul':'var(--gold)','ASMR cleaning':'var(--purple)','Story time':'var(--orange)','Other':'var(--muted)'};
+    const tc=typeColors[c.type]||'var(--muted)';
+    const e=document.createElement('div');
+    e.style.cssText='display:flex;align-items:center;gap:8px;padding:6px 9px;background:white;border:1px solid var(--border);border-radius:8px;margin-bottom:4px;font-size:11px';
+    e.innerHTML=`<span class="tag" style="background:${tc}15;color:${tc};border:1px solid ${tc}33">${c.type}</span><span style="flex:1">${c.idea}</span><button class="bdel" onclick="delDollContent(${i})">✕</button>`;
+    list.appendChild(e);
+  });
+}
+window.addDollContent=()=>{
+  const v=document.getElementById('doll-content-inp').value.trim();if(!v)return;
+  dollContentIdeas.push({idea:v,type:document.getElementById('doll-content-type').value});
+  ss('bb_doll_content',dollContentIdeas);document.getElementById('doll-content-inp').value='';renderDollContentIdeas();
+};
+window.delDollContent=i=>{dollContentIdeas.splice(i,1);ss('bb_doll_content',dollContentIdeas);renderDollContentIdeas()};
+renderDollContentIdeas();
+
+// Content tips
+const dollContentTips=document.getElementById('doll-content-tips');
+if(dollContentTips){
+  [{tip:'Before/after reveals',why:'Highest engagement format — the transformation is addictive to watch',icon:'📸'},
+   {tip:'Thrift store blind bag hauls',why:'The mystery element drives views + comments',icon:'🛒'},
+   {tip:'ASMR cleaning/detangling',why:'Insanely satisfying niche — crossover audience from ASMR world',icon:'🎧'},
+   {tip:'Restoration timelapse with music',why:'Short form gold for TikTok/Reels/Shorts',icon:'⏱️'},
+   {tip:'"Rescue" storyline framing',why:'People love a redemption arc — even for dolls',icon:'🦸'},
+   {tip:'Dollar Tree/thrift challenge',why:'Budget constraint = more creativity = more views',icon:'💵'},
+   {tip:'Viewer submissions / commissions on camera',why:'Community engagement drives algorithm + loyalty',icon:'💌'}
+  ].forEach(t=>{
+    const e=document.createElement('div');
+    e.style.cssText='display:flex;gap:8px;padding:7px 9px;background:white;border:1px solid var(--border);border-radius:9px;margin-bottom:5px;font-size:11px;align-items:flex-start';
+    e.innerHTML=`<span style="font-size:15px;flex-shrink:0">${t.icon}</span><div><div style="font-weight:600">${t.tip}</div><div style="font-size:9px;color:var(--muted);margin-top:1px">${t.why}</div></div>`;
+    dollContentTips.appendChild(e);
+  });
+}
+
+// ===== AUTO-INIT =====
+initBarbie();
+</script>
+</body>
+</html>

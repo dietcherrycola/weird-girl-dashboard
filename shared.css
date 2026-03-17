@@ -1,0 +1,175 @@
+/* ========================================================
+   WEIRD GIRL LIFE DASHBOARD — Shared Styles
+   Every page imports this file for consistent look & feel
+   ======================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ch:#c0392b;--chl:#e74c3c;--chp:#fde8e8;--chd:#7b241c;
+  --gold:#c9a84c;--cream:#fdf6f0;--tm:#1a0a0a;--tmut:#6b3a3a;
+  --cbg:rgba(255,255,255,0.95);--cbr:rgba(192,57,43,0.15);
+  --green:#27ae60;--green-light:#eafaf1;
+  --yellow:#f0a500;--yellow-light:#fef9e7;
+  --purple:#8e44ad;--purple-light:#f3eafb;
+  --blue:#2980b9;--blue-light:#e8f4fd;
+  --orange:#e67e22;--teal:#16a085;--pink:#e91e8c;--red:#c0392b;
+  --grass:#5BBF7A;--grass-dark:#3d9e5e;
+  --shadow:0 2px 8px rgba(0,0,0,.04);--shadow-lg:0 4px 16px rgba(0,0,0,.08);
+  --border:rgba(192,57,43,0.13);
+}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--tm);min-height:100vh}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* ====== NAV ====== */
+.nav{display:flex;gap:3px;flex-wrap:wrap;padding:.5rem .8rem;background:white;border-bottom:1px solid var(--cbr);position:sticky;top:0;z-index:100}
+.nav-btn{font-size:10px;padding:5px 11px;border-radius:20px;border:1.5px solid var(--cbr);background:white;cursor:pointer;color:var(--tmut);transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.nav-btn:hover{background:var(--chp);color:var(--ch);border-color:var(--ch)}
+.nav-btn.active{background:var(--ch);color:white;border-color:var(--ch)}
+.nav-btn.acnh-btn:hover{background:#eafaf1;border-color:var(--grass);color:var(--grass-dark)}
+.nav-btn.acnh-btn.active{background:var(--grass);border-color:var(--grass-dark)}
+.nav-btn.health-btn:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue)}
+.nav-btn.health-btn.active{background:var(--blue);border-color:#1a4a6b}
+.nav-btn.hobbies-btn:hover{background:#fef9e7;border-color:var(--gold);color:#a07828}
+.nav-btn.hobbies-btn.active{background:var(--gold);border-color:#a07828}
+.nav-btn.barbie-btn:hover{background:#fce4f3;border-color:var(--pink);color:#a01060}
+.nav-btn.barbie-btn.active{background:var(--pink);border-color:#a01060}
+.nav-btn.learn-btn:hover{background:var(--purple-light);border-color:var(--purple);color:var(--purple)}
+.nav-btn.learn-btn.active{background:var(--purple);border-color:#4a1a6b}
+.nav-group{display:flex;gap:3px;align-items:center;padding:0 6px;border-left:1px solid var(--cbr)}
+.nav-group:first-child{border-left:none;padding-left:0}
+.nav-sep{width:1px;height:18px;background:var(--cbr);margin:0 4px;flex-shrink:0}
+
+/* ====== PAGE LAYOUT ====== */
+.db{max-width:1120px;margin:0 auto;padding:1.2rem 1rem 3rem}
+.page-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--chd);margin-bottom:1rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.page-sub{font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+
+/* ====== CARDS ====== */
+.card{background:var(--cbg);border:1px solid var(--cbr);border-radius:16px;padding:1rem 1.1rem;position:relative;overflow:hidden;margin-bottom:.9rem;box-shadow:var(--shadow)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--chd),var(--chl))}
+.card.green-acc::before{background:linear-gradient(90deg,#1a6b3c,var(--green))}
+.card.blue-acc::before{background:linear-gradient(90deg,#1a4a6b,var(--blue))}
+.card.purple-acc::before{background:linear-gradient(90deg,#4a1a6b,var(--purple))}
+.card.orange-acc::before{background:linear-gradient(90deg,#7a3a0a,var(--orange))}
+.card.gold-acc::before{background:linear-gradient(90deg,#a07828,var(--gold))}
+.card.teal-acc::before{background:linear-gradient(90deg,#0a4a3c,var(--teal))}
+.card.pink-acc::before{background:linear-gradient(90deg,#8a0050,var(--pink))}
+.ct{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--chd);margin-bottom:.75rem;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ci{width:22px;height:22px;background:var(--chp);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.ct-right{margin-left:auto;display:flex;gap:4px;align-items:center}
+
+/* ====== GRIDS ====== */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:.9rem}
+.gfull{margin-bottom:.9rem}
+@media(max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+/* ====== INPUTS ====== */
+.inp{border:1.5px solid var(--cbr);border-radius:8px;padding:6px 10px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--tm);background:white;outline:none;transition:border .15s}
+.inp:focus{border-color:var(--ch)}
+.inp-full{width:100%}
+.sel{border:1.5px solid var(--cbr);border-radius:8px;padding:6px 10px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--tm);background:white;outline:none;cursor:pointer}
+textarea.inp{resize:none}
+.row{display:flex;gap:6px;align-items:center;margin-bottom:.5rem;flex-wrap:wrap}
+.fl{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--tmut);margin-bottom:3px;display:block;font-weight:600}
+.fr{margin-bottom:.65rem}
+.fgrid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+
+/* ====== BUTTONS ====== */
+.btn{border:none;border-radius:10px;padding:7px 14px;font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600;transition:all .15s}
+.btn-red{background:var(--ch);color:white}.btn-red:hover{background:var(--chd)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{background:#1a6b3c}
+.btn-blue{background:var(--blue);color:white}.btn-blue:hover{background:#1a4a6b}
+.btn-gold{background:var(--gold);color:white}.btn-gold:hover{background:#a07828}
+.btn-purple{background:var(--purple);color:white}.btn-purple:hover{background:#4a1a6b}
+.btn-outline{background:white;color:var(--ch);border:1.5px solid var(--cbr)}.btn-outline:hover{background:var(--chp)}
+.btn-sm{font-size:10px;padding:3px 9px;border-radius:6px;border:1.5px solid var(--cbr);background:white;cursor:pointer;color:var(--ch);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}
+.btn-sm:hover{background:var(--chp)}
+.btn-sm.primary{background:var(--ch);color:white;border-color:var(--ch)}.btn-sm.primary:hover{background:var(--chd)}
+.btn-sm.success{background:var(--green);color:white;border-color:var(--green)}
+.btn-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:11px;padding:0 3px;transition:color .15s}.btn-del:hover{color:var(--red)}
+.tag{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:600;white-space:nowrap}
+.sdiv{height:1px;background:var(--cbr);margin:.7rem 0}
+.empty-s{text-align:center;padding:1.5rem;color:var(--tmut);font-size:11px;font-style:italic;opacity:.7}
+
+/* ====== STAT CARDS ====== */
+.stat-card{background:white;border:1px solid var(--cbr);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow)}
+.stat-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--tmut);margin-bottom:3px}
+.stat-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--chd)}
+.stat-sub{font-size:9px;color:var(--tmut);margin-top:2px}
+
+/* ====== TABS ====== */
+.tab-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:.8rem;padding:.4rem .5rem;background:white;border:1px solid var(--cbr);border-radius:12px}
+.tab-btn{font-size:10px;padding:4px 11px;border-radius:20px;border:none;background:transparent;cursor:pointer;color:var(--tmut);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s;white-space:nowrap}
+.tab-btn:hover{color:var(--ch);background:var(--chp)}
+.tab-btn.active{background:var(--ch);color:white}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* ====== CHECKLIST ====== */
+.check-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-bottom:1px solid var(--cbr);font-size:11px;line-height:1.4}
+.check-item:last-child{border-bottom:none}
+.check-box{width:16px;height:16px;border:2px solid var(--cbr);border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;font-size:9px}
+.check-box.done{background:var(--green);border-color:var(--green);color:white}
+.check-text{flex:1}.check-text.done-text{text-decoration:line-through;opacity:.5}
+
+/* ====== NEEDS BARS (Sims 4 Style) ====== */
+.need-row{background:white;border:1px solid var(--cbr);border-radius:10px;padding:8px 10px;animation:fadeIn .2s ease;margin-bottom:8px}
+.need-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;gap:6px}
+.need-name{font-size:11px;font-weight:500;line-height:1.3}
+.need-freq{font-size:9px;color:var(--tmut)}
+.bar-track{height:12px;background:rgba(192,57,43,.07);border-radius:6px;overflow:hidden;border:1px solid var(--cbr)}
+.bar-fill{height:100%;border-radius:6px;transition:width .4s,background .4s;position:relative}
+.bar-fill::after{content:'';position:absolute;top:2px;left:4px;right:4px;height:3px;border-radius:2px;background:rgba(255,255,255,.25)}
+
+/* ====== MODAL ====== */
+.mo{display:none;position:fixed;inset:0;background:rgba(26,10,10,.55);z-index:500;align-items:center;justify-content:center;padding:1rem}
+.mo.open{display:flex}
+.modal{background:var(--cream);border-radius:20px;padding:1.4rem;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;border:1px solid var(--cbr);box-shadow:var(--shadow-lg)}
+.modal-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--chd);margin-bottom:1rem}
+.macts{display:flex;gap:6px;margin-top:1rem;justify-content:flex-end}
+
+/* ====== CALENDAR MINI ====== */
+.cal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+.cal-nav{background:none;border:1px solid var(--cbr);border-radius:5px;width:22px;height:22px;cursor:pointer;color:var(--ch);font-size:12px;display:flex;align-items:center;justify-content:center}
+.cal-nav:hover{background:var(--chp)}
+.cal-month-lbl{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--chd)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cdl{text-align:center;font-size:9px;color:var(--tmut);padding-bottom:2px;text-transform:uppercase}
+.cd{text-align:center;font-size:11px;padding:4px 1px;border-radius:4px;cursor:pointer;transition:background .15s;position:relative}
+.cd:hover{background:var(--chp)}
+.cd.today{background:var(--ch);color:white;font-weight:500}
+.cd.empty{cursor:default}
+.cd.has-event::after{content:'';position:absolute;bottom:1px;left:50%;transform:translateX(-50%);width:3px;height:3px;border-radius:50%;background:var(--gold)}
+.cd.today.has-event::after{background:white}
+
+/* ====== DONE LIST ====== */
+.done-list{max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:3px}
+.done-item{display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--chp);border-radius:6px;font-size:11px;color:var(--chd);animation:fadeIn .2s ease}
+.done-check{width:13px;height:13px;background:var(--ch);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:white;font-size:8px}
+
+/* ====== ENERGY ====== */
+.energy-compact{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.ec-panel{background:white;border:1px solid var(--cbr);border-radius:10px;padding:.7rem}
+.ec-title{font-size:10px;font-weight:500;margin-bottom:.5rem;display:flex;align-items:center;gap:5px;color:var(--tmut)}
+.ec-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ec-opts{display:flex;gap:4px;justify-content:space-between}
+.ec-opt{flex:1;background:white;border:2px solid var(--cbr);border-radius:8px;padding:5px 2px;text-align:center;cursor:pointer;transition:all .15s}
+.ec-opt:hover{border-color:var(--ch);background:var(--chp)}
+.ec-opt.sel-phys{border-color:var(--orange);background:#fef3e7}
+.ec-opt.sel-mental{border-color:var(--purple);background:#f3eafb}
+.ec-emoji{font-size:16px;display:block}
+.ec-val{font-size:8px;color:var(--tmut)}
+
+/* ====== MOOD/VIBES ====== */
+.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+.mood-tile{background:white;border:2px solid var(--cbr);border-radius:12px;padding:.7rem;text-align:center;cursor:pointer;transition:all .15s;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.mood-tile:hover{border-color:var(--ch);background:var(--chp)}
+.mood-tile.selected{border-color:var(--ch);background:var(--chp)}
+.mood-emoji{font-size:24px}
+.mood-label{font-size:10px;color:var(--tmut)}
+.vibe-entry{display:flex;gap:8px;padding:6px 9px;background:white;border:1px solid var(--cbr);border-radius:8px;align-items:center;font-size:11px;margin-bottom:4px}
+
+/* ====== SCROLLBAR ====== */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(192,57,43,.2);border-radius:2px}
