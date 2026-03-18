@@ -215,11 +215,22 @@ renderCal();
 
 // ============ DONE LIST ============
 let doneItems=ls(K.done,[]);
+function getTodayDone(){
+  const todayStart=new Date();todayStart.setHours(0,0,0,0);
+  return doneItems.filter(item=>item.ts&&item.ts>=todayStart.getTime());
+}
 function renderDone(){
   const list=document.getElementById('done-list'),count=document.getElementById('done-count');
   list.innerHTML='';
-  doneItems.slice(0,30).forEach((item,i)=>{const e=document.createElement('div');e.className='done-item';const txt=typeof item==='string'?item:item.text;e.innerHTML=`<div class="done-check">✓</div><span style="flex:1">${txt}</span><button class="btn-del" onclick="removeDone(${i})">×</button>`;list.appendChild(e)});
-  count.textContent=doneItems.length===0?'nothing logged yet':doneItems.length+' thing'+(doneItems.length!==1?'s':'')+' done ✨';
+  const todayItems=getTodayDone();
+  todayItems.forEach((item,i)=>{
+    const realIndex=doneItems.indexOf(item);
+    const e=document.createElement('div');e.className='done-item';
+    const txt=typeof item==='string'?item:item.text;
+    e.innerHTML=`<div class="done-check">✓</div><span style="flex:1">${txt}</span><span style="font-size:9px;color:var(--tmut);margin-right:4px">${item.ts?new Date(item.ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):''}</span><button class="btn-del" onclick="removeDone(${realIndex})">×</button>`;
+    list.appendChild(e);
+  });
+  count.textContent=todayItems.length===0?'fresh day — get after it!':todayItems.length+' thing'+(todayItems.length!==1?'s':'')+' done today ✨';
 }
 window.removeDone=i=>{doneItems.splice(i,1);ss(K.done,doneItems);renderDone()};
 document.getElementById('done-add-btn').onclick=()=>{const inp=document.getElementById('done-inp');if(!inp.value.trim())return;doneItems.unshift({text:inp.value.trim(),ts:Date.now()});ss(K.done,doneItems);renderDone();inp.value=''};
