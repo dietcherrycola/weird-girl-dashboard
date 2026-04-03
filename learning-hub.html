@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 Learning Hub — Weird Girl Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Nunito:wght@400;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#fdf6f0;--tm:#1a0a0a;--muted:#6b3a3a;
+  --ch:#c0392b;--chp:#fde8e8;--chd:#7b241c;
+  --border:rgba(192,57,43,0.13);--cbg:rgba(255,255,255,.97);
+  --green:#27ae60;--green-light:#eafaf1;--yellow:#f0a500;--yellow-light:#fef9e7;
+  --purple:#8e44ad;--purple-light:#f3eafb;--blue:#2980b9;--blue-light:#e8f4fd;
+  --orange:#e67e22;--teal:#16a085;--pink:#e91e8c;--red:#c0392b;
+  --gold:#c9a84c;
+  --shadow:0 2px 8px rgba(0,0,0,.04);--shadow-lg:0 4px 16px rgba(0,0,0,.08);
+}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--tm);min-height:100vh}
+
+/* === BACK NAV === */
+.back-bar{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);padding:.5rem .8rem;display:flex;align-items:center;gap:10px}
+.back-btn{font-size:11px;padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--ch);font-family:'DM Sans',sans-serif;font-weight:600;transition:all .15s;display:flex;align-items:center;gap:5px}
+.back-btn:hover{background:var(--chp);border-color:var(--ch)}
+.back-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--chd)}
+
+/* === HUB CONTAINER === */
+.hub{max-width:1120px;margin:0 auto;padding:1.2rem 1rem 3rem}
+
+/* === HUB HEADER === */
+.hub-header{text-align:center;margin-bottom:1.5rem}
+.hub-header h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--chd)}
+.hub-header-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+
+/* === OVERVIEW STATS === */
+.overview-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1.2rem}
+@media(max-width:700px){.overview-stats{grid-template-columns:1fr 1fr}}
+.stat-card{background:white;border:1px solid var(--border);border-radius:12px;padding:10px 12px;box-shadow:var(--shadow)}
+.stat-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px}
+.stat-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--chd)}
+.stat-sub{font-size:9px;color:var(--muted);margin-top:2px}
+
+/* === ALERTS === */
+.alert-bar{background:var(--chp);border:1.5px solid rgba(192,57,43,.25);border-radius:12px;padding:.7rem 1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--chd);font-weight:500}
+.alert-bar.warning{background:var(--yellow-light);border-color:rgba(240,165,0,.3);color:#7a5400}
+.alert-count{background:var(--ch);color:white;font-size:9px;border-radius:20px;padding:1px 7px;font-weight:700}
+
+/* === PILLAR GRID (main dashboard view) === */
+.pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1.2rem}
+@media(max-width:900px){.pillar-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.pillar-grid{grid-template-columns:1fr}}
+.pillar-widget{background:white;border:1px solid var(--border);border-radius:14px;padding:.9rem 1rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.pillar-widget:hover{border-color:var(--ch);box-shadow:var(--shadow-lg);transform:translateY(-1px)}
+.pillar-widget::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--pc,var(--ch))}
+.pw-top{display:flex;align-items:flex-start;gap:9px;margin-bottom:8px}
+.pw-emoji{font-size:24px;flex-shrink:0}
+.pw-name{font-size:12px;font-weight:700;color:var(--tm)}
+.pw-level{font-size:9px;padding:2px 7px;border-radius:20px;font-weight:600;white-space:nowrap}
+.pw-needs{display:flex;gap:3px;margin-bottom:6px}
+.pw-need-pip{flex:1;height:6px;border-radius:3px;background:rgba(0,0,0,.06);overflow:hidden}
+.pw-need-fill{height:100%;border-radius:3px;transition:width .4s}
+.pw-meta{display:flex;justify-content:space-between;font-size:9px;color:var(--muted)}
+.pw-alert{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--ch);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* === VIEW TOGGLE === */
+.view-toggle{display:flex;gap:4px;margin-bottom:1rem}
+.vt-btn{font-size:10px;padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:600;transition:all .15s}
+.vt-btn:hover{background:var(--chp);color:var(--ch)}
+.vt-btn.active{background:var(--ch);color:white;border-color:var(--ch)}
+
+/* === CATEGORY FILTERS === */
+.cat-filters{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1rem}
+.cat-btn{font-size:10px;padding:4px 11px;border-radius:20px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}
+.cat-btn:hover{background:var(--chp)}
+.cat-btn.active{background:var(--ch);color:white;border-color:var(--ch)}
+
+/* === PILLAR PAGE === */
+.pillar-page{display:none;animation:fadeIn .25s ease}
+.pillar-page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.pp-hero{border-radius:16px;padding:1.2rem 1.4rem;margin-bottom:1.2rem;position:relative;overflow:hidden;color:white}
+.pp-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--pc) 0%,color-mix(in srgb,var(--pc) 60%,#1a0a0a) 100%)}
+.pp-hero-inner{position:relative;z-index:1}
+.pp-hero-emoji{font-size:2.5rem;margin-bottom:8px;display:block}
+.pp-hero h2{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;margin-bottom:4px}
+.pp-hero-sub{font-size:11px;opacity:.8;line-height:1.5}
+.pp-hero-level{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.3);padding:4px 12px;border-radius:20px;font-size:10px;font-weight:700;margin-top:8px;backdrop-filter:blur(4px)}
+.pp-back{font-size:11px;padding:5px 14px;border-radius:20px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);cursor:pointer;color:white;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .15s;position:absolute;top:1rem;right:1rem;z-index:2;backdrop-filter:blur(4px)}
+.pp-back:hover{background:rgba(255,255,255,.3)}
+
+/* === INNER TABS === */
+.pp-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1rem;padding:.4rem .5rem;background:white;border:1px solid var(--border);border-radius:12px}
+.pp-tab{font-size:10px;padding:4px 11px;border-radius:20px;border:none;background:transparent;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s;white-space:nowrap}
+.pp-tab:hover{color:var(--ch);background:var(--chp)}
+.pp-tab.active{background:var(--ch);color:white}
+.pp-tab-content{display:none}.pp-tab-content.active{display:block}
+
+/* === CARDS === */
+.card{background:white;border:1px solid var(--border);border-radius:16px;padding:1rem 1.1rem;position:relative;overflow:hidden;margin-bottom:.9rem;box-shadow:var(--shadow)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pc,var(--chd)),color-mix(in srgb,var(--pc,var(--ch)) 70%,white))}
+.ct{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--chd);margin-bottom:.75rem;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ci{width:22px;height:22px;background:var(--chp);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.ct-right{margin-left:auto}
+
+/* === LAYOUT === */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+@media(max-width:700px){.g2,.g3{grid-template-columns:1fr}}
+
+/* === NEEDS BARS (Sims 4 Style) === */
+.need-bar{margin-bottom:8px}
+.need-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.need-name{font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px}
+.need-status{font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px}
+.need-track{height:14px;background:rgba(0,0,0,.06);border-radius:7px;overflow:hidden;border:1px solid rgba(0,0,0,.06);position:relative}
+.need-fill{height:100%;border-radius:7px;transition:width .5s ease,background .5s;position:relative}
+.need-fill::after{content:'';position:absolute;top:2px;left:4px;right:4px;height:4px;border-radius:2px;background:rgba(255,255,255,.3)}
+.need-fill.critical{animation:needFlash 1s ease-in-out infinite}
+@keyframes needFlash{0%,100%{opacity:1}50%{opacity:.6}}
+.need-meta{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:2px}
+.need-log-btn{font-size:9px;padding:2px 8px;border-radius:5px;border:1px solid var(--border);background:white;cursor:pointer;color:var(--ch);font-family:'DM Sans',sans-serif;transition:all .15s}
+.need-log-btn:hover{background:var(--chp);border-color:var(--ch)}
+
+/* === MILESTONES === */
+.milestone{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;background:white;border:1px solid var(--border);border-radius:10px;margin-bottom:5px;transition:all .15s;cursor:pointer}
+.milestone:hover{border-color:var(--ch)}
+.milestone.done{background:var(--green-light);border-color:rgba(39,174,96,.3)}
+.ms-check{width:20px;height:20px;border:2px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:all .15s}
+.ms-check.done{background:var(--green);border-color:var(--green);color:white}
+.ms-text{flex:1;font-size:11px;line-height:1.4}
+.ms-text.done-text{text-decoration:line-through;opacity:.5}
+.ms-level{font-size:8px;padding:1px 6px;border-radius:20px;font-weight:600;white-space:nowrap;flex-shrink:0}
+
+/* === SKILL LEVEL PROGRESS === */
+.level-track{display:flex;gap:2px;margin-bottom:.8rem}
+.level-seg{flex:1;height:8px;border-radius:4px;background:rgba(0,0,0,.06);overflow:hidden;position:relative;cursor:pointer;transition:all .15s}
+.level-seg:hover{transform:scaleY(1.3)}
+.level-seg-fill{height:100%;border-radius:4px;transition:width .4s}
+.level-labels{display:flex;justify-content:space-between;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px;margin-bottom:.5rem}
+
+/* === CHECKLIST === */
+.check-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-bottom:1px solid var(--border);font-size:11px;line-height:1.4}
+.check-item:last-child{border-bottom:none}
+.check-box{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;font-size:9px}
+.check-box.done{background:var(--green);border-color:var(--green);color:white}
+.check-text{flex:1}.check-text.done-text{text-decoration:line-through;opacity:.5}
+
+/* === GUIDE SECTIONS === */
+.guide-section{margin-bottom:1rem}
+.guide-h{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--chd);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+.guide-p{font-size:11px;line-height:1.7;color:var(--tm);margin-bottom:.5rem}
+.guide-tip{background:var(--yellow-light);border:1px solid rgba(240,165,0,.2);border-radius:9px;padding:7px 10px;font-size:10px;margin-bottom:.5rem;display:flex;align-items:flex-start;gap:6px}
+.guide-cheese{background:#f3eafb;border:1px solid rgba(142,68,173,.2);border-radius:9px;padding:7px 10px;font-size:10px;margin-bottom:.5rem;display:flex;align-items:flex-start;gap:6px}
+
+/* === INPUTS & BUTTONS === */
+.inp{border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--tm);background:white;outline:none;transition:border .15s}
+.inp:focus{border-color:var(--ch)}
+.inp-full{width:100%}
+.btn{border:none;border-radius:10px;padding:7px 14px;font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600;transition:all .15s}
+.btn-red{background:var(--ch);color:white}.btn-red:hover{background:var(--chd)}
+.btn-green{background:var(--green);color:white}.btn-green:hover{background:#1a6b3c}
+.btn-outline{background:white;color:var(--ch);border:1.5px solid var(--border)}.btn-outline:hover{background:var(--chp)}
+.btn-sm{font-size:10px;padding:3px 9px;border-radius:6px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--ch);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}
+.btn-sm:hover{background:var(--chp)}
+.btn-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:11px;padding:0 3px;transition:color .15s}.btn-del:hover{color:var(--red)}
+.row{display:flex;gap:6px;align-items:center;margin-bottom:.5rem;flex-wrap:wrap}
+.tag{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:600;white-space:nowrap}
+.sdiv{height:1px;background:var(--border);margin:.7rem 0}
+.empty-s{text-align:center;padding:1.5rem;color:var(--muted);font-size:11px;font-style:italic;opacity:.7}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(192,57,43,.2);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- BACK BAR -->
+<div class="back-bar">
+  <button class="back-btn" onclick="goBack()">← Back to Dashboard</button>
+  <span class="back-title">🧠 Learning Hub</span>
+</div>
+
+<!-- MAIN HUB VIEW -->
+<div id="hub-main">
+<div class="hub">
+
+<div class="hub-header">
+  <h1>🧠 Learning Hub</h1>
+  <div class="hub-header-sub">Master new skills · track your progress · never stop growing</div>
+</div>
+
+<!-- OVERVIEW STATS -->
+<div class="overview-stats" id="overview-stats"></div>
+
+<!-- DECAY ALERTS -->
+<div id="decay-alerts"></div>
+
+<!-- CATEGORY FILTERS -->
+<div class="cat-filters" id="cat-filters">
+  <button class="cat-btn active" onclick="filterCat('all')">All</button>
+  <button class="cat-btn" onclick="filterCat('creative')">🎨 Creative</button>
+  <button class="cat-btn" onclick="filterCat('language')">🌍 Languages</button>
+  <button class="cat-btn" onclick="filterCat('coding')">💻 Coding</button>
+  <button class="cat-btn" onclick="filterCat('gaming')">🎮 Gaming/Fandom</button>
+  <button class="cat-btn" onclick="filterCat('craft')">🧵 Crafts & Hands-on</button>
+  <button class="cat-btn" onclick="filterCat('life')">🍳 Life Skills</button>
+</div>
+
+<!-- PILLAR GRID -->
+<div class="pillar-grid" id="pillar-grid"></div>
+
+</div>
+</div>
+
+<!-- PILLAR DETAIL PAGES (rendered dynamically) -->
+<div id="pillar-pages"></div>
+
+<script>
+// ========================= DATA =========================
+const PILLARS = [
+  // CREATIVE
+  {
+    id:'nomad',emoji:'🗿',name:'Nomad Sculpt',cat:'creative',color:'#16a085',
+    goal:'Sculpt, 3D print, and animate characters in Nomad Sculpt',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'What is Nomad Sculpt?',p:'Nomad Sculpt is a powerful 3D sculpting app for iPad and Android tablets. Think of it like digital clay — you push, pull, smooth, and carve shapes. It outputs files you can 3D print or animate.'},
+      {h:'Your Goal Path',p:'Sculpt original characters → export for 3D printing → basic posing and animation. You don\'t need to learn every tool — just the ones that get your ideas into reality.'},
+      {h:'How to Start (Week 1-2)',p:'Download the app. Start with a sphere. Learn just 5 tools: Move, Clay, Smooth, Flatten, Mask. Sculpt something simple like a mushroom or a cat head. Don\'t worry about detail yet.'},
+      {h:'Building Skills (Month 1-2)',p:'Follow along with YouTube tutorials (SmallRobotStudio, SouthernGFX). Practice sculpting one thing per week. Learn about Voxel vs Mesh mode. Start using Symmetry for character faces.'},
+      {h:'Getting Print-Ready',p:'Learn about manifold/watertight meshes (no holes in your model). Use the Trim and Boolean tools to hollow models for printing. Export as STL. Slice with Cura or PrusaSlicer.'},
+      {h:'Animation Basics',p:'Use Nomad\'s built-in posing tools OR export to Blender for animation. Start with simple turntable animations of your sculptures.'}
+    ],
+    cheese:['Use Nomad\'s primitive shapes (cylinders, cubes) and combine them instead of sculpting from scratch','Symmetry tool = do half the work for double the result','Use MatCap materials to make things look amazing without learning texturing','SouthernGFX YouTube channel has fast-track tutorials specifically for Nomad','For 3D printing: use Thingiverse to find bases/accessories you can remix instead of sculpting everything'],
+    needs:[
+      {name:'Practice sculpting',freq:'3x/week',decayDays:7},
+      {name:'Watch tutorial',freq:'1x/week',decayDays:10},
+      {name:'Export & test print',freq:'1x/month',decayDays:35}
+    ],
+    milestones:[
+      {text:'Install Nomad Sculpt and complete UI tour',level:0},
+      {text:'Sculpt a simple shape (mushroom, star, ball)',level:0},
+      {text:'Learn Move, Clay, Smooth, Flatten, Mask tools',level:0},
+      {text:'Sculpt a simple character head with symmetry',level:1},
+      {text:'Learn Voxel Remesh workflow',level:1},
+      {text:'Complete a full character bust',level:1},
+      {text:'Export a model as STL and slice it',level:2},
+      {text:'Successfully 3D print your first sculpt',level:2},
+      {text:'Sculpt a full character (head + body)',level:2},
+      {text:'Learn basic texturing/painting in Nomad',level:2},
+      {text:'Create a multi-part printable model',level:3},
+      {text:'Animate a turntable render of your work',level:3},
+      {text:'Develop a recognizable personal style',level:4},
+      {text:'Complete a collection of 5+ printable characters',level:4}
+    ],
+    steps:[
+      'Download Nomad Sculpt on your iPad','Do the in-app tutorial walkthrough','Watch "Nomad Sculpt for Beginners" on YouTube','Sculpt a mushroom from a sphere','Learn Move + Smooth tools (spend 30 min just playing)','Sculpt a simple face using Symmetry','Learn Clay Buildup tool for adding material','Learn Trim/Cut for hard edges','Sculpt a chibi character head','Try Voxel Remesh to fix mesh issues','Sculpt a full character body','Learn about STL export settings','Download a slicer (Cura/PrusaSlicer)','Slice and print your first model','Learn about supports and infill for printing','Sculpt something specifically designed to be printed','Try painting your model in Nomad','Export to Blender for a turntable animation','Complete your first fully painted printable character','Build a personal gallery of 3 finished pieces'
+    ]
+  },
+  {
+    id:'blender',emoji:'🎬',name:'Blender Animation',cat:'creative',color:'#e67e22',
+    goal:'Animate characters and scenes in Blender using plugins and shortcuts',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'What is Blender?',p:'Free, open-source 3D software. It does modeling, animation, rendering, and more. It looks overwhelming but you only need a fraction of it for animation.'},
+      {h:'Your Goal Path',p:'Import models (from Nomad or elsewhere) → rig them → animate → render. Plugins do 80% of the hard work for you.'},
+      {h:'Essential Plugins',p:'Auto-Rig Pro ($40, rigs characters automatically), Mixamo (free, Adobe\'s auto-rigging + animation library), Rigify (free, built into Blender). These skip months of manual rigging learning.'},
+      {h:'How to Start',p:'Install Blender. Do the donut tutorial by Blender Guru (iconic beginner tutorial). Then skip straight to importing a character and using Mixamo for auto-animation.'},
+      {h:'Animation Workflow',p:'Upload character to Mixamo.com → pick animations → download FBX → import to Blender → tweak in Graph Editor → render. This is the cheese path and it works.'}
+    ],
+    cheese:['Mixamo.com auto-rigs AND auto-animates characters for free — this is the ultimate cheese','Auto-Rig Pro plugin handles rigging in minutes instead of days','Use Blender\'s built-in templates for camera setups','Render with EEVEE (fast) not Cycles (slow) until you need photorealism','YouTube: "Blender animation in 10 minutes" tutorials exist and work'],
+    needs:[
+      {name:'Practice in Blender',freq:'2x/week',decayDays:10},
+      {name:'Complete tutorial section',freq:'1x/week',decayDays:12},
+      {name:'Finish an animation',freq:'1x/month',decayDays:40}
+    ],
+    milestones:[
+      {text:'Install Blender and navigate the interface',level:0},
+      {text:'Complete Blender Guru donut tutorial',level:0},
+      {text:'Import a model from Nomad/elsewhere',level:0},
+      {text:'Upload a character to Mixamo and download animation',level:1},
+      {text:'Import Mixamo animation into Blender',level:1},
+      {text:'Set up a camera and basic lighting',level:1},
+      {text:'Render your first animation (even if rough)',level:2},
+      {text:'Learn the Graph Editor basics for tweaking motion',level:2},
+      {text:'Create a 10-second character animation',level:2},
+      {text:'Learn basic particle effects',level:3},
+      {text:'Create a short animated scene with environment',level:3},
+      {text:'Complete a polished 30-second animation',level:4}
+    ],
+    steps:['Download and install Blender','Do Blender Guru donut tutorial (Part 1-3)','Learn viewport navigation (orbit, pan, zoom)','Import an OBJ/STL file into Blender','Create a Mixamo account','Upload a character to Mixamo and apply walk animation','Download FBX and import into Blender','Set up a basic 3-point lighting setup','Add a camera and set render resolution','Render a turntable animation','Learn keyframe basics in Blender','Edit animation curves in Graph Editor','Create a simple scene with ground plane + backdrop','Add music/sound to rendered video','Complete a polished short animation']
+  },
+  {
+    id:'pixel-art',emoji:'🎨',name:'Pixel Art',cat:'creative',color:'#9b59b6',
+    goal:'Create clean, expressive pixel art for games and personal projects',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'What is Pixel Art?',p:'Art made pixel by pixel on a small canvas. It\'s the art style of retro games. Constraints make it easier to start — small canvas, limited colors.'},
+      {h:'Tools',p:'Aseprite ($20, the gold standard), Piskel (free browser-based), GraphicsGale (free). Aseprite is worth it.'},
+      {h:'Start Small. Literally.',p:'Begin with 16x16 or 32x32 canvases. Draw simple objects: a sword, a potion, a tree. Limit yourself to 4-8 colors. Constraints are your friend.'},
+      {h:'Core Techniques',p:'Learn about: anti-aliasing (smoothing edges), dithering (creating gradients with patterns), sub-pixel animation (tiny movements that look alive), and color ramps (choosing color palettes).'}
+    ],
+    cheese:['Use Lospec.com for free color palettes — don\'t pick your own colors as a beginner','Trace/study existing pixel art to learn proportions','16x16 sprites are MUCH faster than 32x32 — start small','Aseprite\'s onion skinning makes animation 10x easier','Copy the NES/SNES aesthetic — those limitations make good art by default'],
+    needs:[
+      {name:'Draw something',freq:'3x/week',decayDays:7},
+      {name:'Study pixel art technique',freq:'1x/week',decayDays:12},
+      {name:'Complete a sprite sheet',freq:'2x/month',decayDays:20}
+    ],
+    milestones:[
+      {text:'Install Aseprite or Piskel',level:0},
+      {text:'Draw a 16x16 object (sword, potion, etc)',level:0},
+      {text:'Learn about color palettes and pick one from Lospec',level:0},
+      {text:'Draw a simple character sprite (front-facing)',level:1},
+      {text:'Create a 4-direction walk cycle',level:1},
+      {text:'Learn dithering technique',level:2},
+      {text:'Create a full tileset (ground, walls, objects)',level:2},
+      {text:'Animate a character with idle + walk + attack',level:3},
+      {text:'Create a complete game-ready sprite sheet',level:3},
+      {text:'Develop personal pixel art style',level:4}
+    ],
+    steps:['Install Aseprite or use Piskel.com','Draw a 16x16 sword using 4 colors','Draw a 16x16 potion bottle','Draw a 16x16 tree','Browse Lospec and save 3 palettes','Draw a 32x32 character (front view)','Draw the same character facing all 4 directions','Create a 2-frame idle animation','Create a 4-frame walk cycle','Learn about anti-aliasing and apply it','Create a simple tile (grass, stone, water)','Build a small tileset (8+ tiles)','Create an attack animation','Draw a simple enemy sprite','Complete a character sprite sheet with all animations']
+  },
+  // LANGUAGES
+  {
+    id:'spanish',emoji:'🇪🇸',name:'Conversational Spanish',cat:'language',color:'#e67e22',
+    goal:'Hold a natural 15+ minute conversation in Spanish',
+    levels:['Beginner','Novice','Intermediate','Conversational','Fluent'],
+    guide:[
+      {h:'Your Path to Conversation',p:'You don\'t need to learn all of Spanish grammar. You need ~1000 words, present/past tense, and the confidence to mess up. That\'s it for conversation.'},
+      {h:'The 80/20 of Spanish',p:'Learn the 100 most common words first (they make up 50% of spoken Spanish). Then learn present tense conjugation for 20 key verbs. Then past tense for the same verbs. Then start talking.'},
+      {h:'Best Free Tools',p:'Duolingo (daily habit builder), Language Transfer (free audio course — AMAZING for Spanish), Tandem/HelloTalk (find conversation partners), YouTube (SpanishPod101, Dreaming Spanish for comprehensible input).'},
+      {h:'The Secret Sauce',p:'Comprehensible input. Watch Spanish YouTube, Netflix with Spanish audio + Spanish subtitles. Your brain absorbs patterns without you trying. Dreaming Spanish channel is designed exactly for this.'}
+    ],
+    cheese:['Language Transfer free audio course teaches Spanish structure in ~90 lessons — it\'s the fastest start','Spanish and English share thousands of cognates (words that are similar)','Learn "poder/querer/necesitar + infinitive" pattern — it lets you express almost anything','Watch Dreaming Spanish YouTube at "superbeginner" level — pure comprehensible input','Use ChatGPT as a free conversation partner'],
+    needs:[
+      {name:'Duolingo/app practice',freq:'daily',decayDays:3},
+      {name:'Listen to Spanish content',freq:'4x/week',decayDays:5},
+      {name:'Speaking practice',freq:'2x/week',decayDays:8},
+      {name:'Study grammar point',freq:'1x/week',decayDays:12}
+    ],
+    milestones:[
+      {text:'Start Duolingo + Language Transfer',level:0},
+      {text:'Learn 100 most common words',level:0},
+      {text:'Introduce yourself in Spanish',level:0},
+      {text:'Learn present tense conjugation (ser, estar, tener, ir)',level:1},
+      {text:'Order food in Spanish',level:1},
+      {text:'Have a 2-minute conversation',level:1},
+      {text:'Learn past tense (preterite basics)',level:2},
+      {text:'Watch a show in Spanish with subtitles',level:2},
+      {text:'Have a 10-minute conversation',level:2},
+      {text:'Think in Spanish occasionally',level:3},
+      {text:'Have a 15+ minute conversation naturally',level:3},
+      {text:'Understand native speakers at normal speed',level:4}
+    ],
+    steps:['Download Duolingo and do lesson 1','Start Language Transfer (lessons 1-5)','Learn greetings: hola, buenos días, ¿cómo estás?','Learn 20 most common words (flashcards)','Learn ser vs estar basics','Language Transfer lessons 6-20','Learn numbers 1-100','Practice ordering food vocabulary','Find a Dreaming Spanish superbeginner video','Learn present tense of ser, estar, tener, ir, querer','Language Transfer lessons 21-40','Have your first conversation (even 30 seconds)','Learn past tense basics (fui, hice, dije)','Start watching a show with Spanish subtitles','Find a conversation partner on Tandem/HelloTalk','Practice 10 min of speaking per week','Language Transfer lessons 41-60','Write a short journal entry in Spanish','Reach 1000 word vocabulary','Hold a 15-minute conversation']
+  },
+  {
+    id:'korean',emoji:'🇰🇷',name:'Conversational Korean',cat:'language',color:'#c0392b',
+    goal:'Hold a natural conversation in Korean',
+    levels:['Beginner','Novice','Intermediate','Conversational','Fluent'],
+    guide:[
+      {h:'You Have a Head Start',p:'You already have some Korean background — this is about refreshing and building on it. Korean\'s alphabet (Hangul) can be learned in an afternoon. The grammar is totally different from English but very logical.'},
+      {h:'Priority Path',p:'Refresh Hangul → core grammar patterns → vocabulary building → lots of listening → speaking practice.'},
+      {h:'Best Resources',p:'Talk To Me In Korean (TTMIK — the #1 Korean learning resource), Go Billy Korean (YouTube), Korean Unnie (YouTube), Anki flashcards for vocabulary, HelloTalk for conversation partners.'},
+      {h:'Korean Grammar Key',p:'Korean is Subject-Object-Verb order. Learn particles (은/는, 이/가, 을/를) and verb endings. Once you get the pattern, you can say almost anything.'}
+    ],
+    cheese:['TTMIK has a perfectly structured free curriculum — just follow it in order','Hangul is one of the most logical alphabets ever designed — learn it in 1-2 hours','Korean has levels of politeness — learn 요 (yo) form first, it covers 90% of situations','Watch K-dramas you\'ve already seen with Korean subs','Konglish (Korean-English loanwords) = instant vocabulary boost'],
+    needs:[
+      {name:'Study Korean',freq:'daily',decayDays:3},
+      {name:'Listen to Korean content',freq:'4x/week',decayDays:5},
+      {name:'Speaking practice',freq:'2x/week',decayDays:8}
+    ],
+    milestones:[
+      {text:'Refresh Hangul reading/writing',level:0},
+      {text:'TTMIK Level 1 complete',level:0},
+      {text:'Learn 100 most common words',level:1},
+      {text:'Basic self-introduction in Korean',level:1},
+      {text:'TTMIK Level 2-3 complete',level:2},
+      {text:'Watch a K-drama episode with Korean subs',level:2},
+      {text:'Have a 5-minute conversation',level:3},
+      {text:'Hold a 15+ minute conversation naturally',level:3},
+      {text:'Understand K-drama dialogue without subs',level:4}
+    ],
+    steps:['Review Hangul consonants and vowels','Practice reading Hangul for 30 min','TTMIK Level 1, Lessons 1-5','Learn basic greetings and introductions','TTMIK Level 1, Lessons 6-10','Learn numbers (native Korean + Sino-Korean)','Start an Anki deck with common words','TTMIK Level 1, Lessons 11-15','Practice self-introduction out loud','Watch Korean content with subs daily','TTMIK Level 2 start','Find a language partner','Practice speaking weekly','TTMIK Level 3','Hold conversations regularly']
+  },
+  {
+    id:'japanese',emoji:'🇯🇵',name:'Conversational Japanese',cat:'language',color:'#2c3e50',
+    goal:'Hold basic conversations in Japanese',
+    levels:['Beginner','Novice','Intermediate','Conversational','Fluent'],
+    guide:[
+      {h:'The Japanese Writing Systems',p:'Hiragana (basic alphabet, ~46 characters), Katakana (for foreign words, ~46 characters), Kanji (Chinese characters — you need ~300 for basic conversation). Start with Hiragana.'},
+      {h:'Priority Path',p:'Learn Hiragana → basic grammar with Genki/Tae Kim → vocabulary → Katakana → basic Kanji → conversation practice.'},
+      {h:'Best Resources',p:'Tae Kim\'s Guide (free grammar), Genki textbook (gold standard), WaniKani (Kanji learning), JapanesePod101, Cure Dolly (YouTube — weird but effective grammar explanation).'}
+    ],
+    cheese:['Learn Hiragana with the "Tofugu" guide — 2-3 days max','Japanese has very regular pronunciation — what you read is what you say','Polite form (-masu/-desu) covers 90% of conversation','Katakana = English words pronounced Japanese-style = free vocabulary','Cure Dolly YouTube explains grammar structure in a way that actually makes sense'],
+    needs:[
+      {name:'Study Japanese',freq:'daily',decayDays:3},
+      {name:'Practice reading/writing',freq:'3x/week',decayDays:6},
+      {name:'Listening practice',freq:'3x/week',decayDays:6}
+    ],
+    milestones:[
+      {text:'Learn all Hiragana characters',level:0},
+      {text:'Learn basic greetings and phrases',level:0},
+      {text:'Learn Katakana characters',level:1},
+      {text:'Basic self-introduction',level:1},
+      {text:'Learn 50 basic Kanji',level:2},
+      {text:'Simple conversations about daily life',level:2},
+      {text:'Watch anime with Japanese subs and follow along',level:3},
+      {text:'Hold a 10+ minute conversation',level:3},
+      {text:'Read simple Japanese texts',level:4}
+    ],
+    steps:['Learn Hiragana (あ-ん) using Tofugu guide','Practice reading Hiragana daily','Learn 20 basic phrases','Start Tae Kim\'s Grammar Guide (basics section)','Learn Katakana','Build vocabulary with Anki (100 words)','Learn -masu/-desu polite form','Practice self-introduction','Start basic Kanji (numbers, days, common words)','Find Japanese conversation partner','Watch anime with Japanese subtitles','Practice speaking weekly']
+  },
+  {
+    id:'french',emoji:'🇫🇷',name:'Conversational French',cat:'language',color:'#2980b9',
+    goal:'Hold a natural conversation in French',
+    levels:['Beginner','Novice','Intermediate','Conversational','Fluent'],
+    guide:[
+      {h:'French After Spanish',p:'If you learn Spanish first, French becomes MUCH easier. They share tons of vocabulary and grammar structures. Your Spanish knowledge gives you a huge head start.'},
+      {h:'Priority Path',p:'Pronunciation rules → core grammar (like Spanish but with weird spelling) → vocabulary → listening → speaking.'},
+      {h:'Best Resources',p:'Pimsleur French (audio-based, great for pronunciation), Coffee Break French (podcast), InnerFrench (intermediate podcast — Hugo is amazing), Duolingo, Lingoda for conversation classes.'}
+    ],
+    cheese:['French-English cognates are MASSIVE — thousands of shared words','Learn after Spanish — grammar transfer is real','Pimsleur audio course builds speaking confidence fast','InnerFrench podcast is incredible for intermediate listening','French pronunciation rules are consistent once you learn them — unlike English'],
+    needs:[
+      {name:'Study French',freq:'daily',decayDays:3},
+      {name:'Listen to French content',freq:'3x/week',decayDays:6},
+      {name:'Speaking practice',freq:'2x/week',decayDays:8}
+    ],
+    milestones:[
+      {text:'Learn French pronunciation rules',level:0},
+      {text:'Learn 100 most common words',level:0},
+      {text:'Basic greetings and introductions',level:0},
+      {text:'Present tense conjugation basics',level:1},
+      {text:'Order food / basic transactions',level:1},
+      {text:'Learn passé composé (past tense)',level:2},
+      {text:'Watch French content with subtitles',level:2},
+      {text:'Have a 10-minute conversation',level:3},
+      {text:'Hold 15+ minute conversation naturally',level:3}
+    ],
+    steps:['Learn French pronunciation rules','Start Duolingo or Pimsleur','Learn greetings and basic phrases','Learn present tense of être, avoir, aller, faire','Build vocabulary (100 words)','Learn articles and gender','Start listening to Coffee Break French','Practice speaking with partner','Learn past tense basics','Start InnerFrench podcast','Hold conversations regularly']
+  },
+  // CODING
+  {
+    id:'ide',emoji:'🖥️',name:'Coding Environments',cat:'coding',color:'#34495e',
+    goal:'Feel comfortable and confident using coding environments (IDEs)',
+    levels:['Beginner','Novice','Intermediate','Comfortable','Power User'],
+    guide:[
+      {h:'Why IDEs Are Overwhelming',p:'IDEs (Integrated Development Environments) have a million buttons, panels, menus, and settings. But here\'s the secret: you only need like 5% of them. The rest is for people with very specific needs. Ignore everything else.'},
+      {h:'Start with VS Code',p:'Visual Studio Code is free, the most popular editor, has the best tutorials, and works for every language. Start here. Don\'t use anything else until you\'re comfortable.'},
+      {h:'What You Actually Need to Know',p:'1) How to open a folder (File → Open Folder). 2) How to create a file. 3) How to run your code (play button or terminal). 4) How to use the terminal at the bottom. 5) How to install extensions. That\'s literally it to start.'},
+      {h:'The Terminal',p:'The terminal (that black box at the bottom) is just a text-based way to tell your computer to do things. You type commands instead of clicking buttons. It\'s scary looking but you only need a few commands to start: cd (change directory), ls (list files), python filename.py (run a file).'},
+      {h:'What All Those Panels Are',p:'Left sidebar = file browser (your files/folders). Bottom = terminal (run commands). Main area = your code. Top = menus. Right side = usually nothing important. The rest? Ignore it.'}
+    ],
+    cheese:['VS Code has a "Welcome" tab with interactive tutorials — actually do them','Install the "Code Runner" extension — lets you run code with one click instead of terminal commands','Use VS Code\'s built-in terminal instead of a separate terminal app','Color theme + font size changes (Settings → search "font size") make it way less intimidating','The command palette (Ctrl+Shift+P) finds any feature — you never need to hunt through menus'],
+    needs:[
+      {name:'Open VS Code and do something',freq:'3x/week',decayDays:7},
+      {name:'Practice terminal commands',freq:'2x/week',decayDays:10}
+    ],
+    milestones:[
+      {text:'Install VS Code',level:0},
+      {text:'Open a folder and create a file',level:0},
+      {text:'Change the color theme to something you like',level:0},
+      {text:'Run a Hello World program with Code Runner',level:0},
+      {text:'Use the built-in terminal to run a command',level:1},
+      {text:'Install 3 useful extensions',level:1},
+      {text:'Navigate files and folders confidently',level:1},
+      {text:'Use the command palette (Ctrl+Shift+P)',level:2},
+      {text:'Debug a simple program with breakpoints',level:2},
+      {text:'Use Git basics from VS Code',level:3},
+      {text:'Customize keybindings and settings',level:3},
+      {text:'Feel at home — IDE doesn\'t feel scary',level:4}
+    ],
+    steps:['Download and install VS Code','Open VS Code and do the Welcome tutorial','Create a folder on your desktop called "coding"','Open that folder in VS Code','Create a new file called hello.py','Type: print("hello world")','Install the Code Runner extension','Right-click your file and click "Run Code"','Open the terminal (View → Terminal)','Type: python hello.py in the terminal','Install Python extension for VS Code','Create 3 more small files and run them','Learn Ctrl+Shift+P (command palette)','Change your color theme','Install Live Server extension for HTML files']
+  },
+  {
+    id:'python',emoji:'🐍',name:'Python Programming',cat:'coding',color:'#3498db',
+    goal:'Write useful Python scripts and small programs confidently',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'Why Python?',p:'Python reads like English, has the gentlest learning curve, and can do almost anything: web scraping, automation, data analysis, games, AI. It\'s the best first "real" language.'},
+      {h:'Your Learning Path',p:'Variables & types → if/else → loops → functions → lists/dicts → file handling → external libraries. That\'s the core. Everything else builds on these.'},
+      {h:'Best Resources',p:'Automate the Boring Stuff (free online book — practical and fun), FreeCodeCamp Python course (YouTube, 12 hours), Python.org official tutorial, Codecademy (interactive).'}
+    ],
+    cheese:['Automate the Boring Stuff teaches Python through practical projects — rename files, scrape websites, etc.','Python has a library for EVERYTHING — google "[thing you want to do] python library"','ChatGPT can explain any error message — paste the error and ask what it means','Copy and modify existing code from Stack Overflow/GitHub rather than writing from scratch','Jupyter Notebooks let you run code in chunks (way less scary than full programs)'],
+    needs:[
+      {name:'Write Python code',freq:'3x/week',decayDays:7},
+      {name:'Complete a lesson/tutorial',freq:'2x/week',decayDays:8},
+      {name:'Build a small project',freq:'1x/month',decayDays:35}
+    ],
+    milestones:[
+      {text:'Hello World + print statements',level:0},
+      {text:'Variables, strings, numbers',level:0},
+      {text:'If/else statements',level:0},
+      {text:'For loops and while loops',level:1},
+      {text:'Functions (def)',level:1},
+      {text:'Lists and dictionaries',level:1},
+      {text:'Read/write files',level:2},
+      {text:'Use pip to install a library',level:2},
+      {text:'Build a complete small project',level:2},
+      {text:'Use an API (requests library)',level:3},
+      {text:'Web scraping with BeautifulSoup',level:3},
+      {text:'Build something genuinely useful for yourself',level:4}
+    ],
+    steps:['Install Python from python.org','Write and run "Hello World"','Learn variables (name = "Shan")','Learn string operations','Learn if/elif/else','Learn for loops','Learn while loops','Write a simple number guessing game','Learn functions (def my_function())','Learn lists and list methods','Learn dictionaries','Read a text file with Python','Write data to a file','Install a library with pip','Build a small automation project']
+  },
+  {
+    id:'java',emoji:'☕',name:'Java Programming',cat:'coding',color:'#e74c3c',
+    goal:'Write Java programs and understand object-oriented programming',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'Why Java?',p:'Java is used everywhere: Android apps, enterprise software, Minecraft mods. It\'s more structured than Python, which means more typing but also more organization for big projects.'},
+      {h:'Java vs Python',p:'Java makes you declare types (String name = "Shan" vs just name = "Shan"). It uses classes for everything. It\'s more verbose but teaches you programming concepts that transfer to every other language.'},
+      {h:'Best Resources',p:'MOOC.fi Java course (free, interactive, excellent), Codecademy Java, Derek Banas Java Tutorial (YouTube — fast paced), Head First Java (book).'}
+    ],
+    cheese:['Learn Python first if you haven\'t — Java concepts click faster with Python knowledge','IntelliJ IDEA Community (free) auto-completes tons of code for you','MOOC.fi is the best structured free Java course, period','Java\'s error messages are verbose but actually helpful — read them','Use Java for Minecraft modding as practice motivation'],
+    needs:[
+      {name:'Write Java code',freq:'3x/week',decayDays:7},
+      {name:'Complete a lesson',freq:'2x/week',decayDays:8},
+      {name:'Build something',freq:'1x/month',decayDays:35}
+    ],
+    milestones:[
+      {text:'Install JDK and IntelliJ IDEA',level:0},
+      {text:'Hello World in Java',level:0},
+      {text:'Variables and types',level:0},
+      {text:'If/else and loops',level:1},
+      {text:'Methods/functions',level:1},
+      {text:'Arrays and ArrayLists',level:1},
+      {text:'Classes and objects basics',level:2},
+      {text:'Inheritance and interfaces',level:2},
+      {text:'Build a complete program',level:3},
+      {text:'Understand design patterns',level:3},
+      {text:'Build something with a GUI',level:4}
+    ],
+    steps:['Install JDK from Oracle','Install IntelliJ IDEA Community','Create a new project and write Hello World','Learn variables and data types','Learn if/else statements','Learn for and while loops','Write a simple calculator','Learn methods (functions)','Learn arrays and ArrayLists','Learn about classes and objects','Create a class with methods','Learn inheritance','Build a text-based game','Learn file I/O','Build a complete project']
+  },
+  {
+    id:'phone-app',emoji:'📱',name:'Phone App Development',cat:'coding',color:'#1abc9c',
+    goal:'Build and publish a working phone app',
+    levels:['Beginner','Novice','Intermediate','Advanced','Published'],
+    guide:[
+      {h:'Choosing Your Path',p:'Flutter (Google, one codebase for iOS + Android, uses Dart language) or React Native (uses JavaScript/React). Flutter is easier to start, React Native has more jobs. For your first app, Flutter is the move.'},
+      {h:'What You Need First',p:'Basic programming knowledge (Python or Java helps). Then learn the framework basics, UI layout, state management, and navigation. That\'s enough for a simple app.'},
+      {h:'Your First App',p:'Build a personal tool — a mood tracker, habit tracker, or simple game. Something YOU will use. This keeps motivation high.'}
+    ],
+    cheese:['Flutter\'s widget system is like stacking Lego blocks — very visual and intuitive','Use FlutterFlow (visual builder) to prototype without writing much code','Copy starter templates from Flutter cookbook','Use Firebase for backend (database, auth) without building a server','ChatGPT can generate entire Flutter widgets for you'],
+    needs:[
+      {name:'Code/practice app dev',freq:'3x/week',decayDays:7},
+      {name:'Complete tutorial section',freq:'1x/week',decayDays:12},
+      {name:'Work on your app project',freq:'2x/week',decayDays:10}
+    ],
+    milestones:[
+      {text:'Install Flutter SDK and set up environment',level:0},
+      {text:'Run a Flutter demo app on your phone/emulator',level:0},
+      {text:'Build a "Hello World" screen',level:0},
+      {text:'Learn Flutter widgets (Text, Container, Column, Row)',level:1},
+      {text:'Build a screen with buttons and inputs',level:1},
+      {text:'Add navigation between screens',level:2},
+      {text:'Save data locally on the phone',level:2},
+      {text:'Build a complete multi-screen app',level:3},
+      {text:'Polish UI and add animations',level:3},
+      {text:'Publish to app store',level:4}
+    ],
+    steps:['Install Flutter SDK','Set up VS Code with Flutter extension','Run flutter doctor in terminal','Create a new Flutter project','Run the demo app on emulator','Modify the demo app text and colors','Learn about Widgets, Rows, Columns','Build a simple counter app','Add text inputs and buttons','Learn about setState for interactivity','Create multiple screens','Add navigation between screens','Learn about local storage','Build your actual app idea','Test on real phone','Publish to app store']
+  },
+  {
+    id:'pixel-horror',emoji:'👻',name:'Pixel Horror Game',cat:'coding',color:'#2c3e50',
+    goal:'Build and release a playable pixel horror game',
+    levels:['Beginner','Novice','Intermediate','Advanced','Released'],
+    guide:[
+      {h:'Engine Choice',p:'RPG Maker (easiest, pixel art built-in, tons of horror games made with it), Godot (free, more flexible, uses GDScript which is like Python), or GameMaker (middle ground). For pixel horror specifically, RPG Maker is the cheese choice.'},
+      {h:'What Makes Pixel Horror Work',p:'Atmosphere > jump scares. Limited visibility, unsettling music, environmental storytelling, slow build tension. Study: Yume Nikki, Ib, The Witch\'s House, Omori, Corpse Party.'},
+      {h:'Your Path',p:'Pick an engine → learn the basics → make a tiny 5-minute horror experience → expand from there. Don\'t try to make a big game first.'}
+    ],
+    cheese:['RPG Maker has built-in tile editors, event systems, and tons of free horror assets','Study and remix free RPG Maker horror templates','Focus on atmosphere (lighting, music, pacing) over complex mechanics','Your pixel art skills feed directly into this — make your own assets','Keep scope TINY for first game — one room, one puzzle, one scare, done'],
+    needs:[
+      {name:'Work on game',freq:'3x/week',decayDays:7},
+      {name:'Study horror game design',freq:'1x/week',decayDays:12},
+      {name:'Playtest a section',freq:'2x/month',decayDays:20}
+    ],
+    milestones:[
+      {text:'Choose engine and install it',level:0},
+      {text:'Complete engine tutorial',level:0},
+      {text:'Create a room with a character that walks around',level:0},
+      {text:'Add dialogue/text events',level:1},
+      {text:'Create a simple puzzle',level:1},
+      {text:'Add atmospheric lighting and music',level:1},
+      {text:'Build a 5-minute playable demo',level:2},
+      {text:'Add save/load system',level:2},
+      {text:'Create 30 minutes of content',level:3},
+      {text:'Get 3 people to playtest it',level:3},
+      {text:'Release on itch.io',level:4}
+    ],
+    steps:['Choose engine (RPG Maker recommended)','Install and open the engine','Do the beginner tutorial','Create a room/map','Place a player character','Make the character walk around','Add an NPC with dialogue','Create a door that goes to another room','Add background music','Create a dark/atmospheric room','Add a simple puzzle (find key, open door)','Create a scare moment','Build a 5-minute sequence','Add title screen','Playtest with a friend','Polish and add more content','Release on itch.io']
+  },
+  {
+    id:'raspberry',emoji:'🍓',name:'Raspberry Pi Projects',cat:'coding',color:'#c0392b',
+    goal:'Build fun hardware projects with Raspberry Pi',
+    levels:['Beginner','Novice','Intermediate','Advanced','Maker'],
+    guide:[
+      {h:'What is Raspberry Pi?',p:'A tiny, cheap ($35-75) computer. You plug in a monitor, keyboard, and mouse and it runs Linux. You can also connect sensors, LEDs, motors, and cameras to build physical projects.'},
+      {h:'What You Need',p:'A Raspberry Pi (4 or 5), a microSD card (32GB+), a power supply, a case (optional), and a monitor/keyboard to set it up. Total: ~$80-100 for a starter kit.'},
+      {h:'Fun Project Ideas',p:'Retro gaming console (RetroPie), smart mirror, home security camera, weather station, LED light controller, web server, Pi-hole (ad blocker for your whole network).'}
+    ],
+    cheese:['RetroPie turns a Pi into a retro gaming console in under an hour — instant gratification project','Pi-hole blocks ads on your whole home network — useful AND you learn networking','Use pre-made project kits from CanaKit or Vilros — they include everything','Raspberry Pi Imager (official tool) makes setting up the OS dead simple','Most Pi projects have step-by-step YouTube tutorials with exact commands to copy'],
+    needs:[
+      {name:'Tinker with Pi',freq:'2x/week',decayDays:10},
+      {name:'Complete a project step',freq:'1x/week',decayDays:14}
+    ],
+    milestones:[
+      {text:'Buy/acquire a Raspberry Pi kit',level:0},
+      {text:'Install Raspberry Pi OS on SD card',level:0},
+      {text:'Boot up and navigate the desktop',level:0},
+      {text:'Use the terminal for basic commands',level:1},
+      {text:'Complete a simple project (RetroPie or Pi-hole)',level:1},
+      {text:'Control an LED with Python + GPIO',level:2},
+      {text:'Build a sensor-based project',level:2},
+      {text:'Create a project that runs on boot',level:3},
+      {text:'Build a complete custom project',level:3},
+      {text:'Design and 3D print a custom case for a project',level:4}
+    ],
+    steps:['Research and buy a Pi starter kit','Download Raspberry Pi Imager','Flash Raspberry Pi OS to SD card','Boot up the Pi and configure WiFi','Open terminal and run sudo apt update','Install RetroPie OR Pi-hole (first project)','Learn basic Linux commands (ls, cd, sudo)','Write a Python script on the Pi','Learn about GPIO pins','Connect an LED to GPIO and control with Python','Try a sensor project (temperature, motion)','Build a complete project from a tutorial','Make a project that auto-starts on boot','Design a custom project idea','Build and document your custom project']
+  },
+  // GAMING/FANDOM
+  {
+    id:'f1',emoji:'🏎️',name:'F1 Fandom',cat:'gaming',color:'#e10600',
+    goal:'Become a knowledgeable, engaged F1 fan who can follow and discuss races',
+    levels:['Beginner','Novice','Intermediate','Hardcore','Expert'],
+    guide:[
+      {h:'F1 Basics',p:'Formula 1 is the highest class of single-seat car racing. 20 drivers across 10 teams race at ~20 tracks worldwide from March to December. Points are scored per race, champion has most points at end of season.'},
+      {h:'What to Know First',p:'Current teams: Red Bull, Ferrari, McLaren, Mercedes, Aston Martin, Alpine, Williams, Haas, RB (AlphaTauri), Sauber/Audi. Each team has 2 drivers. DRS = drag reduction system (overtaking aid). Qualifying on Saturday determines Sunday starting positions.'},
+      {h:'How to Watch & Follow',p:'Races are on ESPN (US), Sky Sports (UK). F1TV Pro ($10/mo) has every session + historical races. Follow r/formula1, The Race (YouTube), WTF1 for memes and fun content.'},
+      {h:'Understanding Strategy',p:'Tire compound strategy (soft/medium/hard), pit stop timing, weather changes, DRS zones, team orders, and undercuts vs overcuts. This is where F1 gets really interesting.'}
+    ],
+    cheese:['Drive to Survive (Netflix) — watch seasons 1-6 to catch up on drama and storylines fast','F1 YouTube channel has great explainer videos','The Race YouTube channel for in-depth but accessible analysis','Play the F1 video game to learn every track layout','Follow F1 Twitter/Reddit during races for real-time context'],
+    needs:[
+      {name:'Watch/read F1 content',freq:'3x/week',decayDays:5},
+      {name:'Watch a race weekend',freq:'every race (bi-weekly)',decayDays:18},
+      {name:'Study technical/strategy content',freq:'1x/week',decayDays:12}
+    ],
+    milestones:[
+      {text:'Watch Drive to Survive Season 1',level:0},
+      {text:'Know all 10 current teams',level:0},
+      {text:'Watch a full race weekend (FP, Quali, Race)',level:0},
+      {text:'Understand tire strategies and pit stops',level:1},
+      {text:'Know the current driver lineup',level:1},
+      {text:'Understand qualifying format',level:1},
+      {text:'Follow a full race with strategy understanding',level:2},
+      {text:'Know major historical races and drivers',level:2},
+      {text:'Explain DRS, ERS, and car components',level:3},
+      {text:'Predict race strategies before they happen',level:3},
+      {text:'Confidently discuss F1 with hardcore fans',level:4}
+    ],
+    steps:['Watch Drive to Survive Season 1','Learn the 10 team names and colors','Learn the current 20 drivers','Watch an F1 race highlight (YouTube)','Watch a full qualifying session','Watch a full race','Learn tire compounds (soft/med/hard)','Learn what DRS is and how it works','Learn about pit stop strategy','Watch The Race YouTube explainers','Read r/formula1 race discussion threads','Learn about car components (front wing, rear wing, floor)','Study a classic race (e.g., Brazil 2008, Abu Dhabi 2021)','Play the F1 video game','Follow an entire race weekend with strategy analysis']
+  },
+  {
+    id:'nascar',emoji:'🏁',name:'NASCAR Fandom',cat:'gaming',color:'#003DA5',
+    goal:'Become a knowledgeable NASCAR fan who can follow races and discuss strategy',
+    levels:['Beginner','Novice','Intermediate','Hardcore','Expert'],
+    guide:[
+      {h:'NASCAR Basics',p:'Stock car racing on mostly oval tracks. The Cup Series is the top tier. ~36 races per season (Feb-Nov). Stage racing: each race has 3 stages with points for leading at each stage break.'},
+      {h:'Playoff System',p:'Regular season (26 races) determines seeding, then a 10-race playoff with elimination rounds. Final 4 drivers race for the championship at the last race.'},
+      {h:'How to Watch',p:'Fox Sports, NBC Sports, USA Network depending on the race. NASCAR YouTube has great content. Download the NASCAR app for live timing and radio.'}
+    ],
+    cheese:['NASCAR YouTube has great beginner explainers','The NASCAR Heat or iRacing games teach you tracks and strategy','r/NASCAR is one of the best sports subreddits — super welcoming to new fans','Watch DoorBumper.Clear podcast for accessible commentary','Follow @NASCAR on Twitter for race-day context and highlights'],
+    needs:[
+      {name:'Watch/read NASCAR content',freq:'2x/week',decayDays:7},
+      {name:'Watch a race',freq:'weekly during season',decayDays:10},
+      {name:'Study strategy/history',freq:'1x/week',decayDays:14}
+    ],
+    milestones:[
+      {text:'Watch a full NASCAR race',level:0},
+      {text:'Know the top 10 current drivers',level:0},
+      {text:'Understand stage racing format',level:0},
+      {text:'Understand pit stop strategy (2 vs 4 tires, fuel)',level:1},
+      {text:'Know the major tracks (Daytona, Talladega, Bristol, etc.)',level:1},
+      {text:'Understand the playoff format',level:2},
+      {text:'Follow a race with strategic awareness',level:2},
+      {text:'Know NASCAR history (Earnhardt, Petty, Gordon era)',level:3},
+      {text:'Discuss draft strategy, tire management, setup changes',level:3},
+      {text:'Confidently discuss NASCAR like a longtime fan',level:4}
+    ],
+    steps:['Watch a NASCAR race on Fox/NBC','Learn the top drivers and their teams','Learn what stage racing means','Watch NASCAR YouTube beginner content','Learn about draft strategy on superspeedways','Learn pit stop strategy','Watch a short track race (Bristol, Martinsville)','Watch a superspeedway race (Daytona, Talladega)','Learn about the playoff format','Study NASCAR history basics','Follow r/NASCAR during race weekends','Watch in-car camera views','Try a NASCAR video game','Follow a full season casually']
+  },
+  {
+    id:'osrs',emoji:'⚔️',name:'Old School RuneScape',cat:'gaming',color:'#7b5e00',
+    goal:'Become a competent OSRS player who can tackle mid-to-late game content',
+    levels:['Beginner','Novice','Intermediate','Advanced','Maxed'],
+    guide:[
+      {h:'What is OSRS?',p:'Old School RuneScape is a classic MMORPG with a huge skill system (23 skills), quests, and an old-school charm. It\'s about the grind, the goals, and the community.'},
+      {h:'Starting Smart',p:'Do the free quests first (Waterfall Quest gives HUGE early XP). Train combat to make money. Get membership when you\'re ready. Set your own goals — there\'s no "right" way to play.'},
+      {h:'Essential Wikis',p:'The OSRS Wiki (oldschool.runescape.wiki) is your bible. It has optimal training guides for every skill, quest guides, money making guides, everything. Always have it open.'}
+    ],
+    cheese:['Waterfall Quest at level 3 gives you level 30 Attack and Strength instantly','OSRS Wiki has "optimal quest guides" that tell you the perfect order','Use Runelite client (free, official-approved) for huge quality of life improvements','Money making guides on the Wiki sorted by requirements — find your level','Quests give the best XP early game — grind less, quest more'],
+    needs:[
+      {name:'Play OSRS',freq:'3x/week',decayDays:7},
+      {name:'Work on a skill goal',freq:'2x/week',decayDays:8},
+      {name:'Complete a quest',freq:'1x/month',decayDays:35}
+    ],
+    milestones:[
+      {text:'Create account and complete Tutorial Island',level:0},
+      {text:'Install Runelite client',level:0},
+      {text:'Complete Waterfall Quest',level:0},
+      {text:'Get a combat stat to 40',level:1},
+      {text:'Complete 10 quests',level:1},
+      {text:'Earn first 1M gold',level:1},
+      {text:'Get a skill to 70',level:2},
+      {text:'Complete Dragon Slayer',level:2},
+      {text:'Access the Warriors Guild',level:2},
+      {text:'Complete Recipe for Disaster',level:3},
+      {text:'Complete a boss kill (Barrows, etc.)',level:3},
+      {text:'Max a skill to 99',level:4}
+    ],
+    steps:['Create an account on oldschool.runescape.com','Complete Tutorial Island','Download and install Runelite','Do Waterfall Quest (use Wiki guide)','Train combat basics','Complete early quests (Cook\'s Assistant, Restless Ghost)','Learn about the Grand Exchange','Make money with a beginner method','Train a gathering skill (Woodcutting, Mining, Fishing)','Get membership when ready','Do member quests for XP','Train Slayer for combat XP + money','Set a skill goal and work toward it','Try a minigame (Barbarian Assault, Pest Control)','Work toward Recipe for Disaster']
+  },
+  {
+    id:'chess',emoji:'♟️',name:'Chess',cat:'gaming',color:'#5b3fa0',
+    goal:'Become a competent chess player who wins regularly and understands strategy',
+    levels:['Beginner','Novice','Intermediate','Advanced','Expert'],
+    guide:[
+      {h:'Chess Learning Path',p:'Learn how pieces move → basic tactics → opening principles → endgame basics → practice, practice, practice. Tactics are the biggest bang for your buck early on.'},
+      {h:'Best Resources',p:'Chess.com or Lichess.org (both free), GothamChess YouTube (entertaining + educational), "How to Win at Chess" by Levy Rozman, ChessTempo for tactics training.'},
+      {h:'The Most Important Thing',p:'Do daily puzzles. Puzzles teach pattern recognition which is 80% of chess improvement. 10 puzzles a day will improve you faster than playing 10 games.'}
+    ],
+    cheese:['Puzzles > games for improvement — do 10 puzzles daily minimum','Learn just 3 openings (1 as white, 2 as black) and play them every time','GothamChess "Guess the Elo" series teaches you what NOT to do','The London System as white is easy to learn and effective at all levels','Endgames: learn King+Queen vs King and King+Rook vs King and you\'re ahead of most beginners'],
+    needs:[
+      {name:'Daily puzzles',freq:'daily',decayDays:3},
+      {name:'Play a game',freq:'3x/week',decayDays:5},
+      {name:'Study a lesson/video',freq:'1x/week',decayDays:12}
+    ],
+    milestones:[
+      {text:'Create Chess.com/Lichess account',level:0},
+      {text:'Know how all pieces move',level:0},
+      {text:'Complete 100 puzzles',level:0},
+      {text:'Learn an opening for white (London System)',level:1},
+      {text:'Learn basic tactics (forks, pins, skewers)',level:1},
+      {text:'Win 10 games',level:1},
+      {text:'Reach 800 rating',level:2},
+      {text:'Learn basic endgames',level:2},
+      {text:'Reach 1000 rating',level:2},
+      {text:'Analyze your games after playing',level:3},
+      {text:'Reach 1200 rating',level:3},
+      {text:'Reach 1500+ rating',level:4}
+    ],
+    steps:['Create account on Chess.com or Lichess','Learn how each piece moves','Play your first game against computer','Do 10 puzzles','Learn about check, checkmate, stalemate','Learn the value of pieces (pawn=1, knight/bishop=3, rook=5, queen=9)','Watch GothamChess "How to Win at Chess" video','Learn the London System opening','Play 10 online games','Do 10 puzzles daily for a week','Learn about forks and pins','Learn King+Queen checkmate','Analyze a lost game','Learn a defense for black (Caro-Kann or Sicilian)','Reach 100 puzzles completed']
+  },
+  // WRITING
+  {
+    id:'essays',emoji:'✍️',name:'Essay Writing',cat:'life',color:'#8e44ad',
+    goal:'Write clear, persuasive, well-structured essays on any topic',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'The Secret to Good Essays',p:'Good essays have ONE clear point (thesis), evidence supporting it, and a structure that guides the reader. That\'s it. Everything else is polish.'},
+      {h:'Basic Structure',p:'Introduction (hook + thesis) → Body paragraphs (each with one sub-point + evidence) → Conclusion (restate thesis + so what?). Every paragraph should connect to the next.'},
+      {h:'The Actual Writing Process',p:'1. Brainstorm (dump all ideas). 2. Outline (organize ideas). 3. Rough draft (write badly on purpose). 4. Revise (fix structure). 5. Edit (fix sentences). 6. Proofread (fix typos).'}
+    ],
+    cheese:['Outline BEFORE you write — essays fail because of structure, not grammar','Read your essay out loud — your ear catches what your eye misses','Start body paragraphs with a clear topic sentence — this alone fixes most essay problems','Use the "so what?" test on every paragraph — if you can\'t answer it, cut or rewrite it','Grammarly (free version) catches most grammar/style issues automatically'],
+    needs:[
+      {name:'Write something (journal, essay, blog)',freq:'2x/week',decayDays:8},
+      {name:'Read well-written essays/articles',freq:'2x/week',decayDays:8},
+      {name:'Practice editing/revising',freq:'1x/week',decayDays:12}
+    ],
+    milestones:[
+      {text:'Write a 3-paragraph essay on any topic',level:0},
+      {text:'Learn the 5-paragraph essay structure',level:0},
+      {text:'Write an essay with a clear thesis statement',level:1},
+      {text:'Write body paragraphs with topic sentences',level:1},
+      {text:'Revise an essay and improve it',level:2},
+      {text:'Write a persuasive essay with evidence',level:2},
+      {text:'Write a 1000+ word essay you\'re proud of',level:3},
+      {text:'Get feedback from someone and improve based on it',level:3},
+      {text:'Write essays confidently on demand',level:4}
+    ],
+    steps:['Read 3 well-written essays online','Learn the 5-paragraph structure','Pick a topic you care about','Write a thesis statement','Create an outline with 3 body points','Write a rough draft (no editing!)','Read it out loud and mark awkward parts','Revise for structure and flow','Edit for sentence clarity','Proofread for grammar/typos','Write a second essay from scratch','Get someone to read and give feedback','Revise based on feedback','Write a longer essay (1000+ words)','Practice writing under a time limit']
+  },
+  // CRAFT
+  {
+    id:'doll-custom',emoji:'🎎',name:'Doll Customization',cat:'craft',color:'#e91e8c',
+    goal:'Master doll customization techniques — repainting, rerooting, body mods',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'What is Doll Customization?',p:'Repainting faces (faceups), rerooting hair, body modifications, repainting bodies, and creating custom outfits. It ranges from simple repaint to full custom art dolls.'},
+      {h:'Starting with Faceups',p:'Get a cheap doll (Dollar Tree, thrift store). Remove factory paint with acetone-free nail polish remover. Seal with Mr. Super Clear (MSC). Paint with pastels and acrylic. Seal again. Done!'},
+      {h:'Essential Supplies',p:'Mr. Super Clear spray (sealant), soft pastels, acrylic paint + tiny brushes, acetone-free remover, masking tape for eyes. That\'s enough to start.'}
+    ],
+    cheese:['Dollar Tree dolls = unlimited cheap practice','Soft pastels before acrylic paint — pastels are more forgiving','Mr. Super Clear is non-negotiable — it makes everything stick and look professional','Watch Dollightful and Hextian on YouTube for techniques','Take progress photos of EVERY custom — you\'ll be amazed at improvement'],
+    needs:[
+      {name:'Practice a technique',freq:'2x/week',decayDays:8},
+      {name:'Watch tutorial/study reference',freq:'1x/week',decayDays:12},
+      {name:'Complete a custom doll',freq:'1x/month',decayDays:40}
+    ],
+    milestones:[
+      {text:'Remove factory paint from a cheap doll',level:0},
+      {text:'Apply first layer of MSC sealant',level:0},
+      {text:'Complete a basic faceup with pastels',level:0},
+      {text:'Paint detailed lips and eyebrows',level:1},
+      {text:'Learn to mask eyes with tape',level:1},
+      {text:'Complete a faceup with acrylic details',level:1},
+      {text:'Learn basic rerooting technique',level:2},
+      {text:'Complete a full custom (faceup + hair)',level:2},
+      {text:'Body blushing/painting',level:3},
+      {text:'Body modification (joint mods, sculpting)',level:3},
+      {text:'Create a museum-quality custom doll',level:4}
+    ],
+    steps:['Buy a cheap practice doll','Get acetone-free nail polish remover','Remove factory face paint','Buy Mr. Super Clear spray','Spray first sealant layer (well-ventilated area!)','Get soft pastels and tiny brushes','Practice blush application with pastels','Seal, then add eyebrow details','Paint lips with acrylic','Add eyelash details with fine brush','Seal the finished face','Watch rerooting tutorials','Try rerooting with nylon hair','Complete a full faceup + reroot doll','Start body blushing on a practice doll']
+  },
+  {
+    id:'doll-restore',emoji:'🧸',name:'Old Doll Restoration',cat:'craft',color:'#d35400',
+    goal:'Restore vintage and old dolls to beautiful condition',
+    levels:['Beginner','Novice','Intermediate','Advanced','Expert'],
+    guide:[
+      {h:'Restoration vs Customization',p:'Restoration preserves the original intent — you\'re fixing damage, cleaning, and bringing dolls back to life. Not changing them into something new.'},
+      {h:'Common Issues',p:'Yellowed plastic, tangled/matted hair, missing limbs, stains, musty smell, damaged paint, loose joints.'},
+      {h:'Cleaning Basics',p:'Dish soap + warm water for body. Fabric softener + warm water for hair (detangle with a comb). Benzoyl peroxide + sunlight for removing yellow (retro-bright). Baking soda paste for stains.'}
+    ],
+    cheese:['Fabric softener is magic for tangled doll hair — soak overnight','Benzoyl peroxide (acne cream) + sunlight removes yellowing like magic (retro-bright technique)','Dawn dish soap cleans 90% of doll grime','Boil-and-pop method for reattaching loose limbs','Before/after content of doll restoration does VERY well on YouTube and TikTok'],
+    needs:[
+      {name:'Work on a restoration',freq:'2x/week',decayDays:10},
+      {name:'Study restoration techniques',freq:'1x/week',decayDays:14}
+    ],
+    milestones:[
+      {text:'Clean and detangle a doll\'s hair successfully',level:0},
+      {text:'Remove stains from a doll body',level:0},
+      {text:'De-yellow a doll with retro-bright',level:1},
+      {text:'Reattach a loose/missing limb',level:1},
+      {text:'Full body restoration (clean, fix, style)',level:2},
+      {text:'Touch up damaged factory paint',level:2},
+      {text:'Restore a vintage doll to display quality',level:3},
+      {text:'Restore a valuable/collectible doll',level:3},
+      {text:'Restoration portfolio of 10+ dolls',level:4}
+    ],
+    steps:['Find a dirty/damaged doll to practice on','Wash body with warm water and dish soap','Soak hair in fabric softener + warm water','Gently detangle hair with wide-tooth comb','Try removing a stain with baking soda paste','Research retro-bright technique','Try retro-bright on a yellowed doll','Restring or reattach a loose joint','Learn about different doll materials','Restore a complete doll from start to finish','Document with before/after photos','Research vintage doll identification','Restore a more delicate/valuable doll','Build a portfolio of restorations']
+  },
+  {
+    id:'stuffed-restore',emoji:'🧷',name:'Stuffed Animal Restoration',cat:'craft',color:'#f39c12',
+    goal:'Restore old and damaged stuffed animals to cuddly condition',
+    levels:['Beginner','Novice','Intermediate','Advanced','Expert'],
+    guide:[
+      {h:'Stuffed Animal Restoration',p:'Cleaning, restuffing, patching holes, fixing seams, replacing eyes, and deodorizing. It\'s like surgery for stuffed friends.'},
+      {h:'Cleaning Methods',p:'Surface clean: damp cloth + mild soap. Deep clean: gentle cycle in a pillowcase in washing machine (for sturdy ones) or hand wash in sink. Air dry always.'},
+      {h:'Repairs',p:'Ladder stitch (invisible stitch) for seam repairs. Polyfil for restuffing. Safety eyes for replacements. Fabric patches for holes.'}
+    ],
+    cheese:['Ladder stitch = the one stitch you need to learn (invisible closing stitch)','Throw sturdy stuffed animals in the washer inside a pillowcase — mesh bag works too','Baking soda deodorizes stuffed animals without washing — put in bag overnight','Polyfil stuffing is cheap and goes a long way','Before/after stuffed animal restoration content is heartwarming and great for social media'],
+    needs:[
+      {name:'Practice restoration techniques',freq:'1x/week',decayDays:12},
+      {name:'Complete a restoration',freq:'1x/month',decayDays:40}
+    ],
+    milestones:[
+      {text:'Successfully deep-clean a stuffed animal',level:0},
+      {text:'Learn the ladder stitch',level:0},
+      {text:'Close a seam with invisible stitching',level:1},
+      {text:'Restuff a flat/deflated stuffed animal',level:1},
+      {text:'Replace a missing eye safely',level:2},
+      {text:'Patch a hole with matching fabric',level:2},
+      {text:'Complete restoration (clean, stuff, repair, deodorize)',level:3},
+      {text:'Restore a delicate/vintage piece',level:3},
+      {text:'Build a portfolio of restored pieces',level:4}
+    ],
+    steps:['Find a dirty stuffed animal to practice on','Surface clean with damp cloth and mild soap','Try washing a sturdy one in pillowcase in washer','Air dry completely','Learn the ladder stitch (YouTube tutorial)','Practice ladder stitch on scrap fabric','Open a seam, add stuffing, close with ladder stitch','Try deodorizing with baking soda method','Replace a missing eye with safety eye','Patch a hole with fabric and ladder stitch','Complete a full restoration','Document with before/after photos']
+  },
+  {
+    id:'sewing',emoji:'🧵',name:'Basic Sewing',cat:'craft',color:'#e74c3c',
+    goal:'Sew basic items and make simple repairs confidently',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'Why Basic Sewing?',p:'Fix hems, sew buttons, make simple items, alter clothes. It\'s a superpower life skill that saves money and lets you customize everything.'},
+      {h:'Hand Sewing First',p:'Learn 4 stitches: running stitch (basic), backstitch (strong), whip stitch (edges), and ladder/slip stitch (invisible). These cover 90% of hand sewing needs.'},
+      {h:'Machine Sewing',p:'A basic sewing machine ($100-150) opens up way more projects. Brother is the go-to beginner brand. You only need straight stitch and zigzag to start.'}
+    ],
+    cheese:['4 hand stitches cover 90% of everything: running, backstitch, whip, ladder','YouTube "how to sew a button" — takes 2 minutes, saves $15 at the tailor','Iron-on hem tape = hemming without sewing','Brother CS6000i is THE beginner sewing machine ($150-ish)','Follow patterns exactly first — creativity comes after you understand the rules'],
+    needs:[
+      {name:'Sew something (even practice)',freq:'2x/week',decayDays:8},
+      {name:'Learn a new technique',freq:'1x/week',decayDays:14}
+    ],
+    milestones:[
+      {text:'Thread a needle and tie a knot',level:0},
+      {text:'Sew a running stitch in a straight line',level:0},
+      {text:'Sew a button back on',level:0},
+      {text:'Learn backstitch',level:1},
+      {text:'Hem a pair of pants by hand',level:1},
+      {text:'Close a hole with ladder stitch',level:1},
+      {text:'Use a sewing machine (straight stitch)',level:2},
+      {text:'Sew a simple project (pillow, tote bag)',level:2},
+      {text:'Follow a pattern to make a garment',level:3},
+      {text:'Alter a piece of clothing successfully',level:3},
+      {text:'Create something from scratch without a pattern',level:4}
+    ],
+    steps:['Get a basic sewing kit (needles, thread, scissors, pins)','Practice threading a needle','Sew a running stitch on scrap fabric','Sew a backstitch','Sew a button on a shirt','Learn the whip stitch','Learn the ladder stitch','Hem something by hand','Try iron-on hem tape','If interested: get a beginner sewing machine','Practice straight stitch on machine','Sew a simple pillow','Follow a simple pattern','Sew a tote bag','Try altering a garment']
+  },
+  {
+    id:'tailoring',emoji:'👗',name:'Clothes Tailoring',cat:'craft',color:'#2c3e50',
+    goal:'Alter and tailor clothes to fit you perfectly',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'What is Tailoring?',p:'Making clothes fit YOUR body. Taking in waists, hemming pants, adjusting shoulders, tapering shirts. Thrift store finds + tailoring skills = designer-quality wardrobe on a budget.'},
+      {h:'Start Simple',p:'Hemming (shortening) is the easiest alteration. Then taking in (making tighter). Then adjusting shoulders. Each builds on the last.'},
+      {h:'You Need',p:'Measuring tape, pins, a seam ripper, matching thread, and eventually a sewing machine. Hand sewing works for small alterations.'}
+    ],
+    cheese:['Hemming tape (iron-on) lets you hem without sewing at all','A seam ripper is your best friend — take apart before rebuilding','Always pin and try on before sewing — "measure twice, cut once"','Watch "thrift flip" videos on YouTube — tons of real tailoring techniques','Taking in a waist = one of the most impactful alterations (instant better fit)'],
+    needs:[
+      {name:'Practice an alteration',freq:'1x/week',decayDays:12},
+      {name:'Study tailoring technique',freq:'1x/week',decayDays:14}
+    ],
+    milestones:[
+      {text:'Take accurate body measurements',level:0},
+      {text:'Hem a pair of pants',level:0},
+      {text:'Take in a waistband',level:1},
+      {text:'Taper a shirt at the sides',level:1},
+      {text:'Replace a zipper',level:2},
+      {text:'Adjust sleeve length',level:2},
+      {text:'Dart a blouse for better fit',level:3},
+      {text:'Complete a full thrift flip alteration',level:3},
+      {text:'Tailor a blazer/structured garment',level:4}
+    ],
+    steps:['Get a measuring tape and take your measurements','Write down your key measurements','Get a seam ripper','Practice removing seams from a thrift store garment','Pin a hem and sew it','Try taking in the sides of a loose shirt','Practice on cheap thrift store clothes','Hem pants to your length','Take in a waistband','Watch a thrift flip tutorial','Try a full thrift flip alteration','Learn about darts for shaping','Adjust sleeves on a shirt','Attempt a structured garment alteration']
+  },
+  {
+    id:'cooking',emoji:'🍳',name:'Cooking Fundamentals',cat:'life',color:'#e07b39',
+    goal:'Be a confident, competent home cook who can make delicious food consistently',
+    levels:['Beginner','Novice','Intermediate','Advanced','Master'],
+    guide:[
+      {h:'The Secret to Being a Good Cook',p:'It\'s not recipes — it\'s techniques and flavor principles. Learn to sauté, roast, and braise. Learn salt/acid/fat/heat. Then any recipe becomes easy.'},
+      {h:'The 5 Mother Techniques',p:'1. Sautéing (high heat, small pieces, quick). 2. Roasting (oven, dry heat, caramelization). 3. Braising (low and slow in liquid). 4. Boiling/blanching (pasta, vegetables). 5. Pan-searing (high heat, protein, crispy outside).'},
+      {h:'Flavor Fundamentals',p:'Salt enhances everything. Acid (lemon, vinegar) brightens. Fat (butter, oil) carries flavor. Heat (chili, pepper) adds dimension. Balance these four and everything tastes good.'},
+      {h:'T1D-Friendly Cooking',p:'Pair carbs with protein and fat to slow glucose spikes. Prep protein in bulk. Use cauliflower rice, zucchini noodles, and lettuce wraps as low-carb swaps when needed.'}
+    ],
+    cheese:['Salt your pasta water (it should taste like the sea) — instant better pasta','Let meat rest after cooking — 5 min makes it juicier','Mise en place (prep everything before cooking) prevents 90% of cooking disasters','A sharp knife is safer and faster than a dull one — buy a sharpener','Taste as you go — professionals taste 10+ times while cooking one dish'],
+    needs:[
+      {name:'Cook a meal',freq:'4x/week',decayDays:5},
+      {name:'Try a new recipe/technique',freq:'1x/week',decayDays:10},
+      {name:'Study cooking concept',freq:'1x/week',decayDays:14}
+    ],
+    milestones:[
+      {text:'Cook 3 meals in one week',level:0},
+      {text:'Learn to properly sauté vegetables',level:0},
+      {text:'Make a pasta dish from scratch',level:0},
+      {text:'Roast chicken or vegetables successfully',level:1},
+      {text:'Make a pan sauce',level:1},
+      {text:'Cook protein to correct doneness',level:1},
+      {text:'Make a dish without following a recipe',level:2},
+      {text:'Meal prep for a full week',level:2},
+      {text:'Cook a multi-course meal',level:3},
+      {text:'Confidently improvise in the kitchen',level:3},
+      {text:'Host and cook for friends without stress',level:4}
+    ],
+    steps:['Learn to boil pasta properly (salt the water!)','Sauté onions until golden','Scramble eggs (low heat, patience)','Make a basic stir fry','Roast vegetables (425°F, olive oil, salt)','Pan-sear chicken breast','Make a basic pan sauce','Learn knife skills (dice an onion)','Cook rice perfectly','Make a soup from scratch','Try braising (slow cooker counts)','Cook a protein to correct temp (use a thermometer)','Meal prep: cook 3 dishes on Sunday','Make a dish without a recipe','Cook a full meal for someone']
+  },
+  // LIFE SKILL
+  {
+    id:'driving',emoji:'🚗',name:'Driving (AR Permit & License)',cat:'life',color:'#003087',
+    goal:'Pass the Arkansas written test, get your permit, practice driving, and earn your license',
+    levels:['Pre-Permit','Permit Holder','Practice Driver','Test Ready','Licensed Driver'],
+    guide:[
+      {h:'The Full Path to Your License',p:'Step 1: Study for the written test. Step 2: Pass the written test and get your learner\'s permit. Step 3: Practice driving with a licensed adult for 6+ months. Step 4: Pass the road test. Step 5: Get your full license. This page covers ALL of it.'},
+      {h:'Arkansas Written Test — What to Know',p:'25 questions, you need 20 correct (80%) to pass. Questions come from the Arkansas Driver License Study Guide (the official handbook). Topics: road signs, right-of-way, speed limits, parking rules, DUI laws, and special situations. You can take it at any State Revenue Office.'},
+      {h:'What to Bring to the Revenue Office',p:'Birth certificate or passport, Social Security card, proof of Arkansas residency (2 documents — utility bill, bank statement, etc.), and if under 18: parent/guardian signature. Bring ALL of these or they\'ll turn you away.'},
+      {h:'The 5-Day Written Test Study Plan',p:'Day 1: Numbers & distances (speed limits, stopping distances, following distance). Day 2: Signs & signals (flashing signals, regulatory vs warning, pavement markings). Day 3: Right-of-way & special rules (school buses, emergency vehicles, intersections). Day 4: DUI laws, penalties, and Arkansas-specific rules. Day 5: Full review + take 2-3 practice tests.'},
+      {h:'The Numbers You MUST Memorize',p:'Speed limits: 30 mph city, 55 mph rural, 65-70 mph interstate. Following: 3-second rule minimum. School zone: 15-25 mph when lights flash. Blood alcohol: 0.08% adult, 0.02% under 21. Signal before turning: 100 feet. Parking from fire hydrant: 15 feet. Parking from crosswalk: 20 feet. Headlights required: sunset to sunrise and when wipers are on.'},
+      {h:'After the Permit — Practice Driving',p:'You MUST practice with a licensed adult 21+ in the passenger seat. Start in empty parking lots, then quiet neighborhoods, then bigger roads, then highway. Build up gradually. Practice in rain, at night, and on the highway before your road test.'},
+      {h:'The Road Test — What They Check',p:'Pre-drive vehicle check (lights, signals, horn). Backing up straight. Parking (parallel, angle, perpendicular). Lane changes with mirror checks. Turns (proper signaling, correct lane). Obeying all signs and signals. Smooth braking and acceleration. Checking mirrors regularly. Speed control. Confidence and calmness.'}
+    ],
+    cheese:['The official AR handbook is only ~80 pages — read it cover to cover once, it\'s faster than endless practice tests','Focus on NUMBERS — speed limits, distances, BAC levels. These are the most missed questions','Practice tests are free at driving-tests.org/arkansas','If you fail the written test, you can retake it the NEXT DAY','For the road test: practice the exact route near your testing location — Google Maps the Revenue Office and drive around it','The road test is only 15-20 minutes. They want to see you\'re SAFE, not perfect','Use YouTube \"Arkansas driving test\" videos to see real test routes','Parking lot practice is free and the #1 way to build confidence fast'],
+    needs:[
+      {name:'Study handbook/flash cards',freq:'daily',decayDays:3},
+      {name:'Take a practice test',freq:'3x/week',decayDays:5},
+      {name:'Practice driving (with adult)',freq:'3x/week',decayDays:5},
+      {name:'Practice parking',freq:'2x/week',decayDays:7},
+      {name:'Night/rain driving practice',freq:'1x/week',decayDays:14}
+    ],
+    milestones:[
+      {text:'Download and read the Arkansas Driver License Study Guide',level:0},
+      {text:'Memorize all speed limits and distances',level:0},
+      {text:'Learn all road sign shapes and colors',level:0},
+      {text:'Score 90%+ on 3 practice tests in a row',level:0},
+      {text:'Gather all documents (birth cert, SS card, residency proof)',level:0},
+      {text:'Pass the written test at the Revenue Office',level:1},
+      {text:'Get your learner\'s permit!',level:1},
+      {text:'First parking lot practice session',level:1},
+      {text:'Drive in a quiet neighborhood comfortably',level:2},
+      {text:'Make turns at intersections with traffic',level:2},
+      {text:'Drive on a main road (35-45 mph)',level:2},
+      {text:'Parallel park successfully 3 times in a row',level:2},
+      {text:'Drive on the highway (merge, lane change, exit)',level:2},
+      {text:'Drive at night comfortably',level:2},
+      {text:'Drive in rain comfortably',level:2},
+      {text:'Complete 60+ hours of practice driving',level:3},
+      {text:'Practice the route near the Revenue Office',level:3},
+      {text:'Do a full mock road test with your adult driver',level:3},
+      {text:'Pass the road test!',level:4},
+      {text:'Get your full Arkansas driver\'s license!',level:4}
+    ],
+    steps:[
+      'Download the Arkansas Driver License Study Guide (PDF from dfa.arkansas.gov)',
+      'Read chapters 1-3: Signs, signals, and road markings',
+      'Make flashcards for ALL speed limits and distances',
+      'Read chapters 4-6: Right-of-way, intersections, turning',
+      'Read chapters 7-9: Parking, highway driving, special situations',
+      'Read chapters 10-12: DUI laws, penalties, emergencies',
+      'Take your first full practice test (driving-tests.org/arkansas)',
+      'Review every question you got wrong — write down WHY',
+      'Study the Numbers Cheat Sheet until you can recite it',
+      'Take 3 more practice tests — aim for 90%+',
+      'Study tricky topics: school bus rules, funeral processions, roundabouts',
+      'Gather your documents: birth cert, SS card, 2 residency proofs',
+      'Go to the Revenue Office — take the written test',
+      'GET YOUR PERMIT!',
+      'First practice: parking lot — starting, stopping, turning in a big empty lot',
+      'Practice: steering control, smooth braking, using mirrors',
+      'Practice: neighborhood streets — stop signs, speed control, right turns',
+      'Practice: left turns at intersections',
+      'Practice: lane changes with mirror + signal + head check',
+      'Practice: parking — pull-in, back-in, parallel',
+      'Practice: main roads with traffic (35-45 mph)',
+      'Practice: highway — merging, lane changing at speed, exiting',
+      'Practice: night driving (at least 3 sessions)',
+      'Practice: rain driving (when opportunity comes)',
+      'Practice: the area around your Revenue Office',
+      'Do a full mock road test with your practice driver',
+      'Schedule your road test',
+      'Pass the road test',
+      'GET YOUR LICENSE!'
+    ]
+  }
+];
+
+// ========================= STORAGE =========================
+function ls(k,d){try{const r=localStorage.getItem(k);return r?JSON.parse(r):d}catch{return d}}
+function ss(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+function todayStr(){return new Date().toISOString().split('T')[0]}
+
+// ========================= STATE =========================
+// Per-pillar state stored in localStorage
+function getState(id){
+  return ls('wg_learn_'+id,{
+    milestones:{},  // {index: true} for completed
+    steps:{},       // {index: true} for completed
+    needLogs:{},    // {needIndex: lastLogDate}
+    level:0,        // current level index
+    notes:'',
+    customMilestones:[]
+  });
+}
+function saveState(id,state){ss('wg_learn_'+id,state)}
+
+// ========================= DECAY CALC =========================
+function calcNeedPct(need, lastLog){
+  if(!lastLog) return 0;
+  const now = new Date();
+  const last = new Date(lastLog);
+  const daysSince = Math.max(0,(now - last) / 86400000);
+  const pct = Math.max(0, 100 - (daysSince / need.decayDays * 100));
+  return Math.round(pct);
+}
+
+function getNeedColor(pct){
+  if(pct >= 70) return 'var(--green)';
+  if(pct >= 40) return 'var(--yellow)';
+  return 'var(--ch)';
+}
+
+function getNeedStatus(pct){
+  if(pct >= 70) return {text:'Good',bg:'var(--green-light)',color:'var(--green)'};
+  if(pct >= 40) return {text:'Decaying',bg:'var(--yellow-light)',color:'#7a5400'};
+  return {text:'Critical!',bg:'var(--chp)',color:'var(--ch)'};
+}
+
+// ========================= LEVEL CALC =========================
+function calcLevel(pillar, state){
+  const ms = pillar.milestones;
+  let levelCounts = pillar.levels.map(()=>({total:0,done:0}));
+  ms.forEach((m,i)=>{
+    levelCounts[m.level].total++;
+    if(state.milestones[i]) levelCounts[m.level].done++;
+  });
+  // Level is the highest level where all milestones are complete
+  let level = 0;
+  for(let i=0;i<levelCounts.length;i++){
+    if(levelCounts[i].total>0 && levelCounts[i].done>=levelCounts[i].total) level=i+1;
+    else break;
+  }
+  return Math.min(level, pillar.levels.length-1);
+}
+
+function overallProgress(pillar, state){
+  const total = pillar.milestones.length;
+  const done = Object.keys(state.milestones).filter(k=>state.milestones[k]).length;
+  return total>0 ? Math.round(done/total*100) : 0;
+}
+
+// ========================= RENDER OVERVIEW =========================
+function renderOverview(){
+  let totalPillars=PILLARS.length, activePillars=0, criticalNeeds=0, totalMilestones=0, doneMilestones=0;
+  
+  PILLARS.forEach(p=>{
+    const state=getState(p.id);
+    const hasDone=Object.keys(state.milestones).some(k=>state.milestones[k]) || Object.keys(state.steps).some(k=>state.steps[k]) || Object.keys(state.needLogs).length>0;
+    if(hasDone) activePillars++;
+    totalMilestones+=p.milestones.length;
+    doneMilestones+=Object.keys(state.milestones).filter(k=>state.milestones[k]).length;
+    p.needs.forEach((n,ni)=>{
+      const pct=calcNeedPct(n,state.needLogs[ni]);
+      if(pct<40) criticalNeeds++;
+    });
+  });
+
+  document.getElementById('overview-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Learning Pillars</div><div class="stat-val">${totalPillars}</div><div class="stat-sub">${activePillars} active</div></div>
+    <div class="stat-card"><div class="stat-label">Milestones</div><div class="stat-val">${doneMilestones}/${totalMilestones}</div><div class="stat-sub">${totalMilestones>0?Math.round(doneMilestones/totalMilestones*100):0}% complete</div></div>
+    <div class="stat-card"><div class="stat-label">Needs Attention</div><div class="stat-val">${criticalNeeds}</div><div class="stat-sub">${criticalNeeds===0?'All good! ✨':'needs are decaying'}</div></div>
+    <div class="stat-card"><div class="stat-label">Categories</div><div class="stat-val">7</div><div class="stat-sub">creative · language · code · more</div></div>
+  `;
+
+  // Decay alerts
+  const alerts=[];
+  PILLARS.forEach(p=>{
+    const state=getState(p.id);
+    p.needs.forEach((n,ni)=>{
+      const pct=calcNeedPct(n,state.needLogs[ni]);
+      if(pct<20){
+        alerts.push({pillar:p.name,emoji:p.emoji,need:n.name,pct});
+      }
+    });
+  });
+  const alertDiv=document.getElementById('decay-alerts');
+  if(alerts.length>0){
+    alertDiv.innerHTML=`<div class="alert-bar warning">⚠️ <span class="alert-count">${alerts.length}</span> needs are critical: ${alerts.slice(0,3).map(a=>`${a.emoji} ${a.pillar} — ${a.need}`).join(' · ')}${alerts.length>3?' + '+(alerts.length-3)+' more':''}</div>`;
+  } else {
+    alertDiv.innerHTML='';
+  }
+}
+
+// ========================= RENDER PILLAR GRID =========================
+let currentFilter='all';
+function filterCat(cat){
+  currentFilter=cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().includes(cat==='all'?'all':cat)));
+  renderPillarGrid();
+}
+
+function renderPillarGrid(){
+  const grid=document.getElementById('pillar-grid');
+  grid.innerHTML='';
+  const filtered=currentFilter==='all'?PILLARS:PILLARS.filter(p=>p.cat===currentFilter);
+  
+  filtered.forEach(p=>{
+    const state=getState(p.id);
+    const level=calcLevel(p,state);
+    const progress=overallProgress(p,state);
+    const levelName=p.levels[level]||p.levels[0];
+    
+    // Calc needs
+    let worstNeed=100;
+    let needsHtml='';
+    p.needs.forEach((n,ni)=>{
+      const pct=calcNeedPct(n,state.needLogs[ni]);
+      if(pct<worstNeed)worstNeed=pct;
+      needsHtml+=`<div class="pw-need-pip"><div class="pw-need-fill" style="width:${pct}%;background:${getNeedColor(pct)};border-radius:3px"></div></div>`;
+    });
+    
+    const hasAlert=worstNeed<30;
+    const levelColors={Beginner:'var(--muted)',Novice:'var(--blue)',Intermediate:'var(--purple)',Advanced:'var(--orange)',Master:'var(--gold)',Comfortable:'var(--green)','Power User':'var(--teal)',Hardcore:'var(--orange)',Expert:'var(--gold)',Conversational:'var(--green)',Fluent:'var(--gold)',Published:'var(--gold)',Released:'var(--gold)',Maker:'var(--gold)',Maxed:'var(--gold)'};
+    const lc=levelColors[levelName]||'var(--muted)';
+    
+    const widget=document.createElement('div');
+    widget.className='pillar-widget';
+    widget.style.cssText=`--pc:${p.color}`;
+    widget.onclick=()=>openPillar(p.id);
+    widget.innerHTML=`
+      ${hasAlert?'<div class="pw-alert"></div>':''}
+      <div class="pw-top">
+        <div class="pw-emoji">${p.emoji}</div>
+        <div style="flex:1">
+          <div class="pw-name">${p.name}</div>
+          <span class="pw-level" style="background:${lc}18;color:${lc};border:1px solid ${lc}44">${levelName}</span>
+        </div>
+      </div>
+      <div class="pw-needs">${needsHtml}</div>
+      <div class="pw-meta">
+        <span>${progress}% mastered</span>
+        <span>${Object.keys(state.milestones).filter(k=>state.milestones[k]).length}/${p.milestones.length} milestones</span>
+      </div>
+    `;
+    grid.appendChild(widget);
+  });
+}
+
+// ========================= PILLAR DETAIL PAGE =========================
+function openPillar(id){
+  document.getElementById('hub-main').style.display='none';
+  // Remove previous active
+  document.querySelectorAll('.pillar-page').forEach(p=>p.classList.remove('active'));
+  let page=document.getElementById('pp-'+id);
+  if(!page){
+    page=buildPillarPage(id);
+    document.getElementById('pillar-pages').appendChild(page);
+  }
+  refreshPillarPage(id);
+  page.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function closePillar(){
+  document.querySelectorAll('.pillar-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('hub-main').style.display='';
+  renderOverview();
+  renderPillarGrid();
+  window.scrollTo(0,0);
+}
+
+function buildPillarPage(id){
+  const p=PILLARS.find(x=>x.id===id);
+  const state=getState(id);
+  
+  const page=document.createElement('div');
+  page.className='pillar-page';
+  page.id='pp-'+id;
+  
+  page.innerHTML=`
+    <!-- HERO -->
+    <div class="pp-hero" style="--pc:${p.color}">
+      <button class="pp-back" onclick="closePillar()">← Back to Hub</button>
+      <div class="pp-hero-inner">
+        <span class="pp-hero-emoji">${p.emoji}</span>
+        <h2>${p.name}</h2>
+        <div class="pp-hero-sub">${p.goal}</div>
+        <div class="pp-hero-level" id="pp-level-${id}"></div>
+      </div>
+    </div>
+    
+    <div class="hub">
+      <!-- LEVEL PROGRESS -->
+      <div class="card" style="--pc:${p.color}">
+        <div class="ct"><div class="ci">📊</div>Skill Level</div>
+        <div class="level-track" id="pp-levels-${id}"></div>
+        <div class="level-labels" id="pp-level-labels-${id}"></div>
+      </div>
+      
+      <!-- TABS -->
+      <div class="pp-tabs" id="pp-tabs-${id}">
+        <button class="pp-tab active" onclick="showPPTab('${id}','needs')">🎮 Needs</button>
+        <button class="pp-tab" onclick="showPPTab('${id}','guide')">📖 Guide</button>
+        <button class="pp-tab" onclick="showPPTab('${id}','steps')">✅ Steps</button>
+        <button class="pp-tab" onclick="showPPTab('${id}','milestones')">🏆 Milestones</button>
+        <button class="pp-tab" onclick="showPPTab('${id}','cheese')">🧀 Cheese It</button>
+        <button class="pp-tab" onclick="showPPTab('${id}','notes')">📝 Notes</button>
+      </div>
+      
+      <!-- NEEDS TAB -->
+      <div class="pp-tab-content active" id="pptab-${id}-needs">
+        <div class="card" style="--pc:${p.color}">
+          <div class="ct"><div class="ci">🎮</div>Maintenance Needs<span style="font-size:9px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;margin-left:8px">Keep these bars green!</span></div>
+          <div id="pp-needs-${id}"></div>
+        </div>
+      </div>
+      
+      <!-- GUIDE TAB -->
+      <div class="pp-tab-content" id="pptab-${id}-guide">
+        <div class="card" style="--pc:${p.color}">
+          <div class="ct"><div class="ci">📖</div>Learning Guide</div>
+          <div id="pp-guide-${id}">
+            ${p.guide.map(g=>`<div class="guide-section"><div class="guide-h">${g.h}</div><div class="guide-p">${g.p}</div></div>`).join('')}
+          </div>
+        </div>
+      </div>
+      
+      <!-- STEPS TAB -->
+      <div class="pp-tab-content" id="pptab-${id}-steps">
+        <div class="card" style="--pc:${p.color}">
+          <div class="ct"><div class="ci">✅</div>Step-by-Step Path<span class="ct-right" style="font-size:9px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400" id="pp-steps-count-${id}"></span></div>
+          <div id="pp-steps-${id}"></div>
+        </div>
+      </div>
+      
+      <!-- MILESTONES TAB -->
+      <div class="pp-tab-content" id="pptab-${id}-milestones">
+        <div class="card" style="--pc:${p.color}">
+          <div class="ct"><div class="ci">🏆</div>Milestones<span class="ct-right" style="font-size:9px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400" id="pp-ms-count-${id}"></span></div>
+          <div id="pp-milestones-${id}"></div>
+        </div>
+      </div>
+      
+      <!-- CHEESE TAB -->
+      <div class="pp-tab-content" id="pptab-${id}-cheese">
+        <div class="card" style="--pc:${p.color}">
+          <div class="ct"><div class="ci">🧀</div>Cheese It — Shortcuts & Hacks</div>
+          ${p.cheese.map(c=>`<div class="guide-cheese"><span style="font-size:14px;flex-shrink:0">🧀</span><span style="line-height:1.5">${c}</span></div>`).join('')}
+        </div>
+      </div>
+      
+      <!-- NOTES TAB -->
+      <div class="pp-tab-content" id="pptab-${id}-notes">
+        <div class="card" style="--pc:${p.color}">
+          <div class="ct"><div class="ci">📝</div>My Notes</div>
+          <textarea class="inp inp-full" id="pp-notes-${id}" placeholder="Your thoughts, discoveries, resources..." style="height:150px;resize:vertical">${state.notes||''}</textarea>
+          <div style="margin-top:.5rem"><button class="btn btn-red" onclick="saveNotes('${id}')">Save Notes</button><span id="pp-notes-saved-${id}" style="font-size:10px;margin-left:8px"></span></div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  return page;
+}
+
+window.showPPTab=function(id,tab){
+  document.querySelectorAll(`#pp-${id} .pp-tab`).forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll(`#pp-${id} .pp-tab-content`).forEach(c=>c.classList.remove('active'));
+  document.getElementById(`pptab-${id}-${tab}`).classList.add('active');
+  // Find the tab button
+  document.querySelectorAll(`#pp-tabs-${id} .pp-tab`).forEach(t=>{
+    if(t.textContent.toLowerCase().includes(tab.substring(0,4))) t.classList.add('active');
+  });
+};
+
+function refreshPillarPage(id){
+  const p=PILLARS.find(x=>x.id===id);
+  const state=getState(id);
+  const level=calcLevel(p,state);
+  const levelName=p.levels[level]||p.levels[0];
+  
+  // Level badge
+  document.getElementById('pp-level-'+id).innerHTML=`⭐ ${levelName}`;
+  
+  // Level segments
+  const levelsDiv=document.getElementById('pp-levels-'+id);
+  const labelsDiv=document.getElementById('pp-level-labels-'+id);
+  levelsDiv.innerHTML='';
+  labelsDiv.innerHTML='';
+  p.levels.forEach((lv,li)=>{
+    const msForLevel=p.milestones.filter(m=>m.level===li);
+    const doneForLevel=msForLevel.filter((m,mi)=>{
+      const realIdx=p.milestones.indexOf(m);
+      return state.milestones[realIdx];
+    }).length;
+    const pct=msForLevel.length>0?Math.round(doneForLevel/msForLevel.length*100):0;
+    const filled=li<level?100:li===level?pct:0;
+    levelsDiv.innerHTML+=`<div class="level-seg"><div class="level-seg-fill" style="width:${filled}%;background:${p.color}"></div></div>`;
+    labelsDiv.innerHTML+=`<span style="${li<=level?'color:'+p.color+';font-weight:700':''}">${lv}</span>`;
+  });
+  
+  // Needs
+  const needsDiv=document.getElementById('pp-needs-'+id);
+  needsDiv.innerHTML='';
+  p.needs.forEach((n,ni)=>{
+    const pct=calcNeedPct(n,state.needLogs[ni]);
+    const status=getNeedStatus(pct);
+    const color=getNeedColor(pct);
+    const lastLog=state.needLogs[ni];
+    const lastStr=lastLog?timeAgo(new Date(lastLog)):'never';
+    
+    needsDiv.innerHTML+=`
+      <div class="need-bar">
+        <div class="need-header">
+          <div class="need-name">${n.name} <span style="font-size:9px;color:var(--muted);font-weight:400">(${n.freq})</span></div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="need-status" style="background:${status.bg};color:${status.color}">${status.text}</span>
+            <button class="need-log-btn" onclick="logNeed('${id}',${ni})">✓ Log it</button>
+          </div>
+        </div>
+        <div class="need-track"><div class="need-fill ${pct<20?'critical':''}" style="width:${pct}%;background:${color}"></div></div>
+        <div class="need-meta"><span>Last: ${lastStr}</span><span>Decays in ${n.decayDays} days of inactivity</span></div>
+      </div>
+    `;
+  });
+  
+  // Steps
+  const stepsDiv=document.getElementById('pp-steps-'+id);
+  stepsDiv.innerHTML='';
+  const doneSteps=Object.keys(state.steps).filter(k=>state.steps[k]).length;
+  document.getElementById('pp-steps-count-'+id).textContent=`${doneSteps}/${p.steps.length} done`;
+  p.steps.forEach((step,si)=>{
+    const done=state.steps[si];
+    stepsDiv.innerHTML+=`
+      <div class="check-item" onclick="toggleStep('${id}',${si})">
+        <div class="check-box ${done?'done':''}">${done?'✓':''}</div>
+        <span class="check-text ${done?'done-text':''}">${si+1}. ${step}</span>
+      </div>
+    `;
+  });
+  
+  // Milestones
+  const msDiv=document.getElementById('pp-milestones-'+id);
+  msDiv.innerHTML='';
+  const doneMs=Object.keys(state.milestones).filter(k=>state.milestones[k]).length;
+  document.getElementById('pp-ms-count-'+id).textContent=`${doneMs}/${p.milestones.length} achieved`;
+  p.milestones.forEach((m,mi)=>{
+    const done=state.milestones[mi];
+    const levelName=p.levels[m.level];
+    const levelColors=['var(--muted)','var(--blue)','var(--purple)','var(--orange)','var(--gold)'];
+    const lc=levelColors[m.level]||'var(--muted)';
+    msDiv.innerHTML+=`
+      <div class="milestone ${done?'done':''}" onclick="toggleMilestone('${id}',${mi})">
+        <div class="ms-check ${done?'done':''}">${done?'✓':''}</div>
+        <span class="ms-text ${done?'done-text':''}">${m.text}</span>
+        <span class="ms-level" style="background:${lc}18;color:${lc};border:1px solid ${lc}44">${levelName}</span>
+      </div>
+    `;
+  });
+}
+
+// ========================= ACTIONS =========================
+window.logNeed=function(id,ni){
+  const state=getState(id);
+  state.needLogs[ni]=new Date().toISOString();
+  saveState(id,state);
+  refreshPillarPage(id);
+};
+
+window.toggleStep=function(id,si){
+  const state=getState(id);
+  state.steps[si]=!state.steps[si];
+  saveState(id,state);
+  refreshPillarPage(id);
+};
+
+window.toggleMilestone=function(id,mi){
+  const state=getState(id);
+  state.milestones[mi]=!state.milestones[mi];
+  saveState(id,state);
+  refreshPillarPage(id);
+};
+
+window.saveNotes=function(id){
+  const state=getState(id);
+  state.notes=document.getElementById('pp-notes-'+id).value;
+  saveState(id,state);
+  const saved=document.getElementById('pp-notes-saved-'+id);
+  saved.style.color='var(--green)';saved.textContent='Saved ✨';
+  setTimeout(()=>saved.textContent='',2000);
+};
+
+// ========================= HELPERS =========================
+function timeAgo(date){
+  const now=new Date();
+  const diff=now-date;
+  const mins=Math.floor(diff/60000);
+  const hours=Math.floor(diff/3600000);
+  const days=Math.floor(diff/86400000);
+  if(mins<60)return mins+'m ago';
+  if(hours<24)return hours+'h ago';
+  if(days===1)return 'yesterday';
+  if(days<7)return days+'d ago';
+  if(days<30)return Math.floor(days/7)+'w ago';
+  return Math.floor(days/30)+'mo ago';
+}
+
+function goBack(){
+  window.location.href='index.html';
+}
+
+// ========================= INIT =========================
+renderOverview();
+renderPillarGrid();
+</script>
+</body>
+</html>

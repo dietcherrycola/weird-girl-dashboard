@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ Hobbies — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.hobby-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.2rem}
+@media(max-width:900px){.hobby-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.hobby-grid{grid-template-columns:1fr}}
+.hobby-card{background:white;border:2px solid var(--cbr);border-radius:18px;padding:1.2rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;text-decoration:none;color:inherit;display:block}
+.hobby-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);border-color:var(--hc)}
+.hobby-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--hc),color-mix(in srgb,var(--hc) 60%,white))}
+.hc-emoji{font-size:2.5rem;margin-bottom:.5rem;display:block}
+.hc-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:var(--hc);margin-bottom:4px}
+.hc-desc{font-size:10px;color:var(--tmut);line-height:1.5;margin-bottom:.6rem}
+.hc-tags{display:flex;gap:4px;flex-wrap:wrap}
+.hc-tag{font-size:8px;padding:2px 7px;border-radius:20px;font-weight:600;background:color-mix(in srgb,var(--hc) 10%,white);color:var(--hc);border:1px solid color-mix(in srgb,var(--hc) 25%,transparent)}
+.hub-quote{background:linear-gradient(135deg,#fce4f3,#fff9fc,#fef9e7);border:1px solid var(--cbr);border-radius:16px;padding:1.2rem;text-align:center;margin-bottom:1.5rem}
+.hub-quote-text{font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--chd);line-height:1.6}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+
+<div style="text-align:center;margin-bottom:1.2rem">
+  <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--chd)">✨ Hobbies</div>
+  <div style="font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:4px">All the things that make you, you</div>
+</div>
+
+<div class="hub-quote">
+  <div class="hub-quote-text">A woman with hobbies is a woman with depth. Keep collecting interests like wildflowers.</div>
+</div>
+
+<div class="hobby-grid">
+
+  <a href="hobbies-gaming.html" class="hobby-card" style="--hc:#5b3fa0">
+    <span class="hc-emoji">🎮</span>
+    <div class="hc-name">Gaming</div>
+    <div class="hc-desc">Your library, your worlds, your saves. Every game tracked with its own dedicated page and save file system.</div>
+    <div class="hc-tags"><span class="hc-tag">Skyrim</span><span class="hc-tag">Sims 4</span><span class="hc-tag">Stardew</span><span class="hc-tag">Minecraft</span><span class="hc-tag">Hytale</span><span class="hc-tag">Echos</span><span class="hc-tag">DBD</span><span class="hc-tag">ACNH</span></div>
+  </a>
+
+  <a href="hobbies-online.html" class="hobby-card" style="--hc:#1a7abd">
+    <span class="hc-emoji">🌐</span>
+    <div class="hc-name">Online Games</div>
+    <div class="hc-desc">Nostalgia, community, and chaos. Daily checklists, skill trackers, friends lists, minigame logs, and more.</div>
+    <div class="hc-tags"><span class="hc-tag">VMK</span><span class="hc-tag">Build-a-Bearville</span><span class="hc-tag">Roblox</span><span class="hc-tag">Toontown</span><span class="hc-tag">Club Penguin</span><span class="hc-tag">OSRS</span></div>
+  </a>
+
+  <a href="hobbies-crafts.html" class="hobby-card" style="--hc:#d4648a">
+    <span class="hc-emoji">🧵</span>
+    <div class="hc-name">Crafts</div>
+    <div class="hc-desc">Make beautiful things with your hands. Projects with step-by-step guides, supplies, and an archive of what you loved and what you didn't.</div>
+    <div class="hc-tags"><span class="hc-tag">Projects</span><span class="hc-tag">How-To Guides</span><span class="hc-tag">Supplies</span><span class="hc-tag">Loved It</span><span class="hc-tag">Archived</span></div>
+  </a>
+
+  <a href="hobbies-cooking.html" class="hobby-card" style="--hc:#e07b39">
+    <span class="hc-emoji">🍳</span>
+    <div class="hc-name">Cooking</div>
+    <div class="hc-desc">Shan's recipe book, things to try, and an honest archive of what worked and what didn't.</div>
+    <div class="hc-tags"><span class="hc-tag">Recipe Book</span><span class="hc-tag">To Try</span><span class="hc-tag">Archived</span><span class="hc-tag">Tips</span></div>
+  </a>
+
+  <a href="hobbies-gardening.html" class="hobby-card" style="--hc:#3a8c4e">
+    <span class="hc-emoji">🌱</span>
+    <div class="hc-name">Gardening</div>
+    <div class="hc-desc">Everything a beginner gardener needs. Plant tracker, seasonal guides, and a garden journal.</div>
+    <div class="hc-tags"><span class="hc-tag">Beginner Guide</span><span class="hc-tag">Plant Tracker</span><span class="hc-tag">Journal</span><span class="hc-tag">Seasonal</span></div>
+  </a>
+
+  <a href="hobbies-beauty.html" class="hobby-card" style="--hc:#c0396b">
+    <span class="hc-emoji">💄</span>
+    <div class="hc-name">Beauty & Style</div>
+    <div class="hc-desc">Makeup looks, hairstyle inspo, outfit logs, and nail designs. Your personal beauty archive.</div>
+    <div class="hc-tags"><span class="hc-tag">Makeup</span><span class="hc-tag">Hair</span><span class="hc-tag">Outfits</span><span class="hc-tag">Nails</span></div>
+  </a>
+
+  <a href="hobbies-media.html" class="hobby-card" style="--hc:#2c3e50">
+    <span class="hc-emoji">🎬</span>
+    <div class="hc-name">Movies & Books</div>
+    <div class="hc-desc">Watchlists, reading lists, favorites, comfort picks, horror shelf, and film journals for your YouTube channel.</div>
+    <div class="hc-tags"><span class="hc-tag">Watchlist</span><span class="hc-tag">Favorites</span><span class="hc-tag">Horror</span><span class="hc-tag">TBR</span><span class="hc-tag">Film Journal</span></div>
+  </a>
+
+</div>
+</div>
+<script type="module" src="shared.js"></script>
+<script type="module">renderNav('hobbies');</script>
+</body>
+</html>

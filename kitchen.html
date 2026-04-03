@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍳 Kitchen — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+<div class="page-title">🍳 Kitchen & Nutrition</div>
+
+<div class="g2" style="margin-top:1rem">
+  <div class="card"><div class="ct"><div class="ci">🍽</div>Recipe inspo</div>
+    <div class="row"><input class="inp" id="recipe-inp" placeholder="Recipe name..." style="flex:1"><button class="btn btn-red" id="recipe-add-btn">Add</button></div>
+    <div id="recipe-list" style="margin-top:.5rem;max-height:250px;overflow-y:auto"></div>
+  </div>
+  <div class="card"><div class="ct"><div class="ci">📋</div>This week's meals</div><div id="meal-plan"></div></div>
+</div>
+
+<div class="card"><div class="ct"><div class="ci">🩸</div>T1D-friendly nutrition tips</div><div id="nutrition-tips"></div></div>
+
+<div class="card green-acc">
+  <div class="ct"><div class="ci">🛒</div>Grocery list</div>
+  <div class="row"><input class="inp" id="grocery-inp" placeholder="Add item..." style="flex:1"><button class="btn btn-green" id="grocery-add">Add</button></div>
+  <div id="grocery-list" style="margin-top:.5rem"></div>
+</div>
+
+</div>
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('kitchen');
+
+let recipes=ls(K.recipes,['Marry me chicken','Birria tacos','Lemon pasta (5 ingredients)','Cottage cheese pasta bake','Viral smash burgers','Sheet pan fajitas']);
+function renderRecipes(){const list=document.getElementById('recipe-list');if(!list)return;list.innerHTML='';const emojis=['🍗','🌮','🍝','🏺','🍔','🥬','🍪'];recipes.forEach((r,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:7px;padding:7px 10px;background:white;border:1px solid var(--cbr);border-radius:9px;font-size:11px;margin-bottom:5px;cursor:pointer;transition:all .15s';e.innerHTML=`<span style="font-size:20px">${emojis[i%emojis.length]}</span><span style="font-size:11px;font-weight:500;flex:1">${r}</span><button class="btn-sm primary" onclick="addDone('Cooked: ${r} 🍳');this.textContent='✓ Done!';this.disabled=true" style="font-size:9px;padding:2px 6px">cooked it!</button><button class="btn-del" onclick="delRecipe(${i})">×</button>`;list.appendChild(e)})}
+window.delRecipe=i=>{recipes.splice(i,1);ss(K.recipes,recipes);renderRecipes()};
+document.getElementById('recipe-add-btn').onclick=()=>{const inp=document.getElementById('recipe-inp'),v=inp.value.trim();if(!v)return;recipes.push(v);ss(K.recipes,recipes);inp.value='';renderRecipes()};
+document.getElementById('recipe-inp').onkeydown=e=>{if(e.key==='Enter')document.getElementById('recipe-add-btn').click()};
+renderRecipes();
+
+['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].forEach(d=>{const e=document.createElement('div');e.style.cssText='display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--cbr);align-items:center;font-size:11px';e.innerHTML=`<span style="font-weight:500;color:var(--ch);min-width:75px;flex-shrink:0">${d}</span><input class="inp" placeholder="What are you eating?" style="flex:1;font-size:11px;padding:4px 7px" />`;document.getElementById('meal-plan').appendChild(e)});
+
+[{tip:'Pair carbs with protein + fat',why:'Slows glucose spike — huge for T1D'},{tip:'Eat within 30min of waking',why:'Stabilize morning cortisol + blood sugar'},{tip:'Prep 2-3 base proteins Sunday',why:'Reduces decision fatigue on low-energy days'},{tip:'Hydrate before meals',why:'Easy win for PCOS inflammation + skin'},{tip:'Fiber-rich foods are your friend',why:'Slower digestion = more predictable glucose'}].forEach(t=>{const e=document.createElement('div');e.style.cssText='display:flex;gap:9px;padding:7px 9px;background:white;border:1px solid var(--cbr);border-radius:9px;margin-bottom:5px;font-size:11px';e.innerHTML=`<span style="font-size:15px;flex-shrink:0">✨</span><div><div style="font-weight:500">${t.tip}</div><div style="font-size:9px;color:var(--tmut);margin-top:1px">${t.why}</div></div>`;document.getElementById('nutrition-tips').appendChild(e)});
+
+let groceries=ls('wg_groceries',[]);
+function renderGroceries(){const l=document.getElementById('grocery-list');l.innerHTML='';if(!groceries.length){l.innerHTML='<div class="empty-s">Grocery list is empty!</div>';return}groceries.forEach((g,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 8px;border-bottom:1px solid var(--cbr);font-size:11px';e.innerHTML=`<div class="check-box${g.done?' done':''}" onclick="toggleGro(${i})">${g.done?'✓':''}</div><span style="flex:1;${g.done?'text-decoration:line-through;opacity:.5':''}">${g.text}</span><button class="btn-del" onclick="delGro(${i})">×</button>`;l.appendChild(e)})}
+window.toggleGro=i=>{groceries[i].done=!groceries[i].done;ss('wg_groceries',groceries);renderGroceries()};
+window.delGro=i=>{groceries.splice(i,1);ss('wg_groceries',groceries);renderGroceries()};
+document.getElementById('grocery-add').onclick=()=>{const v=document.getElementById('grocery-inp').value.trim();if(!v)return;groceries.push({text:v,done:false});ss('wg_groceries',groceries);document.getElementById('grocery-inp').value='';renderGroceries()};
+document.getElementById('grocery-inp').onkeydown=e=>{if(e.key==='Enter')document.getElementById('grocery-add').click()};
+renderGroceries();
+</script>
+</body>
+</html>

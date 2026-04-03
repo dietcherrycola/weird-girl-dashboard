@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌙 Vibes — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+<div class="page-title">🌙 Vibes & Feelings</div>
+<div class="page-sub">Check in with yourself · track moods · find your reset</div>
+
+<div class="g2" style="margin-top:1rem">
+  <!-- MOOD CHECK IN -->
+  <div class="card">
+    <div class="ct"><div class="ci">🌙</div>How are you feeling?</div>
+    <div class="mood-grid" id="mood-grid"></div>
+    <textarea class="inp inp-full" id="vibe-notes" placeholder="What's on your mind?" style="height:50px;margin-top:.7rem;resize:none"></textarea>
+    <div style="display:flex;gap:6px;margin-top:.5rem;align-items:center">
+      <button class="btn btn-red" style="flex:1" id="vibe-log-btn">Log vibes</button>
+      <span id="vibe-saved" style="font-size:10px;min-height:14px"></span>
+    </div>
+  </div>
+
+  <!-- VIBE LOG -->
+  <div class="card">
+    <div class="ct"><div class="ci">📋</div>Vibe history</div>
+    <div id="vibe-log" style="max-height:350px;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- LETTERS TO SELF -->
+<div class="card">
+  <div class="ct"><div class="ci">💌</div>Letters to yourself</div>
+  <textarea class="inp inp-full" id="letter-inp" placeholder="Write yourself a kind note, a reminder, or something you need to hear..." style="height:70px;resize:none"></textarea>
+  <button class="btn btn-red" style="margin-top:.5rem" id="letter-save-btn">Save letter</button>
+  <div id="letters-list" style="margin-top:.7rem;max-height:250px;overflow-y:auto"></div>
+</div>
+
+<!-- RESET TOOLKIT -->
+<div class="card blue-acc">
+  <div class="ct"><div class="ci">🔄</div>Reset toolkit<span style="font-size:9px;color:var(--tmut);font-family:'DM Sans',sans-serif;font-weight:400;margin-left:6px">When you need a reset, pick one:</span></div>
+  <div id="reset-toolkit"></div>
+</div>
+
+<!-- GRATITUDE / AFFIRMATIONS -->
+<div class="g2">
+  <div class="card green-acc">
+    <div class="ct"><div class="ci">🙏</div>Gratitude</div>
+    <div class="row"><input class="inp" id="grat-inp" placeholder="Something you're grateful for..." style="flex:1"><button class="btn btn-green" id="grat-add-btn">Add</button></div>
+    <div id="grat-list" style="max-height:200px;overflow-y:auto"></div>
+  </div>
+  <div class="card purple-acc">
+    <div class="ct"><div class="ci">✨</div>Affirmations</div>
+    <div id="affirmations-list"></div>
+  </div>
+</div>
+
+</div>
+
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('vibes');
+
+// ============ MOODS ============
+const moods=[{e:'✨',l:'Inspired'},{e:'😌',l:'Calm'},{e:'💪',l:'Motivated'},{e:'🥰',l:'Loved'},{e:'😤',l:'Frustrated'},{e:'😔',l:'Sad'},{e:'😰',l:'Anxious'},{e:'😴',l:'Exhausted'},{e:'🔥',l:'Confident'},{e:'🌧',l:'Low'},{e:'🤩',l:'Excited'},{e:'🌫️',l:'Dissociated'}];
+let selectedMoods=new Set();
+function renderMoodGrid(){
+  const grid=document.getElementById('mood-grid');if(!grid)return;grid.innerHTML='';
+  moods.forEach(m=>{const e=document.createElement('div');e.className='mood-tile'+(selectedMoods.has(m.l)?' selected':'');e.innerHTML=`<div class="mood-emoji">${m.e}</div><div class="mood-label">${m.l}</div>`;e.onclick=()=>{if(selectedMoods.has(m.l))selectedMoods.delete(m.l);else selectedMoods.add(m.l);renderMoodGrid()};grid.appendChild(e)});
+}
+renderMoodGrid();
+
+let vibes=ls(K.vibes,[]);
+document.getElementById('vibe-log-btn').onclick=()=>{
+  if(!selectedMoods.size)return;
+  vibes.unshift({moods:[...selectedMoods],notes:document.getElementById('vibe-notes').value.trim(),date:new Date().toLocaleDateString(),ts:Date.now()});
+  ss(K.vibes,vibes);selectedMoods.clear();document.getElementById('vibe-notes').value='';
+  renderMoodGrid();renderVibeLog();
+  const s=document.getElementById('vibe-saved');s.style.color='var(--green)';s.textContent='Logged ✨';setTimeout(()=>s.textContent='',2000);
+};
+
+function renderVibeLog(){
+  const list=document.getElementById('vibe-log');if(!list)return;list.innerHTML='';
+  if(!vibes.length){list.innerHTML='<div class="empty-s">No vibes logged yet — how are you feeling?</div>';return}
+  vibes.slice(0,30).forEach((v,i)=>{
+    const e=document.createElement('div');e.className='vibe-entry';
+    e.innerHTML=`<span style="font-size:9px;color:var(--tmut);min-width:65px">${v.date}</span><span style="font-size:13px">${v.moods.slice(0,4).map(m=>moods.find(x=>x.l===m)?.e||'').join('')}</span><span style="font-size:10px;color:var(--tmut);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic">${v.notes||v.moods.join(', ')}</span><button class="btn-del" onclick="delVibe(${i})">×</button>`;
+    list.appendChild(e);
+  });
+}
+window.delVibe=i=>{vibes.splice(i,1);ss(K.vibes,vibes);renderVibeLog()};
+renderVibeLog();
+
+// ============ LETTERS ============
+let letters=ls(K.letters,[{text:"Dear Shan — you restarted your ACNH island for the second time and you're rebuilding your life at the same time. That's not a coincidence. You're someone who knows how to start over, and that's a superpower.",date:'March 2026'}]);
+function renderLetters(){
+  const list=document.getElementById('letters-list');if(!list)return;list.innerHTML='';
+  letters.forEach((l,i)=>{
+    const e=document.createElement('div');
+    e.style.cssText='padding:9px 11px;background:white;border:1px solid var(--cbr);border-radius:10px;font-size:11px;line-height:1.6;position:relative;margin-bottom:5px';
+    e.innerHTML=`<div style="font-size:9px;color:var(--tmut);margin-bottom:4px;font-style:italic">${l.date}</div>${l.text}<button class="btn-del" style="position:absolute;top:6px;right:6px" onclick="delLetter(${i})">×</button>`;
+    list.appendChild(e);
+  });
+}
+window.delLetter=i=>{letters.splice(i,1);ss(K.letters,letters);renderLetters()};
+document.getElementById('letter-save-btn').onclick=()=>{const inp=document.getElementById('letter-inp'),v=inp.value.trim();if(!v)return;letters.unshift({text:v,date:new Date().toLocaleDateString()});ss(K.letters,letters);inp.value='';renderLetters()};
+renderLetters();
+
+// ============ RESET TOOLKIT ============
+[
+  {e:'🎵',tip:'Put on a song you love and do nothing else for 3 minutes'},
+  {e:'🚶',tip:'Walk to the end of the street and back — no phone'},
+  {e:'💧',tip:'Drink a full glass of water right now'},
+  {e:'📝',tip:'Brain dump everything in your head, no filter'},
+  {e:'🎮',tip:'Permission to play Animal Crossing for 20 min guilt-free'},
+  {e:'📞',tip:'Text one person you love something kind'},
+  {e:'🛁',tip:'Shower or change your clothes — physical reset works'},
+  {e:'🍒',tip:'Make something easy to eat — stabilize blood sugar'},
+  {e:'🌸',tip:'One thing you can control right now — do just that'},
+  {e:'🧊',tip:'Splash cold water on your face — instant nervous system reset'},
+  {e:'📺',tip:'Watch one comfort video/episode — no guilt'},
+  {e:'🤲',tip:'Put your hand on your chest. Feel your heartbeat. You\'re here.'}
+].forEach(t=>{
+  const e=document.createElement('div');
+  e.style.cssText='display:flex;gap:8px;padding:7px 10px;background:white;border:1px solid var(--cbr);border-radius:9px;margin-bottom:5px;font-size:11px;align-items:flex-start;cursor:pointer;transition:all .15s';
+  e.innerHTML=`<span style="font-size:15px;flex-shrink:0">${t.e}</span><span style="line-height:1.5">${t.tip}</span>`;
+  e.onmouseover=()=>e.style.background='var(--chp)';
+  e.onmouseout=()=>e.style.background='white';
+  e.onclick=()=>{addDone('Reset: '+t.tip.substring(0,40)+'...');e.style.background='var(--green-light)';e.style.borderColor='var(--green)';setTimeout(()=>{e.style.background='white';e.style.borderColor='var(--cbr)'},1500)};
+  document.getElementById('reset-toolkit').appendChild(e);
+});
+
+// ============ GRATITUDE ============
+let gratitude=ls('wg_gratitude',[]);
+function renderGrat(){
+  const list=document.getElementById('grat-list');list.innerHTML='';
+  if(!gratitude.length){list.innerHTML='<div class="empty-s">What are you grateful for today?</div>';return}
+  gratitude.slice(0,20).forEach((g,i)=>{
+    const e=document.createElement('div');
+    e.style.cssText='display:flex;gap:6px;padding:5px 8px;background:var(--green-light);border:1px solid rgba(39,174,96,.15);border-radius:7px;font-size:11px;margin-bottom:3px;align-items:center';
+    e.innerHTML=`<span>🙏</span><span style="flex:1">${g.text}</span><span style="font-size:9px;color:var(--tmut)">${g.date||''}</span><button class="btn-del" onclick="delGrat(${i})">×</button>`;
+    list.appendChild(e);
+  });
+}
+window.delGrat=i=>{gratitude.splice(i,1);ss('wg_gratitude',gratitude);renderGrat()};
+document.getElementById('grat-add-btn').onclick=()=>{const inp=document.getElementById('grat-inp'),v=inp.value.trim();if(!v)return;gratitude.unshift({text:v,date:new Date().toLocaleDateString()});ss('wg_gratitude',gratitude);inp.value='';renderGrat()};
+document.getElementById('grat-inp').onkeydown=e=>{if(e.key==='Enter')document.getElementById('grat-add-btn').click()};
+renderGrat();
+
+// ============ AFFIRMATIONS ============
+[
+  'You are allowed to take up space.',
+  'Your conditions don\'t define your potential.',
+  'Being tired doesn\'t mean you\'re failing.',
+  'Starting over is a skill, and you\'re damn good at it.',
+  'You don\'t have to earn rest.',
+  'Progress isn\'t always visible, but it\'s always happening.',
+  'Your creative voice matters.',
+  'You are building something real, one small step at a time.',
+  'It\'s okay to not have it all figured out.',
+  'You deserve the life you\'re building.'
+].forEach(a=>{
+  const e=document.createElement('div');
+  e.style.cssText='padding:7px 10px;background:var(--purple-light);border:1px solid rgba(142,68,173,.15);border-radius:8px;margin-bottom:5px;font-size:11px;line-height:1.5;color:var(--purple);font-style:italic';
+  e.textContent='✨ '+a;
+  document.getElementById('affirmations-list').appendChild(e);
+});
+</script>
+</body>
+</html>

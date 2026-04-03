@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Done Stats — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tmut);text-decoration:none;margin-bottom:1rem;padding:5px 12px;border-radius:20px;border:1px solid var(--cbr);background:white;transition:all .15s}.back-link:hover{background:var(--chp);color:var(--ch)}
+.ds-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+@media(max-width:700px){.ds-stats{grid-template-columns:1fr 1fr}}
+.ds-stat{background:white;border:1px solid var(--cbr);border-radius:12px;padding:10px 12px;text-align:center}
+.ds-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--chd)}
+.ds-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--tmut);margin-top:2px}
+.kw-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;margin:2px;background:var(--chp);color:var(--chd);border:1px solid var(--cbr)}
+.kw-count{font-size:9px;opacity:.7}
+.day-block{background:white;border:1px solid var(--cbr);border-radius:12px;padding:.7rem .9rem;margin-bottom:.6rem}
+.day-date{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--chd);margin-bottom:.4rem;display:flex;justify-content:space-between;align-items:center}
+.day-count{font-size:10px;color:var(--tmut);font-family:'DM Sans',sans-serif;font-weight:400}
+.day-item{font-size:10px;padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);color:var(--tm);display:flex;gap:6px;align-items:flex-start}
+.day-item:last-child{border-bottom:none}
+.day-item-time{font-size:9px;color:var(--tmut);min-width:50px;flex-shrink:0}
+.month-bar{display:flex;align-items:flex-end;gap:2px;height:120px;padding:0 4px}
+.month-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.month-col-bar{width:100%;border-radius:3px 3px 0 0;background:var(--ch);min-height:2px;transition:height .3s}
+.month-col-lbl{font-size:8px;color:var(--tmut)}
+.month-col-val{font-size:8px;color:var(--chd);font-weight:700}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+<a href="index.html" class="back-link">← Back to Dashboard</a>
+<div style="text-align:center;margin-bottom:1.2rem">
+  <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--chd)">Done Stats</div>
+  <div style="font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Everything you've accomplished</div>
+</div>
+
+<div class="ds-stats" id="ds-stats"></div>
+
+<div class="card"><div class="ct"><div class="ci">+</div>This month daily completions</div>
+<div class="month-bar" id="ds-month-graph"></div></div>
+
+<div class="card"><div class="ct"><div class="ci">*</div>What you work on most</div>
+<div id="ds-keywords" style="display:flex;flex-wrap:wrap;gap:2px"></div></div>
+
+<div class="card"><div class="ct"><div class="ci">-</div>Day-by-day archive</div>
+<div id="ds-archive"></div>
+<div style="text-align:center;margin-top:.5rem"><button class="btn btn-outline" id="ds-load-more" style="font-size:10px">Load more</button></div></div>
+
+</div>
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('home');
+const items=ls(K.done,[]);const now=new Date();const todayStr=todayKey();
+
+function renderStats(){
+  const c=document.getElementById('ds-stats');
+  const today=items.filter(i=>i.ts&&new Date(i.ts).toISOString().split('T')[0]===todayStr).length;
+  const weekAgo=Date.now()-7*86400000;
+  const thisWeek=items.filter(i=>i.ts&&i.ts>weekAgo).length;
+  const monthStart=new Date(now.getFullYear(),now.getMonth(),1).getTime();
+  const thisMonth=items.filter(i=>i.ts&&i.ts>monthStart).length;
+  const dayCounts={};items.forEach(i=>{if(!i.ts)return;const d=new Date(i.ts).toISOString().split('T')[0];dayCounts[d]=(dayCounts[d]||0)+1});
+  const bestDay=Object.entries(dayCounts).sort((a,b)=>b[1]-a[1])[0];
+  c.innerHTML=`<div class="ds-stat"><div class="ds-val" style="color:var(--green)">${today}</div><div class="ds-lbl">Done today</div></div><div class="ds-stat"><div class="ds-val">${thisWeek}</div><div class="ds-lbl">This week</div></div><div class="ds-stat"><div class="ds-val">${thisMonth}</div><div class="ds-lbl">This month</div></div><div class="ds-stat"><div class="ds-val" style="font-size:16px">${bestDay?bestDay[1]:0}</div><div class="ds-lbl">Best day record</div></div>`;
+}
+
+function renderMonthGraph(){
+  const c=document.getElementById('ds-month-graph');const year=now.getFullYear(),month=now.getMonth();
+  const dim=new Date(year,month+1,0).getDate();const dayData={};
+  items.forEach(i=>{if(!i.ts)return;const d=new Date(i.ts);if(d.getFullYear()===year&&d.getMonth()===month){dayData[d.getDate()]=(dayData[d.getDate()]||0)+1}});
+  const max=Math.max(1,...Object.values(dayData));c.innerHTML='';
+  for(let d=1;d<=dim;d++){const count=dayData[d]||0;const height=count>0?Math.max(8,(count/max)*100):2;const isToday=d===now.getDate();
+    const col=document.createElement('div');col.className='month-col';
+    col.innerHTML=`<div class="month-col-val">${count||''}</div><div class="month-col-bar" style="height:${height}px;${isToday?'background:var(--green)':count?'':'background:rgba(0,0,0,.06)'}"></div><div class="month-col-lbl" style="${isToday?'font-weight:700;color:var(--chd)':''}">${d}</div>`;
+    c.appendChild(col);}
+}
+
+function renderKeywords(){
+  const c=document.getElementById('ds-keywords');
+  const stops=new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','my','i','it','is','was','this','that','from','got','did','do','done','just','up','out','some','all','been','have','has','had','its','about','new','old','back','into','over','take','made','get','set','put','ran','let','went','off','try','add']);
+  const wc={};items.forEach(i=>{if(!i.text)return;i.text.toLowerCase().replace(/[^a-z0-9\s]/g,'').split(/\s+/).forEach(w=>{if(w.length<3||stops.has(w))return;wc[w]=(wc[w]||0)+1})});
+  const sorted=Object.entries(wc).filter(([w,c])=>c>=2).sort((a,b)=>b[1]-a[1]).slice(0,25);
+  if(!sorted.length){c.innerHTML='<div style="font-size:10px;color:var(--tmut);font-style:italic">Keep logging to see patterns!</div>';return}
+  sorted.forEach(([word,count])=>{const t=document.createElement('span');t.className='kw-tag';t.innerHTML=`${word} <span class="kw-count">${count}x</span>`;c.appendChild(t)});
+}
+
+let archiveDays=14;
+function renderArchive(){
+  const c=document.getElementById('ds-archive');c.innerHTML='';
+  const groups={};items.forEach(i=>{if(!i.ts)return;const d=new Date(i.ts).toISOString().split('T')[0];if(!groups[d])groups[d]=[];groups[d].push(i)});
+  const dates=Object.keys(groups).sort((a,b)=>b.localeCompare(a)).slice(0,archiveDays);
+  if(!dates.length){c.innerHTML='<div class="empty-s">No items yet!</div>';return}
+  dates.forEach(date=>{const dayItems=groups[date];const block=document.createElement('div');block.className='day-block';
+    const isToday=date===todayStr;const d=new Date(date+'T12:00');
+    const label=isToday?'Today':d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    block.innerHTML=`<div class="day-date">${label}<span class="day-count">${dayItems.length} done</span></div>`;
+    dayItems.forEach(item=>{const time=item.ts?new Date(item.ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):'';
+      const e=document.createElement('div');e.className='day-item';e.innerHTML=`<span class="day-item-time">${time}</span><span>${item.text}</span>`;block.appendChild(e)});
+    c.appendChild(block)});
+  document.getElementById('ds-load-more').style.display=dates.length<Object.keys(groups).length?'':'none';
+}
+document.getElementById('ds-load-more').onclick=()=>{archiveDays+=14;renderArchive()};
+
+renderStats();renderMonthGraph();renderKeywords();renderArchive();
+</script>
+</body>
+</html>

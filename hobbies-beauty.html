@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>💄 Beauty & Style — Weird Girl Dashboard</title><link rel="stylesheet" href="shared.css">
+<style>.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tmut);text-decoration:none;margin-bottom:1rem;padding:5px 12px;border-radius:20px;border:1px solid var(--cbr);background:white;transition:all .15s}.back-link:hover{background:var(--chp);color:var(--ch)}
+.bt-nav{display:flex;gap:5px;flex-wrap:wrap;padding:.5rem .6rem;background:white;border:1px solid var(--cbr);border-radius:14px;margin-bottom:1rem}
+.bt-btn{font-size:10px;padding:5px 12px;border-radius:20px;border:2px solid rgba(0,0,0,.08);background:white;cursor:pointer;color:var(--tmut);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}.bt-btn:hover{border-color:var(--bc);color:var(--bc)}.bt-btn.active{background:var(--bc);color:white;border-color:var(--bc)}
+.bt-page{display:none;animation:fadeIn .25s ease}.bt-page.active{display:block}
+.bt-hero{display:flex;align-items:center;gap:1rem;background:linear-gradient(135deg,var(--bcl),white);border:1px solid rgba(0,0,0,.08);border-radius:18px;padding:1rem 1.2rem;margin-bottom:1rem}
+.bt-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:var(--bc)}
+.bt-sub{font-size:.75rem;color:var(--tmut);margin-top:2px}
+.bc{background:white;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:.9rem 1rem;margin-bottom:.9rem;position:relative;overflow:hidden}
+.bc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--bc),color-mix(in srgb,var(--bc) 60%,white))}
+.bc-t{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--bc);margin-bottom:.6rem;display:flex;align-items:center;gap:6px}
+.bc-g2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}@media(max-width:700px){.bc-g2{grid-template-columns:1fr}}
+.bi{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid rgba(0,0,0,.07);border-radius:7px;font-size:11px;margin-bottom:3px;background:white}
+.bi-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:11px;padding:0 3px}.bi-del:hover{color:var(--ch)}
+.bi-add{display:flex;gap:5px;align-items:center;margin-top:.4rem;flex-wrap:wrap}
+.bi-inp{border:1.5px solid rgba(0,0,0,.1);border-radius:7px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;outline:none;flex:1}.bi-inp:focus{border-color:var(--bc)}
+.bi-btn{font-size:11px;padding:4px 10px;border-radius:7px;border:1.5px solid rgba(0,0,0,.1);background:white;cursor:pointer;color:var(--bc);font-family:'DM Sans',sans-serif;font-weight:600}.bi-btn:hover{background:var(--bcl);border-color:var(--bc)}
+textarea.bi-area{width:100%;border:1.5px solid rgba(0,0,0,.1);border-radius:8px;padding:6px 9px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;resize:none;height:80px;outline:none}.bi-area:focus{border-color:var(--bc)}
+.bi-save{width:100%;margin-top:.4rem;padding:5px;border:none;border-radius:8px;background:var(--bc);color:white;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer}
+</style></head><body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+<a href="hobbies.html" class="back-link">← Back to Hobbies</a>
+<div style="text-align:center;margin-bottom:1.2rem"><div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#c0396b">💄 Beauty & Style</div><div style="font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Your personal style archive</div></div>
+
+<div class="bt-nav">
+  <button class="bt-btn active" onclick="goBT('makeup')" style="--bc:#c0396b">💄 Makeup</button>
+  <button class="bt-btn" onclick="goBT('hair')" style="--bc:#9b59b6">💇 Hair</button>
+  <button class="bt-btn" onclick="goBT('outfits')" style="--bc:#e67e22">👗 Outfits</button>
+  <button class="bt-btn" onclick="goBT('nails')" style="--bc:#e91e8c">💅 Nails</button>
+</div>
+
+<!-- MAKEUP --><div class="bt-page active" id="bt-makeup" style="--bc:#c0396b;--bcl:#fce4f0"><div class="bt-hero"><span style="font-size:2rem">💄</span><div><div class="bt-title">Makeup</div><div class="bt-sub">Looks, products, and inspo</div></div></div>
+<div class="bc-g2"><div class="bc"><div class="bc-t">👁️ Eye looks</div><div id="mk-eyes"></div><div class="bi-add"><input class="bi-inp" id="mk-e-inp" placeholder="Look description..."><button class="bi-btn" onclick="bA('mk-eyes','mk-e-inp','wh_makeup_eyes')">+</button></div></div>
+<div class="bc"><div class="bc-t">👄 Lip looks</div><div id="mk-lips"></div><div class="bi-add"><input class="bi-inp" id="mk-l-inp" placeholder="Color/product..."><button class="bi-btn" onclick="bA('mk-lips','mk-l-inp','wh_makeup_lips')">+</button></div></div></div>
+<div class="bc-g2"><div class="bc"><div class="bc-t">✨ Face looks</div><div id="mk-face"></div><div class="bi-add"><input class="bi-inp" id="mk-f-inp" placeholder="Foundation, blush combo..."><button class="bi-btn" onclick="bA('mk-face','mk-f-inp','wh_makeup_face')">+</button></div></div>
+<div class="bc"><div class="bc-t">📸 Looks log</div><div id="mk-log"></div><div class="bi-add"><input class="bi-inp" id="mk-lg-inp" placeholder="Full look description + date..."><button class="bi-btn" onclick="bA('mk-log','mk-lg-inp','wh_makeup_looks')">+</button></div></div></div>
+<div class="bc-g2"><div class="bc"><div class="bc-t">💡 Inspo</div><div id="mk-inspo"></div><div class="bi-add"><input class="bi-inp" id="mk-i-inp" placeholder="Inspo source/description..."><button class="bi-btn" onclick="bA('mk-inspo','mk-i-inp','wh_makeup_inspo')">+</button></div></div>
+<div class="bc"><div class="bc-t">📺 Tutorials to try</div><div id="mk-tuts"></div><div class="bi-add"><input class="bi-inp" id="mk-t-inp" placeholder="Tutorial link/name..."><button class="bi-btn" onclick="bA('mk-tuts','mk-t-inp','wh_makeup_tutorials')">+</button></div></div></div>
+<div class="bc"><div class="bc-t">🛒 Wishlist</div><div id="mk-wish"></div><div class="bi-add"><input class="bi-inp" id="mk-w-inp" placeholder="Product I want..."><button class="bi-btn" onclick="bA('mk-wish','mk-w-inp','wh_makeup_wishlist')">+</button></div></div></div>
+
+<!-- HAIR --><div class="bt-page" id="bt-hair" style="--bc:#9b59b6;--bcl:#f3eafb"><div class="bt-hero"><span style="font-size:2rem">💇</span><div><div class="bt-title">Hair</div><div class="bt-sub">Styles, products, and hair journey</div></div></div>
+<div class="bc-g2"><div class="bc"><div class="bc-t">🧴 Products</div><div id="hr-products"></div><div class="bi-add"><input class="bi-inp" id="hr-p-inp" placeholder="Product..."><button class="bi-btn" onclick="bA('hr-products','hr-p-inp','wh_hair_products')">+</button></div></div>
+<div class="bc"><div class="bc-t">📸 Styles log</div><div id="hr-log"></div><div class="bi-add"><input class="bi-inp" id="hr-l-inp" placeholder="Style + date..."><button class="bi-btn" onclick="bA('hr-log','hr-l-inp','wh_hair_styles')">+</button></div></div></div>
+<div class="bc-g2"><div class="bc"><div class="bc-t">💡 Inspo</div><div id="hr-inspo"></div><div class="bi-add"><input class="bi-inp" id="hr-i-inp" placeholder="Inspo..."><button class="bi-btn" onclick="bA('hr-inspo','hr-i-inp','wh_hair_inspo')">+</button></div></div>
+<div class="bc"><div class="bc-t">📺 Tutorials</div><div id="hr-tuts"></div><div class="bi-add"><input class="bi-inp" id="hr-t-inp" placeholder="Tutorial..."><button class="bi-btn" onclick="bA('hr-tuts','hr-t-inp','wh_hair_tutorials')">+</button></div></div></div>
+<div class="bc"><div class="bc-t">🛒 Wishlist</div><div id="hr-wish"></div><div class="bi-add"><input class="bi-inp" id="hr-w-inp" placeholder="Want..."><button class="bi-btn" onclick="bA('hr-wish','hr-w-inp','wh_hair_wishlist')">+</button></div></div>
+<div class="bc"><div class="bc-t">📝 Hair notes</div><textarea class="bi-area" id="hr-notes" placeholder="Hair routine, what works, what doesn't..."></textarea><button class="bi-save" onclick="ss('wh_hair_notes',document.getElementById('hr-notes').value)">Save</button></div></div>
+
+<!-- OUTFITS --><div class="bt-page" id="bt-outfits" style="--bc:#e67e22;--bcl:#fef3e7"><div class="bt-hero"><span style="font-size:2rem">👗</span><div><div class="bt-title">Outfits</div><div class="bt-sub">Your wardrobe, your rules</div></div></div>
+<div class="bc-g2"><div class="bc"><div class="bc-t">📸 Outfit log</div><div id="of-log"></div><div class="bi-add"><input class="bi-inp" id="of-l-inp" placeholder="Describe the look + date..."><button class="bi-btn" onclick="bA('of-log','of-l-inp','wh_outfit_log')">+</button></div></div>
+<div class="bc"><div class="bc-t">💡 Inspo</div><div id="of-inspo"></div><div class="bi-add"><input class="bi-inp" id="of-i-inp" placeholder="Inspo source..."><button class="bi-btn" onclick="bA('of-inspo','of-i-inp','wh_outfits_inspo')">+</button></div></div></div>
+<div class="bc-g2"><div class="bc"><div class="bc-t">❤️ Wardrobe loves</div><div id="of-loves"></div><div class="bi-add"><input class="bi-inp" id="of-lv-inp" placeholder="Favorite piece..."><button class="bi-btn" onclick="bA('of-loves','of-lv-inp','wh_wardrobe_loves')">+</button></div></div>
+<div class="bc"><div class="bc-t">🛒 Wishlist</div><div id="of-wish"></div><div class="bi-add"><input class="bi-inp" id="of-w-inp" placeholder="Want..."><button class="bi-btn" onclick="bA('of-wish','of-w-inp','wh_outfits_wishlist')">+</button></div></div></div>
+<div class="bc"><div class="bc-t">📝 Wardrobe notes</div><textarea class="bi-area" id="of-notes" placeholder="Capsule wardrobe plans, style goals..."></textarea><button class="bi-save" style="background:#e67e22" onclick="ss('wh_wardrobe_notes',document.getElementById('of-notes').value)">Save</button></div></div>
+
+<!-- NAILS --><div class="bt-page" id="bt-nails" style="--bc:#e91e8c;--bcl:#fce4f3"><div class="bt-hero"><span style="font-size:2rem">💅</span><div><div class="bt-title">Nails</div><div class="bt-sub">Designs, colors, and nail art inspo</div></div></div>
+<div class="bc-g2"><div class="bc"><div class="bc-t">📸 Nail log</div><div id="nl-log"></div><div class="bi-add"><input class="bi-inp" id="nl-l-inp" placeholder="Design + date..."><button class="bi-btn" onclick="bA('nl-log','nl-l-inp','wh_nails_log')">+</button></div></div>
+<div class="bc"><div class="bc-t">🎨 Polishes I own</div><div id="nl-polish"></div><div class="bi-add"><input class="bi-inp" id="nl-p-inp" placeholder="Color/brand..."><button class="bi-btn" onclick="bA('nl-polish','nl-p-inp','wh_nails_polishes')">+</button></div></div></div>
+<div class="bc-g2"><div class="bc"><div class="bc-t">💡 Inspo</div><div id="nl-inspo"></div><div class="bi-add"><input class="bi-inp" id="nl-i-inp" placeholder="Inspo..."><button class="bi-btn" onclick="bA('nl-inspo','nl-i-inp','wh_nails_inspo')">+</button></div></div>
+<div class="bc"><div class="bc-t">📺 Tutorials</div><div id="nl-tuts"></div><div class="bi-add"><input class="bi-inp" id="nl-t-inp" placeholder="Tutorial..."><button class="bi-btn" onclick="bA('nl-tuts','nl-t-inp','wh_nails_tutorials')">+</button></div></div></div>
+<div class="bc"><div class="bc-t">🛒 Wishlist</div><div id="nl-wish"></div><div class="bi-add"><input class="bi-inp" id="nl-w-inp" placeholder="Want..."><button class="bi-btn" onclick="bA('nl-wish','nl-w-inp','wh_nails_wishlist')">+</button></div></div></div>
+</div>
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('hobbies');
+window.goBT=id=>{document.querySelectorAll('.bt-page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.bt-btn').forEach(b=>b.classList.remove('active'));document.getElementById('bt-'+id).classList.add('active');document.querySelector('.bt-btn[onclick="goBT(\''+id+'\')"]').classList.add('active');window.scrollTo(0,0)};
+function bR(c,k){const el=document.getElementById(c);if(!el)return;const items=ls(k,[]);el.innerHTML='';if(!items.length){el.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic;opacity:.7">Nothing yet</div>';return}items.forEach((t,i)=>{const txt=typeof t==='string'?t:t.text||'';const e=document.createElement('div');e.className='bi';e.innerHTML='<span style="flex:1">'+txt+'</span><button class="bi-del" onclick="bD(\''+c+'\',\''+k+'\','+i+')">×</button>';el.appendChild(e)})}
+window.bA=(c,iid,k)=>{const inp=document.getElementById(iid);if(!inp)return;const v=inp.value.trim();if(!v)return;const items=ls(k,[]);items.push(v);ss(k,items);inp.value='';bR(c,k)};
+window.bD=(c,k,i)=>{const items=ls(k,[]);items.splice(i,1);ss(k,items);bR(c,k)};
+const ALL=[['mk-eyes','wh_makeup_eyes'],['mk-lips','wh_makeup_lips'],['mk-face','wh_makeup_face'],['mk-log','wh_makeup_looks'],['mk-inspo','wh_makeup_inspo'],['mk-tuts','wh_makeup_tutorials'],['mk-wish','wh_makeup_wishlist'],['hr-products','wh_hair_products'],['hr-log','wh_hair_styles'],['hr-inspo','wh_hair_inspo'],['hr-tuts','wh_hair_tutorials'],['hr-wish','wh_hair_wishlist'],['of-log','wh_outfit_log'],['of-inspo','wh_outfits_inspo'],['of-loves','wh_wardrobe_loves'],['of-wish','wh_outfits_wishlist'],['nl-log','wh_nails_log'],['nl-polish','wh_nails_polishes'],['nl-inspo','wh_nails_inspo'],['nl-tuts','wh_nails_tutorials'],['nl-wish','wh_nails_wishlist']];
+ALL.forEach(([c,k])=>bR(c,k));
+document.getElementById('hr-notes').value=ls('wh_hair_notes','')||'';
+document.getElementById('of-notes').value=ls('wh_wardrobe_notes','')||'';
+</script></body></html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Manifestation — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tmut);text-decoration:none;margin-bottom:1rem;padding:5px 12px;border-radius:20px;border:1px solid var(--cbr);background:white;transition:all .15s}.back-link:hover{background:var(--chp);color:var(--ch)}
+.mani-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:1.2rem}
+@media(max-width:900px){.mani-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:550px){.mani-grid{grid-template-columns:1fr}}
+.mani-card{background:white;border:1.5px solid var(--cbr);border-radius:16px;padding:1rem 1.1rem;position:relative;overflow:hidden;transition:all .2s;box-shadow:var(--shadow)}
+.mani-card:hover{box-shadow:var(--shadow-lg);border-color:rgba(233,30,140,.25)}
+.mani-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#e91e8c,#c9a84c,#8e44ad)}
+.mani-text{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:var(--chd);line-height:1.5;margin-bottom:.5rem;min-height:20px}
+.mani-date{font-size:9px;color:var(--tmut);font-style:italic}
+.mani-plan-btn{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:8px;border:1.5px solid rgba(142,68,173,.25);background:white;color:var(--purple);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-weight:700;line-height:1}
+.mani-plan-btn:hover{background:var(--purple);color:white;border-color:var(--purple)}
+.mani-plan-btn.has-plan{background:var(--purple);color:white;border-color:var(--purple);font-size:10px}
+.mani-del{position:absolute;bottom:8px;right:10px;background:none;border:none;cursor:pointer;color:#ddd;font-size:10px;transition:color .15s}.mani-del:hover{color:var(--ch)}
+.mani-progress{height:4px;background:rgba(142,68,173,.1);border-radius:2px;overflow:hidden;margin-top:.4rem}
+.mani-progress-fill{height:100%;background:linear-gradient(90deg,#e91e8c,#8e44ad);border-radius:2px;transition:width .3s}
+.add-mani-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:12px;background:linear-gradient(135deg,#fce4f3,#f3eafb);border:2px dashed rgba(233,30,140,.25);border-radius:16px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#8e44ad;transition:all .15s;margin-bottom:1.2rem}
+.add-mani-btn:hover{border-color:#e91e8c;background:linear-gradient(135deg,#fce4f3,#ede0f7);transform:translateY(-1px)}
+/* PLAN PAGE */
+.plan-page{display:none;animation:fadeIn .25s ease}
+.plan-page.active{display:block}
+.plan-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
+.plan-back{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tmut);text-decoration:none;padding:5px 12px;border-radius:20px;border:1px solid var(--cbr);background:white;cursor:pointer;transition:all .15s}.plan-back:hover{background:var(--chp);color:var(--ch)}
+.plan-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--chd);flex:1}
+.plan-step{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;background:white;border:1px solid var(--cbr);border-radius:10px;margin-bottom:5px;font-size:11px;transition:all .15s}
+.plan-step.done{background:#eafaf1;border-color:rgba(39,174,96,.2)}
+.plan-cb{width:18px;height:18px;border:2px solid var(--cbr);border-radius:5px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .15s;margin-top:1px}
+.plan-cb.checked{background:var(--green);border-color:var(--green);color:white}
+.plan-step-text{flex:1;line-height:1.5}
+.plan-step-text.crossed{text-decoration:line-through;opacity:.5}
+.plan-step-del{background:none;border:none;cursor:pointer;color:#ddd;font-size:10px;padding:0 2px;transition:color .15s;flex-shrink:0}.plan-step-del:hover{color:var(--ch)}
+.plan-add{display:flex;gap:6px;align-items:center;margin-top:.6rem}
+.plan-inp{border:1.5px solid var(--cbr);border-radius:8px;padding:7px 10px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;outline:none;flex:1}.plan-inp:focus{border-color:var(--purple)}
+.plan-add-btn{padding:7px 14px;border:none;border-radius:8px;background:var(--purple);color:white;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:all .15s}.plan-add-btn:hover{background:#6a2980}
+.plan-notes{width:100%;border:1.5px solid var(--cbr);border-radius:10px;padding:8px 10px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;outline:none;resize:none;height:70px;margin-top:.6rem}.plan-notes:focus{border-color:var(--purple)}
+.plan-notes-save{width:100%;margin-top:.3rem;padding:5px;border:none;border-radius:8px;background:var(--purple);color:white;font-size:10px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer}
+.quote-banner{background:linear-gradient(135deg,#fce4f3,#f3eafb,#fef9e7);border:1px solid rgba(233,30,140,.12);border-radius:16px;padding:1.1rem 1.3rem;text-align:center;margin-bottom:1.2rem}
+.quote-text{font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:#8e44ad;line-height:1.6}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+<a href="index.html" class="back-link">← Back to Dashboard</a>
+
+<!-- BOARD VIEW -->
+<div id="board-view">
+  <div style="text-align:center;margin-bottom:1rem">
+    <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#8e44ad">2026 Manifestation</div>
+    <div style="font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Speak it into existence</div>
+  </div>
+
+  <div class="quote-banner">
+    <div class="quote-text">She believed she could, so she planned the hell out of it.</div>
+  </div>
+
+  <button class="add-mani-btn" onclick="openAddModal()">+ Add a manifestation</button>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+    <div style="font-size:10px;color:var(--tmut)" id="mani-count"></div>
+    <div style="font-size:10px;color:var(--tmut)" id="mani-progress-total"></div>
+  </div>
+
+  <div class="mani-grid" id="mani-grid"></div>
+</div>
+
+<!-- PLAN VIEW (shown when you click + on a card) -->
+<div class="plan-page" id="plan-view">
+  <div class="plan-header">
+    <button class="plan-back" onclick="showBoard()">← Back</button>
+    <div class="plan-title" id="plan-title"></div>
+  </div>
+  <div style="font-size:10px;color:var(--tmut);margin-bottom:.8rem" id="plan-subtitle">Break it down into steps. Check them off as you go.</div>
+  
+  <div id="plan-steps"></div>
+  
+  <div class="plan-add">
+    <input class="plan-inp" id="plan-step-inp" placeholder="Add a step to make this happen...">
+    <button class="plan-add-btn" onclick="addPlanStep()">+ Add</button>
+  </div>
+
+  <textarea class="plan-notes" id="plan-notes-area" placeholder="Extra notes, ideas, inspiration for this manifestation..."></textarea>
+  <button class="plan-notes-save" onclick="savePlanNotes()">Save notes</button>
+</div>
+
+<!-- ADD MODAL -->
+<div class="mo" id="add-modal">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-title" style="color:#8e44ad">What are you manifesting?</div>
+    <input class="plan-inp" id="new-mani-inp" placeholder="Type your manifestation..." style="width:100%;margin-bottom:.5rem;font-size:13px;padding:10px 12px">
+    <div style="font-size:9px;color:var(--tmut);margin-bottom:.8rem;line-height:1.5">Write it like it's already happening. "I have..." "I am..." "My life includes..."</div>
+    <div class="macts"><button class="btn btn-outline" onclick="closeAddModal()">Cancel</button><button class="btn" style="background:#8e44ad;color:white" onclick="addManifestation()">Manifest it</button></div>
+  </div>
+</div>
+
+</div>
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('home');
+
+const MK = 'wg_manifestations';
+let manis = ls(MK, []);
+let currentPlanId = null;
+
+// ===== RENDER BOARD =====
+function renderBoard() {
+  const grid = document.getElementById('mani-grid');
+  const countEl = document.getElementById('mani-count');
+  const progressEl = document.getElementById('mani-progress-total');
+  grid.innerHTML = '';
+
+  if (!manis.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--tmut);font-size:11px;font-style:italic">Your manifestation board is empty. What does your dream 2026 look like?</div>';
+    countEl.textContent = '';
+    progressEl.textContent = '';
+    return;
+  }
+
+  countEl.textContent = manis.length + ' manifestation' + (manis.length !== 1 ? 's' : '');
+
+  let totalSteps = 0, doneSteps = 0;
+  manis.forEach(m => {
+    if (m.steps) { totalSteps += m.steps.length; doneSteps += m.steps.filter(s => s.done).length; }
+  });
+  progressEl.textContent = totalSteps ? doneSteps + '/' + totalSteps + ' steps complete' : '';
+
+  manis.forEach((m, i) => {
+    const card = document.createElement('div');
+    card.className = 'mani-card';
+
+    const stepCount = m.steps ? m.steps.length : 0;
+    const stepDone = m.steps ? m.steps.filter(s => s.done).length : 0;
+    const pct = stepCount ? Math.round(stepDone / stepCount * 100) : 0;
+    const hasPlan = stepCount > 0;
+
+    card.innerHTML = `
+      <button class="mani-plan-btn ${hasPlan ? 'has-plan' : ''}" onclick="event.stopPropagation();openPlan(${i})" title="Plan steps">${hasPlan ? stepDone + '/' + stepCount : '+'}</button>
+      <div class="mani-text">${m.text}</div>
+      ${hasPlan ? '<div class="mani-progress"><div class="mani-progress-fill" style="width:' + pct + '%"></div></div>' : ''}
+      <div class="mani-date">${m.date || ''}</div>
+      <button class="mani-del" onclick="event.stopPropagation();delMani(${i})">remove</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ===== ADD =====
+window.openAddModal = () => {
+  document.getElementById('add-modal').classList.add('open');
+  document.getElementById('new-mani-inp').value = '';
+  setTimeout(() => document.getElementById('new-mani-inp').focus(), 100);
+};
+window.closeAddModal = () => document.getElementById('add-modal').classList.remove('open');
+document.getElementById('add-modal').onclick = e => { if (e.target.id === 'add-modal') closeAddModal(); };
+
+window.addManifestation = () => {
+  const inp = document.getElementById('new-mani-inp');
+  const text = inp.value.trim();
+  if (!text) return;
+  manis.push({ text, date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), steps: [], notes: '' });
+  ss(MK, manis);
+  inp.value = '';
+  closeAddModal();
+  renderBoard();
+};
+document.getElementById('new-mani-inp').onkeydown = e => { if (e.key === 'Enter') addManifestation(); };
+
+window.delMani = i => {
+  if (!confirm('Remove this manifestation?')) return;
+  manis.splice(i, 1);
+  ss(MK, manis);
+  renderBoard();
+};
+
+// ===== PLAN VIEW =====
+window.openPlan = i => {
+  currentPlanId = i;
+  const m = manis[i];
+  document.getElementById('board-view').style.display = 'none';
+  document.getElementById('plan-view').classList.add('active');
+  document.getElementById('plan-title').textContent = m.text;
+  document.getElementById('plan-notes-area').value = m.notes || '';
+  renderPlanSteps();
+  setTimeout(() => document.getElementById('plan-step-inp').focus(), 100);
+};
+
+window.showBoard = () => {
+  currentPlanId = null;
+  document.getElementById('plan-view').classList.remove('active');
+  document.getElementById('board-view').style.display = '';
+  renderBoard();
+};
+
+function renderPlanSteps() {
+  const c = document.getElementById('plan-steps');
+  c.innerHTML = '';
+  const m = manis[currentPlanId];
+  if (!m || !m.steps) return;
+
+  if (!m.steps.length) {
+    c.innerHTML = '<div style="text-align:center;padding:1rem;color:var(--tmut);font-size:10px;font-style:italic">No steps yet — break this dream into actionable pieces!</div>';
+    return;
+  }
+
+  m.steps.forEach((step, si) => {
+    const e = document.createElement('div');
+    e.className = 'plan-step' + (step.done ? ' done' : '');
+    e.innerHTML = `
+      <div class="plan-cb ${step.done ? 'checked' : ''}" onclick="toggleStep(${si})">${step.done ? '✓' : ''}</div>
+      <span class="plan-step-text ${step.done ? 'crossed' : ''}">${step.text}</span>
+      <button class="plan-step-del" onclick="delStep(${si})">x</button>
+    `;
+    c.appendChild(e);
+  });
+}
+
+window.addPlanStep = () => {
+  const inp = document.getElementById('plan-step-inp');
+  const text = inp.value.trim();
+  if (!text || currentPlanId === null) return;
+  if (!manis[currentPlanId].steps) manis[currentPlanId].steps = [];
+  manis[currentPlanId].steps.push({ text, done: false });
+  ss(MK, manis);
+  inp.value = '';
+  renderPlanSteps();
+};
+document.getElementById('plan-step-inp').onkeydown = e => { if (e.key === 'Enter') addPlanStep(); };
+
+window.toggleStep = si => {
+  if (currentPlanId === null) return;
+  manis[currentPlanId].steps[si].done = !manis[currentPlanId].steps[si].done;
+  ss(MK, manis);
+  renderPlanSteps();
+};
+
+window.delStep = si => {
+  if (currentPlanId === null) return;
+  manis[currentPlanId].steps.splice(si, 1);
+  ss(MK, manis);
+  renderPlanSteps();
+};
+
+window.savePlanNotes = () => {
+  if (currentPlanId === null) return;
+  manis[currentPlanId].notes = document.getElementById('plan-notes-area').value;
+  ss(MK, manis);
+};
+
+// INIT
+renderBoard();
+</script>
+</body>
+</html>

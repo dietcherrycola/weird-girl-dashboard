@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌐 Online Games — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tmut);text-decoration:none;margin-bottom:1rem;padding:5px 12px;border-radius:20px;border:1px solid var(--cbr);background:white;transition:all .15s}.back-link:hover{background:var(--chp);color:var(--ch)}
+.og-nav{display:flex;gap:5px;flex-wrap:wrap;padding:.5rem .6rem;background:white;border:1px solid var(--cbr);border-radius:14px;margin-bottom:1rem}
+.og-btn{font-size:10px;padding:5px 12px;border-radius:20px;border:2px solid rgba(0,0,0,.08);background:white;cursor:pointer;color:var(--tmut);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s;white-space:nowrap}
+.og-btn:hover{border-color:var(--oc);color:var(--oc)}.og-btn.active{background:var(--oc);color:white;border-color:var(--oc)}
+.og-page{display:none;animation:fadeIn .25s ease}.og-page.active{display:block}
+.og-hero{display:flex;align-items:center;gap:1rem;background:linear-gradient(135deg,var(--ocl),white);border:1px solid rgba(0,0,0,.08);border-radius:18px;padding:1rem 1.2rem;margin-bottom:1rem}
+.og-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:var(--oc)}
+.og-sub{font-size:.75rem;color:var(--tmut);margin-top:2px}
+.oc{background:white;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:.9rem 1rem;margin-bottom:.9rem;position:relative;overflow:hidden}
+.oc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--oc),color-mix(in srgb,var(--oc) 60%,white))}
+.oc-t{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--oc);margin-bottom:.6rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.oc-t-right{margin-left:auto;font-size:9px;color:var(--tmut);font-family:'DM Sans',sans-serif;font-weight:400}
+.oc-g2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}.oc-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+@media(max-width:700px){.oc-g2,.oc-g3{grid-template-columns:1fr}}
+.oi{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid rgba(0,0,0,.07);border-radius:7px;font-size:11px;margin-bottom:3px;background:white}
+.oi-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:11px;padding:0 3px}.oi-del:hover{color:var(--ch)}
+.oi-add{display:flex;gap:5px;align-items:center;margin-top:.4rem;flex-wrap:wrap}
+.oi-inp{border:1.5px solid rgba(0,0,0,.1);border-radius:7px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--tm);background:white;outline:none;flex:1}.oi-inp:focus{border-color:var(--oc)}
+.oi-btn{font-size:11px;padding:4px 10px;border-radius:7px;border:1.5px solid rgba(0,0,0,.1);background:white;cursor:pointer;color:var(--oc);font-family:'DM Sans',sans-serif;font-weight:600}.oi-btn:hover{background:var(--ocl);border-color:var(--oc)}
+.oi-save{width:100%;margin-top:.4rem;padding:5px;border:none;border-radius:8px;background:var(--oc);color:white;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer}
+textarea.oi-area{width:100%;border:1.5px solid rgba(0,0,0,.1);border-radius:8px;padding:6px 9px;font-size:11px;font-family:'DM Sans',sans-serif;color:var(--tm);background:white;resize:none;height:80px;outline:none}.oi-area:focus{border-color:var(--oc)}
+.daily-check{display:flex;align-items:center;gap:6px;font-size:10px;cursor:pointer;padding:4px 0;border-bottom:1px solid rgba(0,0,0,.04);line-height:1.4}.daily-check:last-child{border-bottom:none}
+.daily-check input{flex-shrink:0}
+.daily-bar{height:6px;background:rgba(0,0,0,.06);border-radius:3px;overflow:hidden;margin-top:.4rem}
+.daily-fill{height:100%;border-radius:3px;transition:width .3s}
+.tip-card{display:flex;gap:8px;padding:7px 10px;background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.06);border-radius:9px;margin-bottom:5px;font-size:10px;line-height:1.5;align-items:flex-start}
+.tip-icon{font-size:14px;flex-shrink:0}
+.skill-row{display:flex;align-items:center;justify-content:space-between;padding:3px 0;font-size:10px;border-bottom:1px solid rgba(0,0,0,.04)}
+.skill-row:last-child{border-bottom:none}
+.skill-row .oi-inp{width:45px;padding:2px 5px;font-size:10px;flex:none;text-align:center}
+.friend-card{background:white;border:1px solid rgba(0,0,0,.06);border-radius:8px;padding:6px 9px;margin-bottom:4px;font-size:11px;display:flex;gap:6px;align-items:flex-start}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db">
+<a href="hobbies.html" class="back-link">← Back to Hobbies</a>
+<div style="text-align:center;margin-bottom:1.2rem"><div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#1a7abd">🌐 Online Games</div><div style="font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Nostalgia, community, and chaos</div></div>
+
+<div class="og-nav">
+  <button class="og-btn active" onclick="goOG('vmk')" style="--oc:#1a3a6b">🏰 VMK</button>
+  <button class="og-btn" onclick="goOG('babv')" style="--oc:#b5475e">🐻 BABV</button>
+  <button class="og-btn" onclick="goOG('roblox')" style="--oc:#cc3333">🟥 Roblox</button>
+  <button class="og-btn" onclick="goOG('toontown')" style="--oc:#e07b10">🐭 Toontown</button>
+  <button class="og-btn" onclick="goOG('cp')" style="--oc:#1a5fa0">🐧 Club Penguin</button>
+  <button class="og-btn" onclick="goOG('osrs')" style="--oc:#7b5e00">⚔️ OSRS</button>
+</div>
+
+<!-- ==================== VMK ==================== -->
+<div class="og-page active" id="og-vmk" style="--oc:#1a3a6b;--ocl:#dde8ff">
+  <div class="og-hero"><span style="font-size:2rem">🏰</span><div><div class="og-title">Virtual Magic Kingdom</div><div class="og-sub">The original MMO of our hearts</div></div></div>
+  <div class="oc"><div class="oc-t">📋 Daily checklist<span class="oc-t-right">Resets daily</span></div><div id="vmk-daily"></div></div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">🎮 Minigame tracker</div><div id="vmk-mg"></div><div class="oi-add"><input class="oi-inp" id="vmk-mg-inp" placeholder="Game + high score..."><button class="oi-btn" onclick="oA('vmk-mg','vmk-mg-inp','wh_vmk_mg')">+</button></div></div>
+    <div class="oc"><div class="oc-t">👥 Friends</div><div id="vmk-fr"></div><div class="oi-add"><input class="oi-inp" id="vmk-fr-inp" placeholder="Username — notes..."><button class="oi-btn" onclick="oA('vmk-fr','vmk-fr-inp','wh_vmk_fr')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">👕 Clothes owned</div><div id="vmk-cl"></div><div class="oi-add"><input class="oi-inp" id="vmk-cl-inp" placeholder="Item..."><button class="oi-btn" onclick="oA('vmk-cl','vmk-cl-inp','wh_vmk_cl')">+</button></div></div>
+    <div class="oc"><div class="oc-t">🛒 Clothes wishlist</div><div id="vmk-clw"></div><div class="oi-add"><input class="oi-inp" id="vmk-clw-inp" placeholder="Want..."><button class="oi-btn" onclick="oA('vmk-clw','vmk-clw-inp','wh_vmk_clw')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">🏠 Furniture owned</div><div id="vmk-fu"></div><div class="oi-add"><input class="oi-inp" id="vmk-fu-inp" placeholder="Furniture..."><button class="oi-btn" onclick="oA('vmk-fu','vmk-fu-inp','wh_vmk_fu')">+</button></div></div>
+    <div class="oc"><div class="oc-t">🛒 Furniture wishlist</div><div id="vmk-fuw"></div><div class="oi-add"><input class="oi-inp" id="vmk-fuw-inp" placeholder="Want..."><button class="oi-btn" onclick="oA('vmk-fuw','vmk-fuw-inp','wh_vmk_fuw')">+</button></div></div>
+  </div>
+  <div class="oc"><div class="oc-t">💡 VMK tips</div><div id="vmk-tips"></div></div>
+  <div class="oc"><div class="oc-t">📝 Memories & notes</div><textarea class="oi-area" id="vmk-notes"></textarea><button class="oi-save" onclick="oS('vmk-notes','wh_vmk_notes')">Save</button></div>
+</div>
+
+<!-- ==================== BABV ==================== -->
+<div class="og-page" id="og-babv" style="--oc:#b5475e;--ocl:#fde8ee">
+  <div class="og-hero"><span style="font-size:2rem">🐻</span><div><div class="og-title">Build-a-Bearville</div><div class="og-sub">Stuffed animal paradise</div></div></div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">🧸 My bears</div><div id="babv-bears"></div><div class="oi-add"><input class="oi-inp" id="babv-b-inp" placeholder="Bear name + type..."><button class="oi-btn" onclick="oA('babv-bears','babv-b-inp','wh_babv_bears')">+</button></div></div>
+    <div class="oc"><div class="oc-t">👥 Friends</div><div id="babv-fr"></div><div class="oi-add"><input class="oi-inp" id="babv-fr-inp" placeholder="Friend — notes..."><button class="oi-btn" onclick="oA('babv-fr','babv-fr-inp','wh_babv_fr')">+</button></div></div>
+  </div>
+  <div class="oc"><div class="oc-t">💌 Memories</div><textarea class="oi-area" id="babv-mem"></textarea><button class="oi-save" onclick="oS('babv-mem','wh_babv_memories')">Save</button></div>
+</div>
+
+<!-- ==================== ROBLOX ==================== -->
+<div class="og-page" id="og-roblox" style="--oc:#cc3333;--ocl:#ffe8e8">
+  <div class="og-hero"><span style="font-size:2rem">🟥</span><div><div class="og-title">Roblox</div><div class="og-sub">Games, games, games</div></div></div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">⭐ Favorite games</div><div id="rblx-fav"></div><div class="oi-add"><input class="oi-inp" id="rblx-f-inp" placeholder="Game..."><button class="oi-btn" onclick="oA('rblx-fav','rblx-f-inp','wh_roblox_faves')">+</button></div></div>
+    <div class="oc"><div class="oc-t">🔍 Games to try</div><div id="rblx-try"></div><div class="oi-add"><input class="oi-inp" id="rblx-t-inp" placeholder="Game..."><button class="oi-btn" onclick="oA('rblx-try','rblx-t-inp','wh_roblox_try')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">👤 Avatar notes</div><textarea class="oi-area" id="rblx-av" style="height:60px"></textarea><button class="oi-save" onclick="oS('rblx-av','wh_roblox_avatar')">Save</button></div>
+    <div class="oc"><div class="oc-t">👥 Friends</div><div id="rblx-fr"></div><div class="oi-add"><input class="oi-inp" id="rblx-fr-inp" placeholder="Friend — notes..."><button class="oi-btn" onclick="oA('rblx-fr','rblx-fr-inp','wh_rblx_fr')">+</button></div></div>
+  </div>
+  <div class="oc"><div class="oc-t">💡 Roblox tips</div><div id="rblx-tips"></div></div>
+</div>
+
+<!-- ==================== TOONTOWN ==================== -->
+<div class="og-page" id="og-toontown" style="--oc:#e07b10;--ocl:#fff3e0">
+  <div class="og-hero"><span style="font-size:2rem">🐭</span><div><div class="og-title">Toontown</div><div class="og-sub">Toons of the world, unite!</div></div></div>
+  <div class="oc"><div class="oc-t">📋 Daily checklist<span class="oc-t-right">Resets daily</span></div><div id="tt-daily"></div></div>
+  <div class="oc-g3">
+    <div class="oc"><div class="oc-t">🎭 My toons</div><div id="tt-toons"></div><div class="oi-add"><input class="oi-inp" id="tt-t-inp" placeholder="Toon + species..."><button class="oi-btn" onclick="oA('tt-toons','tt-t-inp','wh_tt_toons')">+</button></div></div>
+    <div class="oc"><div class="oc-t">🎯 Gag tracker</div><div id="tt-gags"></div><div class="oi-add"><input class="oi-inp" id="tt-g-inp" placeholder="Gag track + lvl..."><button class="oi-btn" onclick="oA('tt-gags','tt-g-inp','wh_tt_gags')">+</button></div></div>
+    <div class="oc"><div class="oc-t">👥 Friends</div><div id="tt-fr"></div><div class="oi-add"><input class="oi-inp" id="tt-fr-inp" placeholder="Friend — notes..."><button class="oi-btn" onclick="oA('tt-fr','tt-fr-inp','wh_tt_fr')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">🏎️ Kart racing</div><div id="tt-karts"></div><div class="oi-add"><input class="oi-inp" id="tt-k-inp" placeholder="Track + best time..."><button class="oi-btn" onclick="oA('tt-karts','tt-k-inp','wh_tt_karts')">+</button></div></div>
+    <div class="oc"><div class="oc-t">⛳ Golf</div><div id="tt-golf"></div><div class="oi-add"><input class="oi-inp" id="tt-gf-inp" placeholder="Course + score..."><button class="oi-btn" onclick="oA('tt-golf','tt-gf-inp','wh_tt_golf')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">👕 Clothes owned</div><div id="tt-cl"></div><div class="oi-add"><input class="oi-inp" id="tt-cl-inp" placeholder="Item..."><button class="oi-btn" onclick="oA('tt-cl','tt-cl-inp','wh_tt_cl')">+</button></div></div>
+    <div class="oc"><div class="oc-t">🛒 Clothes wishlist</div><div id="tt-clw"></div><div class="oi-add"><input class="oi-inp" id="tt-clw-inp" placeholder="Want..."><button class="oi-btn" onclick="oA('tt-clw','tt-clw-inp','wh_tt_clw')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">🪑 Furniture owned</div><div id="tt-fu"></div><div class="oi-add"><input class="oi-inp" id="tt-fu-inp" placeholder="Item..."><button class="oi-btn" onclick="oA('tt-fu','tt-fu-inp','wh_tt_fu')">+</button></div></div>
+    <div class="oc"><div class="oc-t">🛒 Furniture wishlist</div><div id="tt-fuw"></div><div class="oi-add"><input class="oi-inp" id="tt-fuw-inp" placeholder="Want..."><button class="oi-btn" onclick="oA('tt-fuw','tt-fuw-inp','wh_tt_fuw')">+</button></div></div>
+  </div>
+  <div class="oc"><div class="oc-t">💡 Toontown tips</div><div id="tt-tips"></div></div>
+  <div class="oc"><div class="oc-t">📝 Notes</div><textarea class="oi-area" id="tt-notes"></textarea><button class="oi-save" onclick="oS('tt-notes','wh_tt_notes')">Save</button></div>
+</div>
+
+<!-- ==================== CLUB PENGUIN ==================== -->
+<div class="og-page" id="og-cp" style="--oc:#1a5fa0;--ocl:#d8eeff">
+  <div class="og-hero"><span style="font-size:2rem">🐧</span><div><div class="og-title">Club Penguin</div><div class="og-sub">Waddle around and meet new friends</div></div></div>
+  <div class="oc"><div class="oc-t">📋 Daily checklist<span class="oc-t-right">Resets daily</span></div><div id="cp-daily"></div></div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">🐧 My penguin</div><textarea class="oi-area" id="cp-pen" placeholder="Name, color, member status, puffles..." style="height:60px"></textarea><button class="oi-save" onclick="oS('cp-pen','wh_cp_pen')">Save</button></div>
+    <div class="oc"><div class="oc-t">👥 Friends</div><div id="cp-fr"></div><div class="oi-add"><input class="oi-inp" id="cp-fr-inp" placeholder="Friend — notes..."><button class="oi-btn" onclick="oA('cp-fr','cp-fr-inp','wh_cp_fr')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">🎮 Minigame tracker</div><div id="cp-mg"></div><div class="oi-add"><input class="oi-inp" id="cp-mg-inp" placeholder="Game + coins/score..."><button class="oi-btn" onclick="oA('cp-mg','cp-mg-inp','wh_cp_mg')">+</button></div></div>
+    <div class="oc"><div class="oc-t">🎉 Events</div><div id="cp-ev"></div><div class="oi-add"><input class="oi-inp" id="cp-ev-inp" placeholder="Event + date..."><button class="oi-btn" onclick="oA('cp-ev','cp-ev-inp','wh_cp_ev')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">👕 Clothes owned</div><div id="cp-cl"></div><div class="oi-add"><input class="oi-inp" id="cp-cl-inp" placeholder="Item..."><button class="oi-btn" onclick="oA('cp-cl','cp-cl-inp','wh_cp_cl')">+</button></div></div>
+    <div class="oc"><div class="oc-t">🛒 Clothes wishlist</div><div id="cp-clw"></div><div class="oi-add"><input class="oi-inp" id="cp-clw-inp" placeholder="Want..."><button class="oi-btn" onclick="oA('cp-clw','cp-clw-inp','wh_cp_clw')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">🪑 Furniture owned</div><div id="cp-fu"></div><div class="oi-add"><input class="oi-inp" id="cp-fu-inp" placeholder="Igloo item..."><button class="oi-btn" onclick="oA('cp-fu','cp-fu-inp','wh_cp_fu')">+</button></div></div>
+    <div class="oc"><div class="oc-t">🛒 Furniture wishlist</div><div id="cp-fuw"></div><div class="oi-add"><input class="oi-inp" id="cp-fuw-inp" placeholder="Want..."><button class="oi-btn" onclick="oA('cp-fuw','cp-fuw-inp','wh_cp_fuw')">+</button></div></div>
+  </div>
+  <div class="oc"><div class="oc-t">💡 Club Penguin tips</div><div id="cp-tips"></div></div>
+  <div class="oc"><div class="oc-t">📝 Memories</div><textarea class="oi-area" id="cp-notes"></textarea><button class="oi-save" onclick="oS('cp-notes','wh_cp_notes')">Save</button></div>
+</div>
+
+<!-- ==================== OSRS ==================== -->
+<div class="og-page" id="og-osrs" style="--oc:#7b5e00;--ocl:#fff8e0">
+  <div class="og-hero"><span style="font-size:2rem">⚔️</span><div><div class="og-title">Old School RuneScape</div><div class="og-sub">The grind never stops</div></div></div>
+  <div class="oc"><div class="oc-t">📋 Daily checklist<span class="oc-t-right">Resets daily</span></div><div id="osrs-daily"></div></div>
+  <div class="oc"><div class="oc-t">📊 Skills<span class="oc-t-right">Enter your level for each</span></div><div id="osrs-skills"></div></div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">🎯 Goals</div><div id="osrs-goals"></div><div class="oi-add"><input class="oi-inp" id="osrs-g-inp" placeholder="Goal..."><button class="oi-btn" onclick="oA('osrs-goals','osrs-g-inp','wh_osrs_goals')">+</button></div></div>
+    <div class="oc"><div class="oc-t">💰 Money methods</div><div id="osrs-money"></div><div class="oi-add"><input class="oi-inp" id="osrs-m-inp" placeholder="Method + gp/hr..."><button class="oi-btn" onclick="oA('osrs-money','osrs-m-inp','wh_osrs_money')">+</button></div></div>
+  </div>
+  <div class="oc-g2">
+    <div class="oc"><div class="oc-t">📜 Quest log</div><div id="osrs-quests"></div><div class="oi-add"><input class="oi-inp" id="osrs-q-inp" placeholder="Quest..."><button class="oi-btn" onclick="oA('osrs-quests','osrs-q-inp','wh_osrs_quests')">+</button></div></div>
+    <div class="oc"><div class="oc-t">⚔️ Gear</div><div id="osrs-items"></div><div class="oi-add"><input class="oi-inp" id="osrs-i-inp" placeholder="Item..."><button class="oi-btn" onclick="oA('osrs-items','osrs-i-inp','wh_osrs_items')">+</button></div></div>
+  </div>
+  <div class="oc"><div class="oc-t">👥 Friends</div><div id="osrs-fr"></div><div class="oi-add"><input class="oi-inp" id="osrs-fr-inp" placeholder="RSN — notes..."><button class="oi-btn" onclick="oA('osrs-fr','osrs-fr-inp','wh_osrs_fr')">+</button></div></div>
+  <div class="oc"><div class="oc-t">💡 OSRS beginner guide & tips</div><div id="osrs-tips"></div></div>
+  <div class="oc"><div class="oc-t">📝 Notes</div><textarea class="oi-area" id="osrs-notes"></textarea><button class="oi-save" onclick="oS('osrs-notes','wh_osrs_notes')">Save</button></div>
+</div>
+
+</div>
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('hobbies');
+
+// ===== NAV =====
+window.goOG=id=>{document.querySelectorAll('.og-page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.og-btn').forEach(b=>b.classList.remove('active'));document.getElementById('og-'+id).classList.add('active');document.querySelector('.og-btn[onclick="goOG(\''+id+'\')"]').classList.add('active');window.scrollTo(0,0)};
+
+// ===== LIST SYSTEM =====
+function oR(c,k){const el=document.getElementById(c);if(!el)return;const items=ls(k,[]);el.innerHTML='';if(!items.length){el.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic;opacity:.7">Nothing yet</div>';return}items.forEach((t,i)=>{const txt=typeof t==='string'?t:t.text||'';const e=document.createElement('div');e.className='oi';e.innerHTML='<span style="flex:1">'+txt+'</span><button class="oi-del" onclick="oD(\''+c+'\',\''+k+'\','+i+')">×</button>';el.appendChild(e)})}
+window.oA=(c,iid,k)=>{const inp=document.getElementById(iid);if(!inp)return;const v=inp.value.trim();if(!v)return;const items=ls(k,[]);items.push(v);ss(k,items);inp.value='';oR(c,k)};
+window.oD=(c,k,i)=>{const items=ls(k,[]);items.splice(i,1);ss(k,items);oR(c,k)};
+window.oS=(id,k)=>{const el=document.getElementById(id);if(el)ss(k,el.value)};
+function oL(id,k){const el=document.getElementById(id);if(el)el.value=ls(k,'')||''}
+
+// ===== DAILY CHECKLISTS =====
+function renderDaily(cid,tasks,sk,color){
+  const c=document.getElementById(cid);if(!c)return;c.innerHTML='';
+  const today=new Date().toISOString().split('T')[0];
+  let d=ls(sk,{});if(d.date!==today)d={date:today,checks:{}};
+  let done=0;
+  tasks.forEach((t,i)=>{const dn=d.checks[i];if(dn)done++;const lbl=document.createElement('label');lbl.className='daily-check';lbl.innerHTML='<input type="checkbox" '+(dn?'checked':'')+' style="accent-color:'+color+'"><span style="'+(dn?'text-decoration:line-through;opacity:.5':'')+'">'+t+'</span>';lbl.querySelector('input').onchange=()=>{d.checks[i]=!d.checks[i];ss(sk,d);renderDaily(cid,tasks,sk,color)};c.appendChild(lbl)});
+  const bar=document.createElement('div');bar.className='daily-bar';bar.innerHTML='<div class="daily-fill" style="width:'+Math.round(done/tasks.length*100)+'%;background:'+color+'"></div>';c.appendChild(bar);
+  const lbl=document.createElement('div');lbl.style.cssText='font-size:9px;color:var(--tmut);text-align:center;margin-top:3px';lbl.textContent=done+'/'+tasks.length+' done today';c.appendChild(lbl);
+}
+
+// VMK DAILIES
+renderDaily('vmk-daily',['Log in and check mail','Play Pirates of the Caribbean','Play Jungle Cruise','Play Haunted Mansion','Play Fireworks','Visit your room — check guests','Check trading posts for rare items','Talk to friends / make new ones','Explore for any new items or events','Screenshot any cool rooms for inspo'],'wh_vmk_daily','#1a3a6b');
+
+// TOONTOWN DAILIES
+renderDaily('tt-daily',['Log in and check mailbox','Do a boss run (VP/CFO/CJ/CEO)','Complete a toontask','Train a gag track','Race at Goofy Speedway','Play a round of golf','Visit a friend\'s estate','Check Clarabelle\'s Cattlelog','Garden your estate','Go fishing','Earn jellybeans for clothes','Try a new playground area'],'wh_tt_daily','#e07b10');
+
+// CLUB PENGUIN DAILIES
+renderDaily('cp-daily',['Log in and check mail','Earn coins (play 2-3 minigames)','Visit the Dance Club','Check the Gift Shop for new items','Feed your puffles','Visit your igloo — decorate if inspired','Find the secret agent message (if EPF)','Check the Newspaper for events','Play Cart Surfer (best coin game!)','Explore for hidden pins','Visit a friend\'s igloo'],'wh_cp_daily','#1a5fa0');
+
+// OSRS DAILIES
+renderDaily('osrs-daily',['Collect daily battlestaff (Varrock diary)','Buy daily runes from shops','Farm run (herbs + trees)','Birdhouse run','Kingdom of Miscellania upkeep','Daily sand + seaweed','Claim daily spin','Check GE offers','Tears of Guthix (weekly)','Complete a Slayer task','Do a clue scroll if you have one'],'wh_osrs_daily','#7b5e00');
+
+// ===== OSRS SKILLS =====
+const OSRS_SKILLS=['Attack','Strength','Defence','Ranged','Prayer','Magic','Runecrafting','Construction','Hitpoints','Agility','Herblore','Thieving','Crafting','Fletching','Slayer','Hunter','Mining','Smithing','Fishing','Cooking','Firemaking','Woodcutting','Farming'];
+function renderSkills(){
+  const c=document.getElementById('osrs-skills');if(!c)return;c.innerHTML='';
+  const d=ls('wh_osrs_levels',{});
+  OSRS_SKILLS.forEach(s=>{const l=d[s]||1;const r=document.createElement('div');r.className='skill-row';r.innerHTML='<span style="font-weight:600;min-width:90px">'+s+'</span><div style="flex:1;height:6px;background:rgba(123,94,0,.1);border-radius:3px;overflow:hidden;margin:0 8px"><div style="height:100%;width:'+(l/99*100)+'%;background:#7b5e00;border-radius:3px"></div></div><input class="oi-inp" type="number" min="1" max="99" value="'+l+'" onchange="saveSk(\''+s+'\',this.value)">';c.appendChild(r)});
+  const total=OSRS_SKILLS.reduce((a,s)=>a+(d[s]||1),0);
+  const t=document.createElement('div');t.style.cssText='display:flex;justify-content:space-between;padding:6px 0;font-size:11px;font-weight:700;color:#7b5e00;border-top:2px solid rgba(123,94,0,.2);margin-top:4px';t.innerHTML='<span>Total level</span><span>'+total+' / '+OSRS_SKILLS.length*99+'</span>';c.appendChild(t);
+}
+window.saveSk=(s,v)=>{const d=ls('wh_osrs_levels',{});d[s]=Math.min(99,Math.max(1,parseInt(v)||1));ss('wh_osrs_levels',d)};
+renderSkills();
+
+// ===== TIPS =====
+function renderTips(cid,tips){const c=document.getElementById(cid);if(!c)return;tips.forEach(t=>{const e=document.createElement('div');e.className='tip-card';e.innerHTML='<span class="tip-icon">'+(t.icon||'💡')+'</span><div><div style="font-weight:600">'+t.tip+'</div>'+(t.detail?'<div style="font-size:9px;color:var(--tmut);margin-top:2px">'+t.detail+'</div>':'')+'</div>';c.appendChild(e)})}
+
+renderTips('vmk-tips',[
+  {icon:'🏰',tip:'Play Pirates of the Caribbean for credits',detail:'Best credit-per-minute game. Get good at the cannon timing.'},
+  {icon:'🎯',tip:'Check trading posts daily',detail:'Rare items rotate. Some are worth a ton if you hold onto them.'},
+  {icon:'🏠',tip:'Visit other people\'s rooms for decoration ideas',detail:'The community builds incredible rooms — screenshot for inspo.'},
+  {icon:'💬',tip:'Be active in chat to make friends',detail:'The community is small and tight — regulars remember each other.'}
+]);
+
+renderTips('rblx-tips',[
+  {icon:'🎮',tip:'Try games with 1K-50K players for hidden gems',detail:'The most popular games aren\'t always the best. Mid-range player counts often have great communities.'},
+  {icon:'💰',tip:'Don\'t spend Robux on limited items early',detail:'Learn the economy first. Some limiteds appreciate, most don\'t.'},
+  {icon:'👤',tip:'Use free avatar items from events',detail:'Roblox runs events constantly that give free items — check the Avatar Shop events tab.'}
+]);
+
+renderTips('tt-tips',[
+  {icon:'🎯',tip:'Train Lure and Sound early',detail:'These are the hardest gag tracks but most important for boss battles.'},
+  {icon:'🏎️',tip:'Goofy Speedway is the best jellybean source',detail:'Win races consistently and you\'ll have more jellybeans than you can spend.'},
+  {icon:'🐭',tip:'Do toontasks in order — don\'t skip ahead',detail:'Each playground\'s tasks unlock the next area. Rushing leads to being underleveled.'},
+  {icon:'👥',tip:'Join a group for boss runs',detail:'VP, CFO, CJ, CEO are group content. Having regular friends makes it way easier.'},
+  {icon:'🌱',tip:'Garden your estate for gag XP boosts',detail:'Planting and watering flowers gives organic gag bonuses — very worth it.'},
+  {icon:'⛳',tip:'Golf gives laff points',detail:'Completing golf courses awards permanent laff boosts. Easy way to get tankier.'}
+]);
+
+renderTips('cp-tips',[
+  {icon:'💰',tip:'Cart Surfer is the best coin earner',detail:'Learn the flip + grind combo (backflip then grind on landing) for max coins per run.'},
+  {icon:'🐧',tip:'Become an EPF agent ASAP',detail:'Go to the Everyday Phoning Facility. The spy missions are some of the best content in the game.'},
+  {icon:'🏠',tip:'Igloo contests happen regularly',detail:'Decorate your igloo and submit it — winners get special items.'},
+  {icon:'🎉',tip:'Check the Town for parties',detail:'Player-run parties happen in specific servers. Check the community discord for schedules.'},
+  {icon:'📰',tip:'Read the Newspaper every issue',detail:'Hidden hints about upcoming events, new items, and secret rooms are in the Penguin Times.'}
+]);
+
+renderTips('osrs-tips',[
+  {icon:'🗡️',tip:'Do Waterfall Quest first',detail:'Gives you enough XP to jump from level 1 to 30 Attack and Strength instantly. Massive head start.'},
+  {icon:'📜',tip:'Quest early and often',detail:'Quests give the best XP and unlock areas, items, and training methods. Way better than grinding.'},
+  {icon:'💰',tip:'Start farming runs ASAP',detail:'Even at low levels, herb runs make 100k+ per run with minimal time invested.'},
+  {icon:'🏹',tip:'Train Ranged with a cannon at multi-combat areas',detail:'Expensive but the fastest combat XP in the game. Great for Slayer tasks too.'},
+  {icon:'⛏️',tip:'Motherlode Mine for AFK Mining',detail:'Unlocks at 30 Mining. You can watch Netflix while mining. Gives nuggets for Prospector outfit.'},
+  {icon:'🎣',tip:'Barbarian Fishing for free Agility + Strength XP',detail:'At level 48 Fishing you can catch leaping fish that also train Agility and Strength. 3-for-1.'},
+  {icon:'🏃',tip:'Agility is painful but important',detail:'Higher Agility = faster run energy restore. Do Rooftop Courses for Marks of Grace (Graceful outfit).'},
+  {icon:'🔑',tip:'Get the Quest Cape as a long-term goal',detail:'Completing all quests is the most rewarding achievement. It opens up everything.'}
+]);
+
+// ===== INIT ALL LISTS =====
+const ALL=[['vmk-mg','wh_vmk_mg'],['vmk-fr','wh_vmk_fr'],['vmk-cl','wh_vmk_cl'],['vmk-clw','wh_vmk_clw'],['vmk-fu','wh_vmk_fu'],['vmk-fuw','wh_vmk_fuw'],['babv-bears','wh_babv_bears'],['babv-fr','wh_babv_fr'],['rblx-fav','wh_roblox_faves'],['rblx-try','wh_roblox_try'],['rblx-fr','wh_rblx_fr'],['tt-toons','wh_tt_toons'],['tt-gags','wh_tt_gags'],['tt-fr','wh_tt_fr'],['tt-karts','wh_tt_karts'],['tt-golf','wh_tt_golf'],['tt-cl','wh_tt_cl'],['tt-clw','wh_tt_clw'],['tt-fu','wh_tt_fu'],['tt-fuw','wh_tt_fuw'],['cp-fr','wh_cp_fr'],['cp-mg','wh_cp_mg'],['cp-ev','wh_cp_ev'],['cp-cl','wh_cp_cl'],['cp-clw','wh_cp_clw'],['cp-fu','wh_cp_fu'],['cp-fuw','wh_cp_fuw'],['osrs-goals','wh_osrs_goals'],['osrs-money','wh_osrs_money'],['osrs-quests','wh_osrs_quests'],['osrs-items','wh_osrs_items'],['osrs-fr','wh_osrs_fr']];
+ALL.forEach(([c,k])=>oR(c,k));
+['vmk-notes/wh_vmk_notes','babv-mem/wh_babv_memories','rblx-av/wh_roblox_avatar','tt-notes/wh_tt_notes','cp-pen/wh_cp_pen','cp-notes/wh_cp_notes','osrs-notes/wh_osrs_notes'].forEach(p=>{const[id,key]=p.split('/');oL(id,key)});
+</script>
+</body>
+</html>

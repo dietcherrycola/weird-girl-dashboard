@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍃 ACNH — Weird Girl Dashboard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ACNH */
+#page-acnh{font-family:'Nunito',sans-serif;color:#3a2e24;background:linear-gradient(180deg,#B8EDFF 0%,#7DD8F0 40%,#5BBF7A 40%,#4aa868 100%);background-attachment:fixed;min-height:100vh;padding-bottom:60px}
+.acnh-container{max-width:820px;margin:0 auto;padding:20px 16px 60px;position:relative;z-index:1}
+.acnh-header{text-align:center;padding:24px 20px 20px}
+.acnh-leaf{font-size:2.5rem;display:block;margin-bottom:6px;animation:acnh-bounce 2s ease-in-out infinite}
+@keyframes acnh-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.acnh-header h1{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,5vw,2.6rem);color:#FFFDF7;text-shadow:3px 4px 0 #3d9e5e;line-height:1.1;margin-bottom:8px}
+.acnh-header-sub{background:#FFFDF7;display:inline-block;padding:6px 16px;border-radius:30px;font-weight:700;font-size:.82rem;color:#3d9e5e;border:2px solid #3d9e5e;box-shadow:2px 3px 0 #3d9e5e}
+.acnh-progress-wrap{background:rgba(255,255,255,.4);border-radius:20px;padding:12px 18px;margin-bottom:18px;border:2px solid rgba(255,255,255,.6);backdrop-filter:blur(8px)}
+.acnh-progress-label{font-weight:800;font-size:.82rem;color:#FFFDF7;text-shadow:1px 1px 0 rgba(0,0,0,.2);margin-bottom:7px;display:flex;justify-content:space-between}
+.acnh-progress-track{background:rgba(255,255,255,.4);border-radius:20px;height:16px;overflow:hidden;border:2px solid rgba(255,255,255,.5)}
+.acnh-progress-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#5BBF7A,#A8D672);transition:width .5s ease;min-width:16px;position:relative}
+.acnh-progress-fill::after{content:'🌟';position:absolute;right:-2px;top:50%;transform:translateY(-50%);font-size:14px}
+.acnh-day-card{background:#FFFDF7;border-radius:18px;margin-bottom:12px;border:3px solid rgba(0,0,0,.08);box-shadow:4px 5px 0 rgba(0,0,0,.1);overflow:hidden}
+.acnh-day-card.completed{opacity:.75}
+.acnh-day-header{display:flex;align-items:center;gap:11px;padding:13px 16px;cursor:pointer;user-select:none}
+.acnh-day-header:hover{filter:brightness(.97)}
+.acnh-day-badge{font-family:'Fredoka One',cursive;font-size:.95rem;min-width:54px;text-align:center;background:rgba(255,255,255,.5);border-radius:11px;padding:5px 7px;border:2px solid rgba(255,255,255,.7);line-height:1.1;flex-shrink:0}
+.acnh-day-num{font-size:1.2rem;display:block}
+.acnh-day-title{font-family:'Fredoka One',cursive;font-size:1rem;line-height:1.2}
+.acnh-day-subtitle{font-size:.76rem;font-weight:600;opacity:.7;margin-top:2px}
+.acnh-day-unlock{font-size:.7rem;font-weight:700;background:rgba(255,255,255,.6);padding:3px 8px;border-radius:20px;border:1.5px solid rgba(0,0,0,.1);white-space:nowrap;flex-shrink:0}
+.acnh-day-arrow{font-size:1rem;transition:transform .3s;flex-shrink:0}
+.acnh-day-card.open .acnh-day-arrow{transform:rotate(180deg)}
+.acnh-day-body{display:none;padding:0 16px 16px;border-top:2px dashed rgba(0,0,0,.08)}
+.acnh-day-card.open .acnh-day-body{display:block}
+.acnh-section-label{font-family:'Fredoka One',cursive;font-size:.88rem;margin:11px 0 6px}
+.acnh-task-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.acnh-task-item{display:flex;align-items:flex-start;gap:8px;padding:6px 10px;background:#F9F6EE;border-radius:8px;border:1.5px solid rgba(0,0,0,.06);cursor:pointer;transition:background .15s;font-size:.84rem;font-weight:600;line-height:1.4}
+.acnh-task-item:hover{background:#F0EBE0}
+.acnh-task-item.done{background:#EAF7ED;border-color:#A8D9B0;text-decoration:line-through;opacity:.65}
+.acnh-task-cb{width:18px;height:18px;border-radius:5px;border:2px solid #C5B8A0;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .2s;font-size:11px;background:white}
+.acnh-task-item.done .acnh-task-cb{background:#5BBF7A;border-color:#3d9e5e;color:white}
+.acnh-tip-box{background:linear-gradient(135deg,#FFF8E7,#FFF3D4);border:2px solid #FFB347;border-radius:11px;padding:8px 12px;margin-top:11px;font-size:.81rem;font-weight:600;line-height:1.5}
+.acnh-tt-box{background:linear-gradient(135deg,#F0E8FF,#E8D9FF);border:2px solid #C9A9E0;border-radius:11px;padding:8px 12px;margin-top:8px;font-size:.81rem;font-weight:600;line-height:1.5;color:#6b3a8a}
+.acnh-complete-btn{margin-top:12px;width:100%;padding:10px;border-radius:12px;border:3px solid;font-family:'Fredoka One',cursive;font-size:.95rem;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:3px 4px 0 rgba(0,0,0,.12)}
+.acnh-complete-btn:hover{transform:translateY(-2px)}
+.acnh-complete-btn.mark{background:#5BBF7A;border-color:#3d9e5e;color:white}
+.acnh-complete-btn.unmark{background:#f0ebe0;border-color:#c5b8a0;color:#7a6a58}
+.acnh-unlocks-wrap{background:#FFFDF7;border-radius:18px;padding:16px;margin-top:8px;border:3px solid rgba(0,0,0,.08);box-shadow:4px 5px 0 rgba(0,0,0,.1)}
+.acnh-unlocks-wrap h2{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:11px;text-align:center;color:#3d9e5e}
+.acnh-unlock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.acnh-unlock-item{background:linear-gradient(135deg,#F9F6EE,#F2EDE0);border-radius:10px;padding:8px 10px;border:2px solid rgba(0,0,0,.07);font-size:.79rem;font-weight:700;display:flex;align-items:center;gap:7px}
+.acnh-celebration{text-align:center;padding:22px 16px;background:#FFFDF7;border-radius:18px;border:3px solid #5BBF7A;box-shadow:4px 5px 0 #3d9e5e;margin-top:8px;display:none}
+.acnh-celebration.show{display:block}
+.acnh-celebration h2{font-family:'Fredoka One',cursive;font-size:1.6rem;color:#3d9e5e;margin:6px 0 5px}
+.confetti-emoji{font-size:2.2rem;display:block;animation:acnh-bounce 1s ease-in-out infinite}
+
+/* MISC */
+.legend{display:flex;gap:10px;margin-bottom:.7rem;flex-wrap:wrap}
+.leg-i{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--tmut)}
+.leg-d{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.empty-s{text-align:center;padding:1.2rem;color:var(--tmut);font-size:11px;font-style:italic}
+.scrollbar-thin::-webkit-scrollbar{width:3px}
+.scrollbar-thin::-webkit-scrollbar-thumb{background:rgba(192,57,43,.2);border-radius:2px}
+.hdr{text-align:center;margin-bottom:1.2rem}
+.hdr-logo{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--chd)}
+.hdr-logo span{color:var(--ch);font-style:italic}
+.divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--ch),transparent);margin:7px auto}
+.hdr-sub{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--tmut);font-weight:300}
+.date-pill{display:inline-block;background:var(--chp);color:var(--chd);font-size:11px;border-radius:20px;padding:3px 12px;margin-top:6px}
+.quote-card{background:var(--ch);border-radius:14px;padding:.9rem 1.2rem;margin-bottom:1rem;position:relative;overflow:hidden}
+.quote-card::before{content:'"';position:absolute;top:-12px;left:8px;font-family:'Playfair Display',serif;font-size:70px;color:rgba(255,255,255,.1);line-height:1}
+.qt{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:white;line-height:1.6}
+.qa{font-size:10px;color:rgba(255,255,255,.65);margin-top:4px;letter-spacing:1px;text-transform:uppercase}
+.int-item{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--cbr);align-items:flex-start}
+.int-item:last-child{border-bottom:none}
+.int-num{font-family:'Playfair Display',serif;font-size:14px;color:var(--ch);font-weight:700;line-height:1;min-width:16px}
+.int-text{font-size:11px;color:var(--tm);line-height:1.5}
+.mo{display:none;position:fixed;inset:0;background:rgba(26,10,10,.5);z-index:300;align-items:center;justify-content:center;padding:1rem}
+.mo.open{display:flex}
+.modal{background:var(--cream);border-radius:16px;padding:1.3rem;width:100%;max-width:430px;border:1px solid var(--cbr);max-height:90vh;overflow-y:auto}
+.modal-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--chd);margin-bottom:.9rem}
+.fr{margin-bottom:.7rem}
+.fl{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--tmut);margin-bottom:3px;display:block;font-weight:500}
+.macts{display:flex;gap:6px;margin-top:.9rem}
+.form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Override for standalone page */
+#page-acnh{display:block}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="db" id="page-acnh">
+  <div class="acnh-container">
+    <div class="acnh-header">
+      <span class="acnh-leaf">🍃</span>
+      <h1>ACNH Island<br>Progression Guide</h1>
+      <span class="acnh-header-sub">⏰ Time Travel Edition · ~14 Days to Full Island</span>
+    </div>
+    <div class="acnh-progress-wrap">
+      <div class="acnh-progress-label"><span>🏝️ Island Progress</span><span id="acnh-progress-text">0 / 14 days complete</span></div>
+      <div class="acnh-progress-track"><div class="acnh-progress-fill" id="acnh-progress-fill" style="width:0%"></div></div>
+    </div>
+    <div id="acnh-days-container"></div>
+    <div class="acnh-unlocks-wrap">
+      <h2>🎉 Everything You'll Have Unlocked</h2>
+      <div class="acnh-unlock-grid">
+        <div class="acnh-unlock-item">🦉 Blathers' Museum</div><div class="acnh-unlock-item">🏪 Nook's Cranny</div>
+        <div class="acnh-unlock-item">👗 Able Sisters</div><div class="acnh-unlock-item">🏛️ Resident Services</div>
+        <div class="acnh-unlock-item">🎸 K.K. Slider Concerts</div><div class="acnh-unlock-item">⛏️ Terraforming</div>
+        <div class="acnh-unlock-item">🌻 Leif's Garden Shop</div><div class="acnh-unlock-item">🖼️ Redd's Art Boat</div>
+        <div class="acnh-unlock-item">🌟 3-Star Rating</div><div class="acnh-unlock-item">👥 10 Villagers</div>
+        <div class="acnh-unlock-item">🌉 Bridges & Inclines</div><div class="acnh-unlock-item">💰 500k+ Bells</div>
+      </div>
+    </div>
+    <div class="acnh-celebration" id="acnh-celebration">
+      <span class="confetti-emoji">🎊</span>
+      <h2>Island Complete!!</h2>
+      <p style="font-weight:700;color:#7a6a58;margin-top:5px">Your island is ready for normal gameplay. Time to enjoy it! 🏝️✨</p>
+    </div>
+  </div>
+</div>
+
+<!-- HEALTH MODALS -->
+<div class="mo" id="h-med-modal">
+  <div class="modal"><div class="modal-title">Add medication</div>
+    <div class="fr"><label class="fl">Name</label><input class="inp inp-full" id="h-mm-name" placeholder="Medication name..."></div>
+    <div class="fr"><div class="form-grid2"><div><label class="fl">Dosage</label><input class="inp inp-full" id="h-mm-dose" placeholder="e.g. 500mg"></div><div><label class="fl">Form</label><select class="sel inp-full" id="h-mm-form"><option>Tablet</option><option>Capsule</option><option>Injection</option><option>Liquid</option><option>Patch</option><option>Other</option></select></div></div></div>
+    <div class="fr"><label class="fl">Frequency</label><div class="form-grid2"><input class="inp" id="h-mm-fnum" type="number" min="1" max="99" value="1" style="width:100%"><select class="sel" id="h-mm-funit" style="width:100%"><option value="day">×/day</option><option value="week">×/week</option><option value="month">×/month</option></select></div></div>
+    <div class="fr"><label class="fl">Type</label><select class="sel inp-full" id="h-mm-type" onchange="document.getElementById('h-mm-end-row').style.display=this.value==='limited'?'block':'none'"><option value="recurring">Recurring</option><option value="limited">Limited course</option></select></div>
+    <div class="fr" id="h-mm-end-row" style="display:none"><label class="fl">End date</label><input class="inp inp-full" id="h-mm-end" type="date"></div>
+    <div class="fr"><label class="fl">Condition</label><select class="sel inp-full" id="h-mm-cond"><option>Type 1 Diabetes</option><option>PCOS</option><option>Hypothyroidism</option><option>ADHD</option><option>Cardiovascular</option><option>Hormone / Contraceptive</option><option>General / Other</option></select></div>
+    <div class="fr"><label class="fl">When to take</label><input class="inp inp-full" id="h-mm-time" placeholder="e.g. Morning with food..."></div>
+    <div class="fr"><label class="fl">Notes</label><textarea class="inp inp-full" id="h-mm-notes" style="height:44px;resize:none"></textarea></div>
+    <div class="macts"><button class="btn btn-outline" onclick="hCloseMo('h-med-modal')">Cancel</button><button class="btn btn-red" onclick="hSaveMed()">Add medication</button></div>
+  </div>
+</div>
+<div class="mo" id="h-supp-modal">
+  <div class="modal"><div class="modal-title">Add supplement</div>
+    <div class="fr"><label class="fl">Name</label><input class="inp inp-full" id="h-sm-name" placeholder="e.g. Magnesium..."></div>
+    <div class="fr"><div class="form-grid2"><div><label class="fl">Dosage</label><input class="inp inp-full" id="h-sm-dose"></div><div><label class="fl">Form</label><select class="sel inp-full" id="h-sm-form"><option>Gummy</option><option>Capsule</option><option>Tablet</option><option>Powder</option><option>Liquid</option><option>Other</option></select></div></div></div>
+    <div class="fr"><label class="fl">Frequency</label><div class="form-grid2"><input class="inp" id="h-sm-fnum" type="number" min="1" value="1" style="width:100%"><select class="sel" id="h-sm-funit" style="width:100%"><option value="day">×/day</option><option value="week">×/week</option><option value="month">×/month</option></select></div></div>
+    <div class="fr"><label class="fl">Why you're taking it</label><input class="inp inp-full" id="h-sm-reason"></div>
+    <div class="fr"><label class="fl">Notes</label><textarea class="inp inp-full" id="h-sm-notes" style="height:40px;resize:none"></textarea></div>
+    <div class="macts"><button class="btn btn-outline" onclick="hCloseMo('h-supp-modal')">Cancel</button><button class="btn btn-green" onclick="hSaveSupp()">Add supplement</button></div>
+  </div>
+</div>
+<div class="mo" id="h-doc-modal">
+  <div class="modal"><div class="modal-title">Add doctor</div>
+    <div class="fr"><label class="fl">Name</label><input class="inp inp-full" id="h-dm-name" placeholder="Dr. ..."></div>
+    <div class="fr"><label class="fl">Specialty</label><input class="inp inp-full" id="h-dm-spec"></div>
+    <div class="fr"><label class="fl">Practice / Hospital</label><input class="inp inp-full" id="h-dm-practice"></div>
+    <div class="fr"><label class="fl">Phone</label><input class="inp inp-full" id="h-dm-phone"></div>
+    <div class="fr"><label class="fl">Conditions managed</label><input class="inp inp-full" id="h-dm-conds"></div>
+    <div class="fr"><label class="fl">Notes</label><textarea class="inp inp-full" id="h-dm-notes" style="height:44px;resize:none"></textarea></div>
+    <div class="macts"><button class="btn btn-outline" onclick="hCloseMo('h-doc-modal')">Cancel</button><button class="btn btn-red" onclick="hSaveDoc()">Add doctor</button></div>
+  </div>
+</div>
+<div class="mo" id="h-appt-modal">
+  <div class="modal"><div class="modal-title">Add appointment</div>
+    <div class="fr"><label class="fl">Doctor / specialist</label><input class="inp inp-full" id="h-am-doc"></div>
+    <div class="fr"><label class="fl">Date</label><input class="inp inp-full" id="h-am-date" type="date"></div>
+    <div class="fr"><label class="fl">Time</label><input class="inp inp-full" id="h-am-time" type="time"></div>
+    <div class="fr"><label class="fl">Location / telehealth</label><input class="inp inp-full" id="h-am-loc"></div>
+    <div class="fr"><label class="fl">Purpose / notes</label><textarea class="inp inp-full" id="h-am-notes" style="height:52px;resize:none"></textarea></div>
+    <div class="macts"><button class="btn btn-outline" onclick="hCloseMo('h-appt-modal')">Cancel</button><button class="btn btn-red" onclick="hSaveAppt()">Save appointment</button></div>
+  </div>
+</div>
+<div class="mo" id="h-chk-modal">
+  <div class="modal">
+    <div class="modal-title" id="h-chk-modal-title">Mark as done</div>
+    <div style="font-size:11px;color:var(--tmut);margin-bottom:.8rem" id="h-chk-modal-desc"></div>
+    <div class="fr"><label class="fl">Date completed</label><input class="inp inp-full" id="h-chk-done-date" type="date"></div>
+    <div style="background:var(--chp);border-radius:8px;padding:.6rem .8rem;font-size:11px;margin-bottom:.7rem">
+      <div style="font-weight:600;color:var(--chd);margin-bottom:3px">📅 Your next one will be due:</div>
+      <div id="h-chk-next-preview" style="color:var(--ch);font-weight:600;font-size:13px;font-family:'Playfair Display',serif"></div>
+    </div>
+    <div class="macts"><button class="btn btn-outline" onclick="hCloseMo('h-chk-modal')">Cancel</button><button class="btn btn-red" id="h-chk-confirm-btn">Mark as done</button></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="mo" id="need-modal">
+  <div class="modal"><div class="modal-title">Add a new goal</div>
+    <div class="fr"><label class="fl">Goal name</label><input class="inp inp-full" id="nm-name" placeholder="e.g. language practice..." /></div>
+    <div class="fr"><label class="fl">How often to stay full?</label><div class="form-grid2"><input class="inp" id="nm-num" type="number" min="1" max="99" value="3" /><select class="sel inp-full" id="nm-unit"><option value="day">times/day</option><option value="week" selected>times/week</option><option value="month">times/month</option></select></div></div>
+    <div class="fr"><label class="fl">Starting fill</label><div style="display:flex;align-items:center;gap:8px"><input type="range" id="nm-start" min="0" max="100" value="50" step="1" style="flex:1" /><span id="nm-start-out" style="font-size:11px;font-weight:500;min-width:28px;color:var(--chd)">50%</span></div></div>
+    <div class="macts"><button class="btn btn-outline" id="nm-cancel">Cancel</button><button class="btn btn-red" id="nm-save">Add goal</button></div>
+  </div>
+</div>
+<div class="mo" id="content-modal">
+  <div class="modal"><div class="modal-title">Add content idea</div>
+    <div class="fr"><label class="fl">Title / concept</label><input class="inp inp-full" id="cm-title" placeholder="e.g. Why Heathers is a feminist masterpiece..." /></div>
+    <div class="fr"><label class="fl">Type</label><select class="sel inp-full" id="cm-type"><option>Movie analysis</option><option>GRWM</option><option>Vlog / life update</option><option>Doll restoration</option><option>Skill / learning</option><option>Other</option></select></div>
+    <div class="fr"><label class="fl">Platform</label><select class="sel inp-full" id="cm-platform"><option>YouTube</option><option>TikTok</option><option>Instagram</option><option>All platforms</option></select></div>
+    <div class="fr"><label class="fl">Notes</label><textarea class="inp inp-full" id="cm-notes" style="height:44px;resize:none"></textarea></div>
+    <div class="macts"><button class="btn btn-outline" id="cm-cancel">Cancel</button><button class="btn btn-red" id="cm-save">Add idea</button></div>
+  </div>
+</div>
+<div class="mo" id="income-modal">
+  <div class="modal"><div class="modal-title">Log income</div>
+    <div class="fr"><label class="fl">Source</label><input class="inp inp-full" id="inc-source" placeholder="e.g. Etsy sale, UGC deal..." /></div>
+    <div class="fr"><label class="fl">Amount ($)</label><input class="inp inp-full" id="inc-amt" type="number" min="0" placeholder="0" /></div>
+    <div class="fr"><label class="fl">Category</label><select class="sel inp-full" id="inc-cat"><option>YouTube</option><option>Etsy</option><option>UGC / Brand deal</option><option>Streaming</option><option>Modding / Patreon</option><option>Other</option></select></div>
+    <div class="macts"><button class="btn btn-outline" id="inc-cancel">Cancel</button><button class="btn btn-red" id="inc-save">Log it</button></div>
+  </div>
+</div>
+<div class="mo" id="learn-modal">
+  <div class="modal"><div class="modal-title">Add learning subject</div>
+    <div class="fr"><label class="fl">Subject</label><input class="inp inp-full" id="lm-name" placeholder="e.g. Machine learning..." /></div>
+    <div class="fr"><label class="fl">Category</label><select class="sel inp-full" id="lm-cat"><option>Coding</option><option>Art / Design</option><option>History</option><option>Science</option><option>Language</option><option>Games / Modding</option><option>Other</option></select></div>
+    <div class="fr"><label class="fl">Resource</label><input class="inp inp-full" id="lm-resource" placeholder="e.g. FreeCodeCamp, YouTube..." /></div>
+    <div class="macts"><button class="btn btn-outline" id="lm-cancel">Cancel</button><button class="btn btn-red" id="lm-save">Add subject</button></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script type="module" src="shared.js"></script>
+<script type="module">
+renderNav('acnh');
+
+// Make page visible
+
+
+// ============ STORAGE ============
+const acnhDays=[{day:1,emoji:"🏕️",title:"First Day — Build Your Foundation",subtitle:"The most important day.",unlock:"🌿 Island Unlocked",color:"#FFB3C6",sections:[{label:"🌅 Morning Tasks",tasks:["Pick up everything on the ground (sticks, stones, weeds)","Craft Flimsy Fishing Rod, Net, and Axe from Tom Nook's DIY recipes","Shake every tree for branches and furniture","Hit all 6 rocks for iron nuggets & bells"]},{label:"🐛 Call Blathers",tasks:["Catch 5 bugs OR fish","Walk up to Tom Nook → 'I found a creature!' 5 times","Do this for ALL 5 — triggers Blathers to come!","Tom Nook will place Blathers' tent spot on your map"]},{label:"💰 Money Grind",tasks:["Sell everything you don't need to Timmy","Find the glowing spot — dig it up (10k bells!)","Bury 10,000 bells back → grows into 30k bell tree in 3 days","Shake ALL trees — 2 have 1,000 bell bags per day"]}],tip:"💡 Don't eat fruit and destroy rocks! Keep all 6 rocks intact every day.",tt:"TT forward +1 day before sleeping. Blathers' tent will be placed when you load in!"},{day:2,emoji:"🦉",title:"Blathers Arrives — Start the Museum",subtitle:"Get the museum pipeline going ASAP.",unlock:"🏕️ Blathers' Tent",color:"#FFD6A5",sections:[{label:"🦉 Blathers' Tent",tasks:["Find Blathers' tent on your island","Donate 5 things immediately","Talk again and donate 10 MORE things (15 total to upgrade)","Dig up all 4 fossils (star-shaped cracks in dirt)","Assess and donate fossils"]},{label:"⛏️ Iron Nugget Grind",tasks:["Need 30 iron nuggets for Nook's Cranny — start stacking!","Hit all 6 rocks (dig 2 holes behind you for 8 hits each!)","Buy a Nook Miles Ticket (2,000 miles) and fly to mystery island","Hit ALL rocks on mystery islands too","Collect non-native fruit (sells for 500 bells each!)"]}],tip:"💡 Mystery islands are KEY for iron nuggets.",tt:"After donating 15 to Blathers, TT +1 day → Full Museum opens!"},{day:3,emoji:"🏛️",title:"Museum Opens — Build Nook's Cranny",subtitle:"The shop is the most important early unlock.",unlock:"🏛️ Full Museum",color:"#FDFFB6",sections:[{label:"🏗️ Build Nook's Cranny",tasks:["Talk to Timmy → 'What are you thinking about?'","Hand over: 30 Iron Nuggets, 30 Wood, 30 Softwood, 30 Hardwood","Place the shop kit near the plaza","Better prices + more items daily after this!"]},{label:"💸 Bell Building",tasks:["Take NMT mystery island trip — look for tarantulas at night!","Sell duplicate fossils to Timmy","Check balloon presents at :04 and :34 past the hour","Plant money trees from your daily glowing spot"]}],tip:"💡 The drop-box outside Nook's Cranny gives 80% of sell price when shop is closed.",tt:"TT forward +2 days for Nook's Cranny to finish construction."},{day:4,emoji:"🏪",title:"Nook's Cranny Opens — Invite Villagers",subtitle:"Time to get your island populated.",unlock:"🏪 Nook's Cranny",color:"#CAFFBF",sections:[{label:"👥 Place Villager Plots",tasks:["Talk to Tom Nook → 'Let's talk infrastructure' → 'I want more residents'","He gives you 3 housing kits to place","Place all 3 plots somewhere you'll want houses","You need these placed before inviting villagers!"]},{label:"✈️ NMT Island Hopping",tasks:["Fly to mystery islands with NMT tickets","Some islands have a random villager — talk to them 3 times","They'll ask to move to your island → say YES","Repeat until you've invited 3 villagers"]}],tip:"💡 Don't be picky about villagers right now. You can swap them later.",tt:"After inviting 3 villagers, TT +3 days for them all to move in."},{day:5,emoji:"🌉",title:"Villagers Move In — Infrastructure",subtitle:"Build a bridge and incline for Resident Services upgrade.",unlock:"👥 First 3 Villagers",color:"#9BF6FF",sections:[{label:"🌉 Build a Bridge",tasks:["Tom Nook → 'Let's talk infrastructure' → 'I want a bridge'","Choose a bridge style and place it over a river","Cost: ~98,000 bells — pay it off at the donation box","You MUST build at least 1 bridge to progress"]},{label:"🏔️ Build an Incline",tasks:["Tom Nook → 'I want an incline/slope'","Place connecting cliff levels","Cost: ~98,000 bells","You need at least 1 incline to progress"]}],tip:"💡 You need: 3 villagers + 1 bridge + 1 incline for Resident Services to upgrade.",tt:"TT +3 days after paying off bridge and incline."},{day:6,emoji:"🏛️",title:"Resident Services Upgrades!",subtitle:"The biggest unlock in the game.",unlock:"🏛️ Resident Services",color:"#A0C4FF",sections:[{label:"🎉 Resident Services Upgrade",tasks:["Tom Nook announces Resident Services is upgrading — closes for 1 day","TT +1 day and the full building is open!","Isabelle now works here — talk to her about island improvements","You can now customize island with fencing, paths, and more"]},{label:"👗 Prep for Mabel",tasks:["Mabel (the hedgehog) will start visiting your plaza — buy something!","She visits twice before offering to open a shop","Check the plaza area daily","Buy at least 1 clothing item each time she's there"]}],tip:"💡 Check Isabelle daily — she tells you exactly what's keeping your rating low.",tt:"After upgrade announcement, TT +1 day to open it immediately."},{day:7,emoji:"👗",title:"Mabel Visits — Push For Able Sisters",subtitle:"Buy from Mabel twice to unlock the clothing shop.",unlock:"📅 Mabel Visit 1",color:"#BDB2FF",sections:[{label:"👗 Mabel's First Visit",tasks:["Find Mabel in your town plaza (shows up randomly on weekdays)","Buy at least one clothing item — required!","Talk to her about her shop, sister Sable, and her plans","She'll mention wanting to open a shop — encourage her!"]},{label:"⭐ Island Rating Push",tasks:["Talk to Isabelle → ask about rating","She'll tell you exactly what's missing — listen!","Place DIY furniture outside (not in your house!)","Plant flower seeds around your island","Pull all weeds — weeds hurt your rating"]}],tip:"💡 Quantity of outdoor placed items matters A LOT. Craft cheap DIY items and scatter them.",tt:"TT day by day checking plaza until Mabel shows up."},{day:8,emoji:"✂️",title:"Mabel Visits Again — Place Her Shop",subtitle:"One more Mabel visit and Able Sisters is yours.",unlock:"📅 Mabel Visit 2",color:"#FFC6FF",sections:[{label:"✂️ Mabel's Second Visit",tasks:["Find Mabel in the plaza again (TT daily until she appears)","Buy from her again — required to trigger the shop offer!","After buying she'll ask about opening Able Sisters → say YES","Tom Nook gives you a plot kit for Able Sisters"]},{label:"🏗️ Place Able Sisters",tasks:["Place the Able Sisters shop kit in a good permanent location","Near Nook's Cranny or plaza is ideal","Think carefully — moving buildings costs 50k bells!","Once placed, TT +2 days for it to open"]}],tip:"💡 Able Sisters unlocks custom designs (QR codes!), huge clothing catalog, and Sable's fabric patterns.",tt:"TT +2 days after placing Able Sisters → shop opens."},{day:9,emoji:"🌟",title:"Able Sisters Open — Chase 3 Stars",subtitle:"Major shopping upgrade + push hard for island rating.",unlock:"👗 Able Sisters Shop",color:"#FFB3C6",sections:[{label:"⭐⭐⭐ 3-Star Rating Push",tasks:["Ask Isabelle about your rating — need 3 stars for K.K. Slider","Place 30+ outdoor furniture items","Have at least 7-8 villagers","Plant 100+ flowers around your island","Have 10+ trees in different areas"]}],tip:"💡 Tarantula hunting: Fly to mystery island after 7pm. Clear ALL flowers/stumps. Forces only tarantulas. Each worth 8,000 bells!",tt:"Check star rating with Isabelle each TT day."},{day:10,emoji:"🎸",title:"3 Stars! K.K. Slider Visits",subtitle:"Terraforming unlocks after this!",unlock:"🌟 3-Star Rating",color:"#CAFFBF",sections:[{label:"🎸 K.K. Slider Concert",tasks:["Tom Nook announces K.K. Slider is coming!","TT to a Saturday to trigger his concert","Attend at 6pm in the plaza","After the concert you get the Island Designer app!"]},{label:"⛏️ Terraforming Unlocked!",tasks:["Open NookPhone → Island Designer app installed","You can now create and delete cliff levels","You can now create and delete water","You can now lay paths — dirt, stone, brick, custom"]}],tip:"💡 Don't start major terraforming without a plan! Use Happy Island Designer at eugeneration.github.io first.",tt:"TT to any Saturday (after 3 stars) between 6pm-midnight to trigger K.K."},{day:11,emoji:"🌈",title:"Harv's Island — Unlock All Vendors",subtitle:"Unlock Leif, Redd, Label, and more.",unlock:"⛏️ Terraforming",color:"#9BF6FF",sections:[{label:"✈️ Fly to Harv's Island",tasks:["Use the airport to fly to Harv's Island","Donate bells at donation box to fund each vendor — 100k bells each","Prioritize: Leif (rare plants), Redd (art), Tortimer (storage)","Leif, Redd, Label, Tortimer, Saharah, Kicks — all 100k each"]}],tip:"💡 Use Nookipedia to tell fake vs real art. Redd will try to sell you fakes and Blathers won't accept them!",tt:"After unlocking vendors, TT +7 days to see their next weekly rotation."},{day:12,emoji:"🏘️",title:"Fill Your Island — More Villagers",subtitle:"Get to 10 villagers and make your island feel alive.",unlock:"🌿 Harv's Vendors",color:"#FFD6A5",sections:[{label:"👥 More Villager Slots",tasks:["Talk to Tom Nook to place more plots — work toward 10 total","Use NMT island hopping to find villagers you like","Check fan trading sites or use Amiibo cards for specific villagers"]},{label:"🌺 Island Beautification",tasks:["Breed hybrid flowers — rare colors sell for tons of bells","Plant bushes from Leif to create natural borders","Build more paths using Island Designer"]}],tip:"💡 Hybrid flowers take time but blue roses and gold roses are worth it!",tt:"TT +1 day repeatedly to process villager move-ins."},{day:13,emoji:"🌊",title:"Terraforming & Designing",subtitle:"Now the fun part — make your island actually yours.",unlock:"👥 10 Villagers",color:"#BDB2FF",sections:[{label:"🗺️ Island Design Planning",tasks:["Use Happy Island Designer (eugeneration.github.io) to plan layout","Decide on aesthetic — cottagecore, modern, natural, fairytale...","Plan where you want cliffs, rivers, and flat land","Move any buildings you want repositioned (50k each)"]},{label:"🌸 Outdoor Decor",tasks:["Create themed areas — flower garden, cafe area, market stalls...","Use Nook Shopping catalog to order furniture","Set up a photo spot for screenshots!"]}],tip:"💡 Custom path designs are game-changing! Search 'ACNH custom paths' on Pinterest or Reddit for free Design ID codes.",tt:"TT forward to skip construction days when moving or building."},{day:14,emoji:"🏆",title:"Fully Unlocked — Normal Play Begins!",subtitle:"You've done it. Your island is ready for regular gameplay.",unlock:"🏆 Everything!",color:"#FDFFB6",sections:[{label:"✅ Final Checklist",tasks:["Museum open with all 4 wings ✓","Nook's Cranny open ✓","Able Sisters open ✓","Resident Services building open ✓","K.K. Slider performed (terraforming unlocked) ✓","Harv's vendors funded and open ✓","8+ villagers moved in ✓","At least 1 bridge and 1 incline built ✓"]},{label:"🎉 You're Done Rushing!",tasks:["Stop time traveling and just play at your own pace now 🌿","Visit daily for seasonal events, new shop items, island changes","Enjoy the slow, cozy game you wanted — you've earned it!"]}],tip:"💡 The real endgame is designing your island exactly how you want. Take months making it perfect!",tt:"You can stop time traveling now! But TT to specific dates to experience seasonal events."}];
+
+function acnhDayKey(d){return`acnh_day_done_${d}`}
+function acnhTaskKey(d,s,t){return`acnh_d${d}_s${s}_t${t}`}
+let acnhState=ls('acnh_guide',{});
+function acnhUpdateProgress(){const done=acnhDays.filter((_,i)=>acnhState[acnhDayKey(i)]).length;const pct=Math.round(done/acnhDays.length*100);document.getElementById('acnh-progress-fill').style.width=pct+'%';document.getElementById('acnh-progress-text').textContent=done+' / '+acnhDays.length+' days complete';document.getElementById('acnh-celebration').classList.toggle('show',done===acnhDays.length)}
+function renderACNH(){
+  const container=document.getElementById('acnh-days-container');container.innerHTML='';
+  acnhDays.forEach((day,di)=>{
+    const isDone=!!acnhState[acnhDayKey(di)];const card=document.createElement('div');card.className='acnh-day-card'+(isDone?' completed':'');
+    const header=document.createElement('div');header.className='acnh-day-header';header.style.background=`linear-gradient(135deg,${day.color}cc,${day.color}88)`;
+    header.innerHTML=`<div class="acnh-day-badge"><span style="font-size:1.2rem">${day.emoji}</span><span class="acnh-day-num">Day ${day.day}</span></div><div style="flex:1"><div class="acnh-day-title">${day.title}</div><div class="acnh-day-subtitle">${day.subtitle}</div></div><div class="acnh-day-unlock">${day.unlock}</div><span class="acnh-day-arrow">▾</span>`;
+    header.onclick=()=>card.classList.toggle('open');
+    const body=document.createElement('div');body.className='acnh-day-body';
+    day.sections.forEach((sec,si)=>{const lbl=document.createElement('div');lbl.className='acnh-section-label';lbl.textContent=sec.label;body.appendChild(lbl);const ul=document.createElement('ul');ul.className='acnh-task-list';sec.tasks.forEach((task,ti)=>{const key=acnhTaskKey(di,si,ti),done=!!acnhState[key];const li=document.createElement('li');li.className='acnh-task-item'+(done?' done':'');li.innerHTML=`<div class="acnh-task-cb">${done?'✓':''}</div><span>${task}</span>`;li.onclick=e=>{e.stopPropagation();acnhState[key]=!acnhState[key];ss('acnh_guide',acnhState);li.classList.toggle('done',!!acnhState[key]);li.querySelector('.acnh-task-cb').textContent=acnhState[key]?'✓':''};ul.appendChild(li)});body.appendChild(ul)});
+    if(day.tip){const t=document.createElement('div');t.className='acnh-tip-box';t.innerHTML=day.tip;body.appendChild(t)}
+    if(day.tt){const t=document.createElement('div');t.className='acnh-tt-box';t.innerHTML=`<strong>⏰ Time Travel Tip:</strong> ${day.tt}`;body.appendChild(t)}
+    const btn=document.createElement('button');btn.className='acnh-complete-btn '+(isDone?'unmark':'mark');btn.textContent=isDone?'↩ Mark as Not Done':'✓ Mark Day Complete!';
+    btn.onclick=e=>{e.stopPropagation();acnhState[acnhDayKey(di)]=!isDone;ss('acnh_guide',acnhState);renderACNH();acnhUpdateProgress()};
+    body.appendChild(btn);card.appendChild(header);card.appendChild(body);container.appendChild(card);
+    if(!isDone&&!container.querySelector('.acnh-day-card.open'))card.classList.add('open');
+  });acnhUpdateProgress();
+}
+renderACNH();
+
+// ============ FINAL INIT ============
+genSeed();renderEnergyOpts();renderTED();
+
+
+</script>
+</body>
+</html>
