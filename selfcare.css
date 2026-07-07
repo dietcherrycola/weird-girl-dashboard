@@ -1,0 +1,4 @@
+.ritual-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:white;border:1px solid var(--cbr);border-radius:9px;margin-bottom:5px;transition:all .15s}
+.ritual-item.done-today{background:var(--chp);border-color:rgba(192,57,43,.3)}
+.ritual-check{width:18px;height:18px;border:2px solid var(--cbr);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.ritual-check.checked{background:var(--ch);border-color:var(--ch);color:white;font-size:10px}
