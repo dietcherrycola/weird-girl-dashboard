@@ -1,0 +1,11 @@
+.hour-grid{display:grid;grid-template-columns:repeat(18,1fr);gap:3px;margin-bottom:.5rem}
+@media(max-width:700px){.hour-grid{grid-template-columns:repeat(9,1fr)}}
+.hour-chart{display:grid;grid-template-columns:repeat(18,1fr);gap:3px;margin-bottom:.5rem}
+@media(max-width:700px){.hour-chart{grid-template-columns:repeat(9,1fr)}}
+.trend-row{display:flex;gap:4px;padding:6px 0;border-bottom:1px solid var(--cbr);align-items:center;font-size:11px}
+.trend-row:last-child{border-bottom:none}
+.trend-date{min-width:65px;font-size:9px;color:var(--tmut);flex-shrink:0}
+.trend-emojis{display:flex;gap:3px;font-size:14px}
+.trend-bar{flex:1;height:8px;background:rgba(0,0,0,.05);border-radius:4px;overflow:hidden;display:flex;gap:1px}
+.trend-bar-p{height:100%;border-radius:4px;background:var(--orange);opacity:.7}
+.trend-bar-m{height:100%;border-radius:4px;background:var(--purple);opacity:.7}
