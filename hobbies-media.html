@@ -1,20 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>🎬 Movies & Books — Weird Girl Dashboard</title><link rel="stylesheet" href="shared.css">
-<style>.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tmut);text-decoration:none;margin-bottom:1rem;padding:5px 12px;border-radius:20px;border:1px solid var(--cbr);background:white;transition:all .15s}.back-link:hover{background:var(--chp);color:var(--ch)}
-.md-nav{display:flex;gap:5px;flex-wrap:wrap;padding:.5rem .6rem;background:white;border:1px solid var(--cbr);border-radius:14px;margin-bottom:1rem}
-.md-btn{font-size:10px;padding:5px 12px;border-radius:20px;border:2px solid rgba(0,0,0,.08);background:white;cursor:pointer;color:var(--tmut);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}.md-btn:hover{border-color:var(--mc);color:var(--mc)}.md-btn.active{background:var(--mc);color:white;border-color:var(--mc)}
-.md-page{display:none;animation:fadeIn .25s ease}.md-page.active{display:block}
-.mc{background:white;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:.9rem 1rem;margin-bottom:.9rem;position:relative;overflow:hidden}
-.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--mc),color-mix(in srgb,var(--mc) 60%,white))}
-.mc-t{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--mc);margin-bottom:.6rem;display:flex;align-items:center;gap:6px}
-.mc-g2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}@media(max-width:700px){.mc-g2{grid-template-columns:1fr}}
-.mi{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid rgba(0,0,0,.07);border-radius:7px;font-size:11px;margin-bottom:3px;background:white}
-.mi-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:11px;padding:0 3px}.mi-del:hover{color:var(--ch)}
-.mi-add{display:flex;gap:5px;align-items:center;margin-top:.4rem;flex-wrap:wrap}
-.mi-inp{border:1.5px solid rgba(0,0,0,.1);border-radius:7px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;outline:none;flex:1}.mi-inp:focus{border-color:var(--mc)}
-.mi-btn{font-size:11px;padding:4px 10px;border-radius:7px;border:1.5px solid rgba(0,0,0,.1);background:white;cursor:pointer;color:var(--mc);font-family:'DM Sans',sans-serif;font-weight:600}.mi-btn:hover{background:color-mix(in srgb,var(--mc) 10%,white);border-color:var(--mc)}
-textarea.mi-area{width:100%;border:1.5px solid rgba(0,0,0,.1);border-radius:8px;padding:6px 9px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;resize:none;height:80px;outline:none}.mi-area:focus{border-color:var(--mc)}
-.mi-save{width:100%;margin-top:.4rem;padding:5px;border:none;border-radius:8px;background:var(--mc);color:white;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer}
-</style></head><body>
+<link rel="stylesheet" href="hobbies-media.css">
+</head><body>
 <nav class="nav" id="main-nav"></nav>
 <div class="db">
 <a href="hobbies.html" class="back-link">← Back to Hobbies</a>
@@ -48,29 +34,5 @@ textarea.mi-area{width:100%;border:1.5px solid rgba(0,0,0,.1);border-radius:8px;
 <div id="book-journal" style="max-height:300px;overflow-y:auto"></div></div></div>
 </div>
 <script type="module" src="shared.js"></script>
-<script type="module">
-renderNav('hobbies');
-window.goMD=id=>{document.querySelectorAll('.md-page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.md-btn').forEach(b=>b.classList.remove('active'));document.getElementById('md-'+id).classList.add('active');document.querySelector('.md-btn[onclick="goMD(\''+id+'\')"]').classList.add('active');window.scrollTo(0,0)};
-function mR(c,k){const el=document.getElementById(c);if(!el)return;const items=ls(k,[]);el.innerHTML='';if(!items.length){el.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic;opacity:.7">Nothing yet</div>';return}items.forEach((t,i)=>{const txt=typeof t==='string'?t:t.text||'';const e=document.createElement('div');e.className='mi';e.innerHTML='<span style="flex:1">'+txt+'</span><button class="mi-del" onclick="mD(\''+c+'\',\''+k+'\','+i+')">×</button>';el.appendChild(e)})}
-window.mA=(c,iid,k)=>{const inp=document.getElementById(iid);if(!inp)return;const v=inp.value.trim();if(!v)return;const items=ls(k,[]);items.push(v);ss(k,items);inp.value='';mR(c,k)};
-window.mD=(c,k,i)=>{const items=ls(k,[]);items.splice(i,1);ss(k,items);mR(c,k)};
-
-// Film journal
-let filmJ=ls('wh_film_journal',[]);
-function renderFJ(){const c=document.getElementById('film-journal');if(!c)return;c.innerHTML='';if(!filmJ.length){c.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic">No entries yet — watch something and write about it!</div>';return}
-filmJ.forEach((e,i)=>{const d=document.createElement('div');d.style.cssText='padding:8px 10px;background:white;border:1px solid rgba(0,0,0,.06);border-radius:8px;margin-bottom:5px;position:relative';d.innerHTML='<div style="font-weight:700;font-size:12px;color:#2c3e50">'+e.title+'</div><div style="font-size:9px;color:var(--tmut);margin:2px 0">'+(e.date||'')+'</div><div style="font-size:10px;line-height:1.5">'+e.entry+'</div><button class="mi-del" style="position:absolute;top:6px;right:6px" onclick="delFJ('+i+')">×</button>';c.appendChild(d)})}
-window.addFilmJournal=()=>{const t=document.getElementById('fj-title').value.trim();const e=document.getElementById('fj-entry').value.trim();if(!t)return;filmJ.unshift({title:t,entry:e,date:new Date().toLocaleDateString()});ss('wh_film_journal',filmJ);document.getElementById('fj-title').value='';document.getElementById('fj-entry').value='';renderFJ()};
-window.delFJ=i=>{filmJ.splice(i,1);ss('wh_film_journal',filmJ);renderFJ()};
-renderFJ();
-
-// Book journal
-let bookJ=ls('wh_book_journal',[]);
-function renderBJ(){const c=document.getElementById('book-journal');if(!c)return;c.innerHTML='';if(!bookJ.length){c.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic">No entries yet</div>';return}
-bookJ.forEach((e,i)=>{const d=document.createElement('div');d.style.cssText='padding:8px 10px;background:white;border:1px solid rgba(0,0,0,.06);border-radius:8px;margin-bottom:5px;position:relative';d.innerHTML='<div style="font-weight:700;font-size:12px;color:#795548">'+e.title+'</div><div style="font-size:9px;color:var(--tmut);margin:2px 0">'+(e.date||'')+'</div><div style="font-size:10px;line-height:1.5">'+e.entry+'</div><button class="mi-del" style="position:absolute;top:6px;right:6px" onclick="delBJ('+i+')">×</button>';c.appendChild(d)})}
-window.addBookJournal=()=>{const t=document.getElementById('bj-title').value.trim();const e=document.getElementById('bj-entry').value.trim();if(!t)return;bookJ.unshift({title:t,entry:e,date:new Date().toLocaleDateString()});ss('wh_book_journal',bookJ);document.getElementById('bj-title').value='';document.getElementById('bj-entry').value='';renderBJ()};
-window.delBJ=i=>{bookJ.splice(i,1);ss('wh_book_journal',bookJ);renderBJ()};
-renderBJ();
-
-const ALL=[['mv-watchlist','wh_movies_watchlist'],['mv-faves','wh_movies_faves'],['mv-horror','wh_movies_horror'],['mv-comfort','wh_movies_comfort'],['mv-analyse','wh_movies_analyse'],['mv-cult','wh_movies_cult'],['bk-current','wh_books_current'],['bk-tbr','wh_books_tbr'],['bk-faves','wh_books_faves'],['bk-horror','wh_books_horror'],['bk-comfort','wh_books_comfort'],['bk-nonfic','wh_books_nonfic']];
-ALL.forEach(([c,k])=>mR(c,k));
-</script></body></html>
+<script type="module" src="hobbies-media.js"></script>
+</body></html>
