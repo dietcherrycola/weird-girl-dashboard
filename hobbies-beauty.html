@@ -1,23 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>💄 Beauty & Style — Weird Girl Dashboard</title><link rel="stylesheet" href="shared.css">
-<style>.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--tmut);text-decoration:none;margin-bottom:1rem;padding:5px 12px;border-radius:20px;border:1px solid var(--cbr);background:white;transition:all .15s}.back-link:hover{background:var(--chp);color:var(--ch)}
-.bt-nav{display:flex;gap:5px;flex-wrap:wrap;padding:.5rem .6rem;background:white;border:1px solid var(--cbr);border-radius:14px;margin-bottom:1rem}
-.bt-btn{font-size:10px;padding:5px 12px;border-radius:20px;border:2px solid rgba(0,0,0,.08);background:white;cursor:pointer;color:var(--tmut);font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s}.bt-btn:hover{border-color:var(--bc);color:var(--bc)}.bt-btn.active{background:var(--bc);color:white;border-color:var(--bc)}
-.bt-page{display:none;animation:fadeIn .25s ease}.bt-page.active{display:block}
-.bt-hero{display:flex;align-items:center;gap:1rem;background:linear-gradient(135deg,var(--bcl),white);border:1px solid rgba(0,0,0,.08);border-radius:18px;padding:1rem 1.2rem;margin-bottom:1rem}
-.bt-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:var(--bc)}
-.bt-sub{font-size:.75rem;color:var(--tmut);margin-top:2px}
-.bc{background:white;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:.9rem 1rem;margin-bottom:.9rem;position:relative;overflow:hidden}
-.bc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--bc),color-mix(in srgb,var(--bc) 60%,white))}
-.bc-t{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--bc);margin-bottom:.6rem;display:flex;align-items:center;gap:6px}
-.bc-g2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}@media(max-width:700px){.bc-g2{grid-template-columns:1fr}}
-.bi{display:flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid rgba(0,0,0,.07);border-radius:7px;font-size:11px;margin-bottom:3px;background:white}
-.bi-del{background:none;border:none;cursor:pointer;color:#ccc;font-size:11px;padding:0 3px}.bi-del:hover{color:var(--ch)}
-.bi-add{display:flex;gap:5px;align-items:center;margin-top:.4rem;flex-wrap:wrap}
-.bi-inp{border:1.5px solid rgba(0,0,0,.1);border-radius:7px;padding:5px 8px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;outline:none;flex:1}.bi-inp:focus{border-color:var(--bc)}
-.bi-btn{font-size:11px;padding:4px 10px;border-radius:7px;border:1.5px solid rgba(0,0,0,.1);background:white;cursor:pointer;color:var(--bc);font-family:'DM Sans',sans-serif;font-weight:600}.bi-btn:hover{background:var(--bcl);border-color:var(--bc)}
-textarea.bi-area{width:100%;border:1.5px solid rgba(0,0,0,.1);border-radius:8px;padding:6px 9px;font-size:11px;font-family:'DM Sans',sans-serif;background:white;resize:none;height:80px;outline:none}.bi-area:focus{border-color:var(--bc)}
-.bi-save{width:100%;margin-top:.4rem;padding:5px;border:none;border-radius:8px;background:var(--bc);color:white;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer}
-</style></head><body>
+<link rel="stylesheet" href="hobbies-beauty.css">
+</head><body>
 <nav class="nav" id="main-nav"></nav>
 <div class="db">
 <a href="hobbies.html" class="back-link">← Back to Hobbies</a>
@@ -62,14 +45,5 @@ textarea.bi-area{width:100%;border:1.5px solid rgba(0,0,0,.1);border-radius:8px;
 <div class="bc"><div class="bc-t">🛒 Wishlist</div><div id="nl-wish"></div><div class="bi-add"><input class="bi-inp" id="nl-w-inp" placeholder="Want..."><button class="bi-btn" onclick="bA('nl-wish','nl-w-inp','wh_nails_wishlist')">+</button></div></div></div>
 </div>
 <script type="module" src="shared.js"></script>
-<script type="module">
-renderNav('hobbies');
-window.goBT=id=>{document.querySelectorAll('.bt-page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.bt-btn').forEach(b=>b.classList.remove('active'));document.getElementById('bt-'+id).classList.add('active');document.querySelector('.bt-btn[onclick="goBT(\''+id+'\')"]').classList.add('active');window.scrollTo(0,0)};
-function bR(c,k){const el=document.getElementById(c);if(!el)return;const items=ls(k,[]);el.innerHTML='';if(!items.length){el.innerHTML='<div style="text-align:center;padding:.5rem;color:var(--tmut);font-size:10px;font-style:italic;opacity:.7">Nothing yet</div>';return}items.forEach((t,i)=>{const txt=typeof t==='string'?t:t.text||'';const e=document.createElement('div');e.className='bi';e.innerHTML='<span style="flex:1">'+txt+'</span><button class="bi-del" onclick="bD(\''+c+'\',\''+k+'\','+i+')">×</button>';el.appendChild(e)})}
-window.bA=(c,iid,k)=>{const inp=document.getElementById(iid);if(!inp)return;const v=inp.value.trim();if(!v)return;const items=ls(k,[]);items.push(v);ss(k,items);inp.value='';bR(c,k)};
-window.bD=(c,k,i)=>{const items=ls(k,[]);items.splice(i,1);ss(k,items);bR(c,k)};
-const ALL=[['mk-eyes','wh_makeup_eyes'],['mk-lips','wh_makeup_lips'],['mk-face','wh_makeup_face'],['mk-log','wh_makeup_looks'],['mk-inspo','wh_makeup_inspo'],['mk-tuts','wh_makeup_tutorials'],['mk-wish','wh_makeup_wishlist'],['hr-products','wh_hair_products'],['hr-log','wh_hair_styles'],['hr-inspo','wh_hair_inspo'],['hr-tuts','wh_hair_tutorials'],['hr-wish','wh_hair_wishlist'],['of-log','wh_outfit_log'],['of-inspo','wh_outfits_inspo'],['of-loves','wh_wardrobe_loves'],['of-wish','wh_outfits_wishlist'],['nl-log','wh_nails_log'],['nl-polish','wh_nails_polishes'],['nl-inspo','wh_nails_inspo'],['nl-tuts','wh_nails_tutorials'],['nl-wish','wh_nails_wishlist']];
-ALL.forEach(([c,k])=>bR(c,k));
-document.getElementById('hr-notes').value=ls('wh_hair_notes','')||'';
-document.getElementById('of-notes').value=ls('wh_wardrobe_notes','')||'';
-</script></body></html>
+<script type="module" src="hobbies-beauty.js"></script>
+</body></html>
