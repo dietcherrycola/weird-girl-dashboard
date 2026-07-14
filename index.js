@@ -178,7 +178,7 @@ const quickLinks=document.getElementById('quick-links');
   {label:'✨ Hobbies',href:'hobbies.html',color:'var(--gold)'},
   {label:'🩺 Health',href:'health.html',color:'var(--blue)'},
   {label:'📅 Calendar',href:'calendar.html',color:'var(--ch)'},
-  {label:'🔮 2026 Manifestation',href:'manifestation.html',color:'#8e44ad'},
+  {label:'🔮 2026 Manifestation',href:'manifestation.html',color:'#5C0300'},
   {label:'🍃 ACNH',href:'acnh.html',color:'var(--grass)'},
 ].forEach(l=>{
   const a=document.createElement('a');

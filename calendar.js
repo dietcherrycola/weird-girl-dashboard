@@ -3,9 +3,9 @@ renderNav('calendar');
 // ===== FULL CALENDAR =====
 (function(){
 const FC_STORAGE='wg_fc_events';
-let fcEvents=[],fcYear,fcMonth,fcSelectedDay=null,fcView='month',fcEditId=null,fcNewEventDay=null,fcPickedColor='#c0392b';
+let fcEvents=[],fcYear,fcMonth,fcSelectedDay=null,fcView='month',fcEditId=null,fcNewEventDay=null,fcPickedColor='#930500';
 let fcWeekStart=null;
-const FC_CAT_COLORS={personal:'#e91e8c',health:'#c0392b',school:'#2980b9',work:'#c9a84c',social:'#27ae60',birthday:'#8e44ad',reminder:'#e07b10',other:'#555'};
+const FC_CAT_COLORS={personal:'#930500',health:'#930500',school:'#4A6FA5',work:'#5C0300',social:'#4A6FA5',birthday:'#5C0300',reminder:'#e07b10',other:'#555'};
 const FC_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const FC_DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const FC_DAY_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -106,7 +106,7 @@ function fcMakeCell(ey,em,d,otherMonth){
   const dn=document.createElement('div');dn.className='fc-day-num';dn.textContent=d;cell.appendChild(dn);
   evs.slice(0,2).forEach(function(ev){
     const pill=document.createElement('div');pill.className='fc-event-pill';
-    pill.style.background=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+    pill.style.background=ev.color||FC_CAT_COLORS[ev.cat]||'#930500';
     pill.textContent=(ev.time?ev.time.slice(0,5)+' ':'')+ev.name;
     pill.onclick=function(e){e.stopPropagation();fcEditEvent(ev.id);};
     cell.appendChild(pill);
@@ -136,7 +136,7 @@ function fcShowDayPanel(dateStr){
   evList.innerHTML='';
   if(empty)empty.style.display=evs.length?'none':'block';
   evs.forEach(function(ev){
-    const color=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+    const color=ev.color||FC_CAT_COLORS[ev.cat]||'#930500';
     const row=document.createElement('div');row.className='fc-day-event-row';
     row.innerHTML='<div style="width:4px;border-radius:2px;background:'+color+';flex-shrink:0;align-self:stretch"></div>'
       +'<div style="flex:1"><div style="font-weight:600;font-size:12px">'+ev.name+'</div>'
@@ -169,7 +169,7 @@ function fcRenderWeek(){
     hdr.innerHTML=FC_DAYS[i]+'<br>'+day.getDate();col.appendChild(hdr);
     evs.forEach(function(ev){
       const pill=document.createElement('div');pill.className='fc-event-pill';
-      pill.style.background=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+      pill.style.background=ev.color||FC_CAT_COLORS[ev.cat]||'#930500';
       pill.style.marginBottom='3px';
       pill.textContent=(ev.time?ev.time.slice(0,5)+' ':'')+ev.name;
       pill.onclick=function(){fcEditEvent(ev.id);};col.appendChild(pill);
@@ -198,7 +198,7 @@ function fcRenderAgenda(){
     dh.textContent=(isToday?'TODAY \u2014 ':'')+FC_DAY_NAMES[item.d.getDay()]+', '+FC_MONTHS[item.d.getMonth()]+' '+item.d.getDate();
     list.appendChild(dh);
     item.evs.sort(function(a,b){return(a.time||'99:99').localeCompare(b.time||'99:99');}).forEach(function(ev){
-      const color=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+      const color=ev.color||FC_CAT_COLORS[ev.cat]||'#930500';
       const el=document.createElement('div');el.className='fc-agenda-item';
       el.innerHTML='<div class="fc-agenda-dot" style="background:'+color+'"></div>'
         +'<div style="flex:1"><div style="font-size:12px;font-weight:600">'+ev.name+'</div>'
@@ -225,7 +225,7 @@ window.fcOpenNewEvent=function(dateStr){
   fcToggleRecurDays();
   const cd=document.getElementById('fc-ev-cat');if(cd)cd.value='personal';
   const nd2=document.getElementById('fc-ev-notes');if(nd2)nd2.value='';
-  fcPickedColor='#c0392b';
+  fcPickedColor='#930500';
   document.querySelectorAll('.fc-color-swatch').forEach(function(s){s.classList.toggle('selected',s.dataset.color===fcPickedColor);});
   const modal=document.getElementById('fc-event-modal');if(modal)modal.classList.add('open');
 };
@@ -272,7 +272,7 @@ window.fcEditEvent=function(id){
   [0,1,2,3,4,5,6].forEach(function(d){const el=document.getElementById('fc-rd-'+d);if(el)el.checked=ev.recurDays&&ev.recurDays.includes(d);});
   const wi=ev.weekInterval||1;const wiEl=document.getElementById('fc-wi-'+wi);if(wiEl)wiEl.checked=true;
   fcToggleRecurDays();
-  fcPickedColor=ev.color||'#c0392b';
+  fcPickedColor=ev.color||'#930500';
   document.querySelectorAll('.fc-color-swatch').forEach(function(s){s.classList.toggle('selected',s.dataset.color===fcPickedColor);});
   const modal=document.getElementById('fc-event-modal');if(modal)modal.classList.add('open');
 };
@@ -314,7 +314,7 @@ function fcUpdateHomeWidget(){
     const hdr=document.createElement('div');hdr.style.cssText='font-size:9px;font-weight:700;color:var(--tmut);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;margin-top:.3rem';hdr.textContent="Today's events";container.appendChild(hdr);
     todayEvs.slice(0,4).forEach(function(ev){
       const pill=document.createElement('div');pill.className='home-cal-event-pill';
-      pill.style.background=ev.color||FC_CAT_COLORS[ev.cat]||'#c0392b';
+      pill.style.background=ev.color||FC_CAT_COLORS[ev.cat]||'#930500';
       pill.textContent=(ev.time?ev.time.slice(0,5)+' ':'')+ev.name;
       pill.onclick=function(){window.location.href='calendar.html';};container.appendChild(pill);
     });

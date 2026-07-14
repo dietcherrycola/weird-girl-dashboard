@@ -120,13 +120,13 @@ function showLogin() {
   if (document.getElementById('login-overlay')) return;
   const o = document.createElement('div');
   o.id = 'login-overlay';
-  o.style.cssText = 'position:fixed;inset:0;background:#fdf6f0;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:"DM Sans",sans-serif';
+  o.style.cssText = 'position:fixed;inset:0;background:#FFF8E7;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:"DM Sans",sans-serif';
   o.innerHTML = '<div style="text-align:center;max-width:360px;padding:2rem">' +
     '<div style="font-size:3rem;margin-bottom:1rem">✨</div>' +
-    '<div style="font-family:Playfair Display,serif;font-size:1.8rem;font-weight:700;color:#7b241c;margin-bottom:.5rem">Weird Girl Dashboard</div>' +
-    '<div style="font-size:11px;color:#6b3a3a;margin-bottom:1.5rem;line-height:1.6">Sign in to sync your data across all your devices</div>' +
+    '<div style="font-family:Playfair Display,serif;font-size:1.8rem;font-weight:700;color:#930500;margin-bottom:.5rem">Weird Girl Dashboard</div>' +
+    '<div style="font-size:11px;color:rgba(0,0,0,.55);margin-bottom:1.5rem;line-height:1.6">Sign in to sync your data across all your devices</div>' +
     '<button id="g-sign-in" style="display:inline-flex;align-items:center;gap:10px;padding:12px 24px;background:white;border:2px solid rgba(192,57,43,.15);border-radius:12px;font-size:13px;font-family:DM Sans,sans-serif;font-weight:600;color:#1a0a0a;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08)">🔐 Sign in with Google</button>' +
-    '<div style="font-size:9px;color:#6b3a3a;margin-top:1rem;opacity:.6">Your data is private — only you can access it</div>' +
+    '<div style="font-size:9px;color:rgba(0,0,0,.55);margin-top:1rem;opacity:.6">Your data is private — only you can access it</div>' +
     '</div>';
   document.body.appendChild(o);
   document.getElementById('g-sign-in').onclick = () => {

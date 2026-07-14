@@ -7,11 +7,11 @@
 <div style="text-align:center;margin-bottom:1.2rem"><div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#2c3e50">🎬 Movies & Books</div><div style="font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Consume, analyze, obsess</div></div>
 
 <div class="md-nav">
-  <button class="md-btn active" onclick="goMD('movies')" style="--mc:#2c3e50">🎬 Movies</button>
-  <button class="md-btn" onclick="goMD('books')" style="--mc:#795548">📚 Books</button>
+  <button class="md-btn active" onclick="goMD('movies')" style="--mc:#4A6FA5">🎬 Movies</button>
+  <button class="md-btn" onclick="goMD('books')" style="--mc:#5C0300">📚 Books</button>
 </div>
 
-<!-- MOVIES --><div class="md-page active" id="md-movies" style="--mc:#2c3e50">
+<!-- MOVIES --><div class="md-page active" id="md-movies" style="--mc:#4A6FA5">
 <div class="mc-g2"><div class="mc"><div class="mc-t">📋 Watchlist</div><div id="mv-watchlist"></div><div class="mi-add"><input class="mi-inp" id="mv-wl-inp" placeholder="Movie to watch..."><button class="mi-btn" onclick="mA('mv-watchlist','mv-wl-inp','wh_movies_watchlist')">+</button></div></div>
 <div class="mc"><div class="mc-t">⭐ All-time favorites</div><div id="mv-faves"></div><div class="mi-add"><input class="mi-inp" id="mv-fv-inp" placeholder="Favorite movie..."><button class="mi-btn" onclick="mA('mv-faves','mv-fv-inp','wh_movies_faves')">+</button></div></div></div>
 <div class="mc-g2"><div class="mc"><div class="mc-t">🔪 Horror shelf</div><div id="mv-horror"></div><div class="mi-add"><input class="mi-inp" id="mv-hr-inp" placeholder="Horror film..."><button class="mi-btn" onclick="mA('mv-horror','mv-hr-inp','wh_movies_horror')">+</button></div></div>
@@ -22,7 +22,7 @@
 <div class="mi-add" style="margin-bottom:.5rem"><input class="mi-inp" id="fj-title" placeholder="Movie title..."><input class="mi-inp" id="fj-entry" placeholder="Your thoughts, analysis, themes..." style="flex:2"><button class="mi-btn" onclick="addFilmJournal()">+ Entry</button></div>
 <div id="film-journal" style="max-height:300px;overflow-y:auto"></div></div></div>
 
-<!-- BOOKS --><div class="md-page" id="md-books" style="--mc:#795548">
+<!-- BOOKS --><div class="md-page" id="md-books" style="--mc:#5C0300">
 <div class="mc-g2"><div class="mc"><div class="mc-t">📖 Currently reading</div><div id="bk-current"></div><div class="mi-add"><input class="mi-inp" id="bk-cr-inp" placeholder="Book title..."><button class="mi-btn" onclick="mA('bk-current','bk-cr-inp','wh_books_current')">+</button></div></div>
 <div class="mc"><div class="mc-t">📋 TBR (to be read)</div><div id="bk-tbr"></div><div class="mi-add"><input class="mi-inp" id="bk-tb-inp" placeholder="Book to read..."><button class="mi-btn" onclick="mA('bk-tbr','bk-tb-inp','wh_books_tbr')">+</button></div></div></div>
 <div class="mc-g2"><div class="mc"><div class="mc-t">⭐ Favorites</div><div id="bk-faves"></div><div class="mi-add"><input class="mi-inp" id="bk-fv-inp" placeholder="Favorite book..."><button class="mi-btn" onclick="mA('bk-faves','bk-fv-inp','wh_books_faves')">+</button></div></div>

@@ -2,7 +2,7 @@
 const PILLARS = [
   // CREATIVE
   {
-    id:'nomad',emoji:'🗿',name:'Nomad Sculpt',cat:'creative',color:'#16a085',
+    id:'nomad',emoji:'🗿',name:'Nomad Sculpt',cat:'creative',color:'#4A6FA5',
     goal:'Sculpt, 3D print, and animate characters in Nomad Sculpt',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -40,7 +40,7 @@ const PILLARS = [
     ]
   },
   {
-    id:'blender',emoji:'🎬',name:'Blender Animation',cat:'creative',color:'#e67e22',
+    id:'blender',emoji:'🎬',name:'Blender Animation',cat:'creative',color:'#5C0300',
     goal:'Animate characters and scenes in Blender using plugins and shortcuts',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -73,7 +73,7 @@ const PILLARS = [
     steps:['Download and install Blender','Do Blender Guru donut tutorial (Part 1-3)','Learn viewport navigation (orbit, pan, zoom)','Import an OBJ/STL file into Blender','Create a Mixamo account','Upload a character to Mixamo and apply walk animation','Download FBX and import into Blender','Set up a basic 3-point lighting setup','Add a camera and set render resolution','Render a turntable animation','Learn keyframe basics in Blender','Edit animation curves in Graph Editor','Create a simple scene with ground plane + backdrop','Add music/sound to rendered video','Complete a polished short animation']
   },
   {
-    id:'pixel-art',emoji:'🎨',name:'Pixel Art',cat:'creative',color:'#9b59b6',
+    id:'pixel-art',emoji:'🎨',name:'Pixel Art',cat:'creative',color:'#4A6FA5',
     goal:'Create clean, expressive pixel art for games and personal projects',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -104,7 +104,7 @@ const PILLARS = [
   },
   // LANGUAGES
   {
-    id:'spanish',emoji:'🇪🇸',name:'Conversational Spanish',cat:'language',color:'#e67e22',
+    id:'spanish',emoji:'🇪🇸',name:'Conversational Spanish',cat:'language',color:'#5C0300',
     goal:'Hold a natural 15+ minute conversation in Spanish',
     levels:['Beginner','Novice','Intermediate','Conversational','Fluent'],
     guide:[
@@ -137,7 +137,7 @@ const PILLARS = [
     steps:['Download Duolingo and do lesson 1','Start Language Transfer (lessons 1-5)','Learn greetings: hola, buenos días, ¿cómo estás?','Learn 20 most common words (flashcards)','Learn ser vs estar basics','Language Transfer lessons 6-20','Learn numbers 1-100','Practice ordering food vocabulary','Find a Dreaming Spanish superbeginner video','Learn present tense of ser, estar, tener, ir, querer','Language Transfer lessons 21-40','Have your first conversation (even 30 seconds)','Learn past tense basics (fui, hice, dije)','Start watching a show with Spanish subtitles','Find a conversation partner on Tandem/HelloTalk','Practice 10 min of speaking per week','Language Transfer lessons 41-60','Write a short journal entry in Spanish','Reach 1000 word vocabulary','Hold a 15-minute conversation']
   },
   {
-    id:'korean',emoji:'🇰🇷',name:'Conversational Korean',cat:'language',color:'#c0392b',
+    id:'korean',emoji:'🇰🇷',name:'Conversational Korean',cat:'language',color:'#4A6FA5',
     goal:'Hold a natural conversation in Korean',
     levels:['Beginner','Novice','Intermediate','Conversational','Fluent'],
     guide:[
@@ -166,7 +166,7 @@ const PILLARS = [
     steps:['Review Hangul consonants and vowels','Practice reading Hangul for 30 min','TTMIK Level 1, Lessons 1-5','Learn basic greetings and introductions','TTMIK Level 1, Lessons 6-10','Learn numbers (native Korean + Sino-Korean)','Start an Anki deck with common words','TTMIK Level 1, Lessons 11-15','Practice self-introduction out loud','Watch Korean content with subs daily','TTMIK Level 2 start','Find a language partner','Practice speaking weekly','TTMIK Level 3','Hold conversations regularly']
   },
   {
-    id:'japanese',emoji:'🇯🇵',name:'Conversational Japanese',cat:'language',color:'#2c3e50',
+    id:'japanese',emoji:'🇯🇵',name:'Conversational Japanese',cat:'language',color:'#5C0300',
     goal:'Hold basic conversations in Japanese',
     levels:['Beginner','Novice','Intermediate','Conversational','Fluent'],
     guide:[
@@ -194,7 +194,7 @@ const PILLARS = [
     steps:['Learn Hiragana (あ-ん) using Tofugu guide','Practice reading Hiragana daily','Learn 20 basic phrases','Start Tae Kim\'s Grammar Guide (basics section)','Learn Katakana','Build vocabulary with Anki (100 words)','Learn -masu/-desu polite form','Practice self-introduction','Start basic Kanji (numbers, days, common words)','Find Japanese conversation partner','Watch anime with Japanese subtitles','Practice speaking weekly']
   },
   {
-    id:'french',emoji:'🇫🇷',name:'Conversational French',cat:'language',color:'#2980b9',
+    id:'french',emoji:'🇫🇷',name:'Conversational French',cat:'language',color:'#4A6FA5',
     goal:'Hold a natural conversation in French',
     levels:['Beginner','Novice','Intermediate','Conversational','Fluent'],
     guide:[
@@ -223,7 +223,7 @@ const PILLARS = [
   },
   // CODING
   {
-    id:'ide',emoji:'🖥️',name:'Coding Environments',cat:'coding',color:'#34495e',
+    id:'ide',emoji:'🖥️',name:'Coding Environments',cat:'coding',color:'#5C0300',
     goal:'Feel comfortable and confident using coding environments (IDEs)',
     levels:['Beginner','Novice','Intermediate','Comfortable','Power User'],
     guide:[
@@ -255,7 +255,7 @@ const PILLARS = [
     steps:['Download and install VS Code','Open VS Code and do the Welcome tutorial','Create a folder on your desktop called "coding"','Open that folder in VS Code','Create a new file called hello.py','Type: print("hello world")','Install the Code Runner extension','Right-click your file and click "Run Code"','Open the terminal (View → Terminal)','Type: python hello.py in the terminal','Install Python extension for VS Code','Create 3 more small files and run them','Learn Ctrl+Shift+P (command palette)','Change your color theme','Install Live Server extension for HTML files']
   },
   {
-    id:'python',emoji:'🐍',name:'Python Programming',cat:'coding',color:'#3498db',
+    id:'python',emoji:'🐍',name:'Python Programming',cat:'coding',color:'#4A6FA5',
     goal:'Write useful Python scripts and small programs confidently',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -286,7 +286,7 @@ const PILLARS = [
     steps:['Install Python from python.org','Write and run "Hello World"','Learn variables (name = "Shan")','Learn string operations','Learn if/elif/else','Learn for loops','Learn while loops','Write a simple number guessing game','Learn functions (def my_function())','Learn lists and list methods','Learn dictionaries','Read a text file with Python','Write data to a file','Install a library with pip','Build a small automation project']
   },
   {
-    id:'java',emoji:'☕',name:'Java Programming',cat:'coding',color:'#e74c3c',
+    id:'java',emoji:'☕',name:'Java Programming',cat:'coding',color:'#5C0300',
     goal:'Write Java programs and understand object-oriented programming',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -316,7 +316,7 @@ const PILLARS = [
     steps:['Install JDK from Oracle','Install IntelliJ IDEA Community','Create a new project and write Hello World','Learn variables and data types','Learn if/else statements','Learn for and while loops','Write a simple calculator','Learn methods (functions)','Learn arrays and ArrayLists','Learn about classes and objects','Create a class with methods','Learn inheritance','Build a text-based game','Learn file I/O','Build a complete project']
   },
   {
-    id:'phone-app',emoji:'📱',name:'Phone App Development',cat:'coding',color:'#1abc9c',
+    id:'phone-app',emoji:'📱',name:'Phone App Development',cat:'coding',color:'#4A6FA5',
     goal:'Build and publish a working phone app',
     levels:['Beginner','Novice','Intermediate','Advanced','Published'],
     guide:[
@@ -345,7 +345,7 @@ const PILLARS = [
     steps:['Install Flutter SDK','Set up VS Code with Flutter extension','Run flutter doctor in terminal','Create a new Flutter project','Run the demo app on emulator','Modify the demo app text and colors','Learn about Widgets, Rows, Columns','Build a simple counter app','Add text inputs and buttons','Learn about setState for interactivity','Create multiple screens','Add navigation between screens','Learn about local storage','Build your actual app idea','Test on real phone','Publish to app store']
   },
   {
-    id:'pixel-horror',emoji:'👻',name:'Pixel Horror Game',cat:'coding',color:'#2c3e50',
+    id:'pixel-horror',emoji:'👻',name:'Pixel Horror Game',cat:'coding',color:'#5C0300',
     goal:'Build and release a playable pixel horror game',
     levels:['Beginner','Novice','Intermediate','Advanced','Released'],
     guide:[
@@ -375,7 +375,7 @@ const PILLARS = [
     steps:['Choose engine (RPG Maker recommended)','Install and open the engine','Do the beginner tutorial','Create a room/map','Place a player character','Make the character walk around','Add an NPC with dialogue','Create a door that goes to another room','Add background music','Create a dark/atmospheric room','Add a simple puzzle (find key, open door)','Create a scare moment','Build a 5-minute sequence','Add title screen','Playtest with a friend','Polish and add more content','Release on itch.io']
   },
   {
-    id:'raspberry',emoji:'🍓',name:'Raspberry Pi Projects',cat:'coding',color:'#c0392b',
+    id:'raspberry',emoji:'🍓',name:'Raspberry Pi Projects',cat:'coding',color:'#4A6FA5',
     goal:'Build fun hardware projects with Raspberry Pi',
     levels:['Beginner','Novice','Intermediate','Advanced','Maker'],
     guide:[
@@ -404,7 +404,7 @@ const PILLARS = [
   },
   // GAMING/FANDOM
   {
-    id:'f1',emoji:'🏎️',name:'F1 Fandom',cat:'gaming',color:'#e10600',
+    id:'f1',emoji:'🏎️',name:'F1 Fandom',cat:'gaming',color:'#5C0300',
     goal:'Become a knowledgeable, engaged F1 fan who can follow and discuss races',
     levels:['Beginner','Novice','Intermediate','Hardcore','Expert'],
     guide:[
@@ -435,7 +435,7 @@ const PILLARS = [
     steps:['Watch Drive to Survive Season 1','Learn the 10 team names and colors','Learn the current 20 drivers','Watch an F1 race highlight (YouTube)','Watch a full qualifying session','Watch a full race','Learn tire compounds (soft/med/hard)','Learn what DRS is and how it works','Learn about pit stop strategy','Watch The Race YouTube explainers','Read r/formula1 race discussion threads','Learn about car components (front wing, rear wing, floor)','Study a classic race (e.g., Brazil 2008, Abu Dhabi 2021)','Play the F1 video game','Follow an entire race weekend with strategy analysis']
   },
   {
-    id:'nascar',emoji:'🏁',name:'NASCAR Fandom',cat:'gaming',color:'#003DA5',
+    id:'nascar',emoji:'🏁',name:'NASCAR Fandom',cat:'gaming',color:'#4A6FA5',
     goal:'Become a knowledgeable NASCAR fan who can follow races and discuss strategy',
     levels:['Beginner','Novice','Intermediate','Hardcore','Expert'],
     guide:[
@@ -464,7 +464,7 @@ const PILLARS = [
     steps:['Watch a NASCAR race on Fox/NBC','Learn the top drivers and their teams','Learn what stage racing means','Watch NASCAR YouTube beginner content','Learn about draft strategy on superspeedways','Learn pit stop strategy','Watch a short track race (Bristol, Martinsville)','Watch a superspeedway race (Daytona, Talladega)','Learn about the playoff format','Study NASCAR history basics','Follow r/NASCAR during race weekends','Watch in-car camera views','Try a NASCAR video game','Follow a full season casually']
   },
   {
-    id:'osrs',emoji:'⚔️',name:'Old School RuneScape',cat:'gaming',color:'#7b5e00',
+    id:'osrs',emoji:'⚔️',name:'Old School RuneScape',cat:'gaming',color:'#5C0300',
     goal:'Become a competent OSRS player who can tackle mid-to-late game content',
     levels:['Beginner','Novice','Intermediate','Advanced','Maxed'],
     guide:[
@@ -495,7 +495,7 @@ const PILLARS = [
     steps:['Create an account on oldschool.runescape.com','Complete Tutorial Island','Download and install Runelite','Do Waterfall Quest (use Wiki guide)','Train combat basics','Complete early quests (Cook\'s Assistant, Restless Ghost)','Learn about the Grand Exchange','Make money with a beginner method','Train a gathering skill (Woodcutting, Mining, Fishing)','Get membership when ready','Do member quests for XP','Train Slayer for combat XP + money','Set a skill goal and work toward it','Try a minigame (Barbarian Assault, Pest Control)','Work toward Recipe for Disaster']
   },
   {
-    id:'chess',emoji:'♟️',name:'Chess',cat:'gaming',color:'#5b3fa0',
+    id:'chess',emoji:'♟️',name:'Chess',cat:'gaming',color:'#4A6FA5',
     goal:'Become a competent chess player who wins regularly and understands strategy',
     levels:['Beginner','Novice','Intermediate','Advanced','Expert'],
     guide:[
@@ -527,7 +527,7 @@ const PILLARS = [
   },
   // WRITING
   {
-    id:'essays',emoji:'✍️',name:'Essay Writing',cat:'life',color:'#8e44ad',
+    id:'essays',emoji:'✍️',name:'Essay Writing',cat:'life',color:'#5C0300',
     goal:'Write clear, persuasive, well-structured essays on any topic',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -556,7 +556,7 @@ const PILLARS = [
   },
   // CRAFT
   {
-    id:'doll-custom',emoji:'🎎',name:'Doll Customization',cat:'craft',color:'#e91e8c',
+    id:'doll-custom',emoji:'🎎',name:'Doll Customization',cat:'craft',color:'#4A6FA5',
     goal:'Master doll customization techniques — repainting, rerooting, body mods',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -586,7 +586,7 @@ const PILLARS = [
     steps:['Buy a cheap practice doll','Get acetone-free nail polish remover','Remove factory face paint','Buy Mr. Super Clear spray','Spray first sealant layer (well-ventilated area!)','Get soft pastels and tiny brushes','Practice blush application with pastels','Seal, then add eyebrow details','Paint lips with acrylic','Add eyelash details with fine brush','Seal the finished face','Watch rerooting tutorials','Try rerooting with nylon hair','Complete a full faceup + reroot doll','Start body blushing on a practice doll']
   },
   {
-    id:'doll-restore',emoji:'🧸',name:'Old Doll Restoration',cat:'craft',color:'#d35400',
+    id:'doll-restore',emoji:'🧸',name:'Old Doll Restoration',cat:'craft',color:'#5C0300',
     goal:'Restore vintage and old dolls to beautiful condition',
     levels:['Beginner','Novice','Intermediate','Advanced','Expert'],
     guide:[
@@ -613,7 +613,7 @@ const PILLARS = [
     steps:['Find a dirty/damaged doll to practice on','Wash body with warm water and dish soap','Soak hair in fabric softener + warm water','Gently detangle hair with wide-tooth comb','Try removing a stain with baking soda paste','Research retro-bright technique','Try retro-bright on a yellowed doll','Restring or reattach a loose joint','Learn about different doll materials','Restore a complete doll from start to finish','Document with before/after photos','Research vintage doll identification','Restore a more delicate/valuable doll','Build a portfolio of restorations']
   },
   {
-    id:'stuffed-restore',emoji:'🧷',name:'Stuffed Animal Restoration',cat:'craft',color:'#f39c12',
+    id:'stuffed-restore',emoji:'🧷',name:'Stuffed Animal Restoration',cat:'craft',color:'#4A6FA5',
     goal:'Restore old and damaged stuffed animals to cuddly condition',
     levels:['Beginner','Novice','Intermediate','Advanced','Expert'],
     guide:[
@@ -640,7 +640,7 @@ const PILLARS = [
     steps:['Find a dirty stuffed animal to practice on','Surface clean with damp cloth and mild soap','Try washing a sturdy one in pillowcase in washer','Air dry completely','Learn the ladder stitch (YouTube tutorial)','Practice ladder stitch on scrap fabric','Open a seam, add stuffing, close with ladder stitch','Try deodorizing with baking soda method','Replace a missing eye with safety eye','Patch a hole with fabric and ladder stitch','Complete a full restoration','Document with before/after photos']
   },
   {
-    id:'sewing',emoji:'🧵',name:'Basic Sewing',cat:'craft',color:'#e74c3c',
+    id:'sewing',emoji:'🧵',name:'Basic Sewing',cat:'craft',color:'#5C0300',
     goal:'Sew basic items and make simple repairs confidently',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -669,7 +669,7 @@ const PILLARS = [
     steps:['Get a basic sewing kit (needles, thread, scissors, pins)','Practice threading a needle','Sew a running stitch on scrap fabric','Sew a backstitch','Sew a button on a shirt','Learn the whip stitch','Learn the ladder stitch','Hem something by hand','Try iron-on hem tape','If interested: get a beginner sewing machine','Practice straight stitch on machine','Sew a simple pillow','Follow a simple pattern','Sew a tote bag','Try altering a garment']
   },
   {
-    id:'tailoring',emoji:'👗',name:'Clothes Tailoring',cat:'craft',color:'#2c3e50',
+    id:'tailoring',emoji:'👗',name:'Clothes Tailoring',cat:'craft',color:'#4A6FA5',
     goal:'Alter and tailor clothes to fit you perfectly',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -696,7 +696,7 @@ const PILLARS = [
     steps:['Get a measuring tape and take your measurements','Write down your key measurements','Get a seam ripper','Practice removing seams from a thrift store garment','Pin a hem and sew it','Try taking in the sides of a loose shirt','Practice on cheap thrift store clothes','Hem pants to your length','Take in a waistband','Watch a thrift flip tutorial','Try a full thrift flip alteration','Learn about darts for shaping','Adjust sleeves on a shirt','Attempt a structured garment alteration']
   },
   {
-    id:'cooking',emoji:'🍳',name:'Cooking Fundamentals',cat:'life',color:'#e07b39',
+    id:'cooking',emoji:'🍳',name:'Cooking Fundamentals',cat:'life',color:'#5C0300',
     goal:'Be a confident, competent home cook who can make delicious food consistently',
     levels:['Beginner','Novice','Intermediate','Advanced','Master'],
     guide:[
@@ -728,7 +728,7 @@ const PILLARS = [
   },
   // LIFE SKILL
   {
-    id:'driving',emoji:'🚗',name:'Driving (AR Permit & License)',cat:'life',color:'#003087',
+    id:'driving',emoji:'🚗',name:'Driving (AR Permit & License)',cat:'life',color:'#4A6FA5',
     goal:'Pass the Arkansas written test, get your permit, practice driving, and earn your license',
     levels:['Pre-Permit','Permit Holder','Practice Driver','Test Ready','Licensed Driver'],
     guide:[
@@ -841,7 +841,7 @@ function getNeedColor(pct){
 
 function getNeedStatus(pct){
   if(pct >= 70) return {text:'Good',bg:'var(--green-light)',color:'var(--green)'};
-  if(pct >= 40) return {text:'Decaying',bg:'var(--yellow-light)',color:'#7a5400'};
+  if(pct >= 40) return {text:'Decaying',bg:'var(--yellow-light)',color:'#5C0300'};
   return {text:'Critical!',bg:'var(--chp)',color:'var(--ch)'};
 }
 

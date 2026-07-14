@@ -7,13 +7,13 @@
 <div style="text-align:center;margin-bottom:1.2rem"><div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#c0396b">💄 Beauty & Style</div><div style="font-size:11px;color:var(--tmut);letter-spacing:2px;text-transform:uppercase;margin-top:4px">Your personal style archive</div></div>
 
 <div class="bt-nav">
-  <button class="bt-btn active" onclick="goBT('makeup')" style="--bc:#c0396b">💄 Makeup</button>
-  <button class="bt-btn" onclick="goBT('hair')" style="--bc:#9b59b6">💇 Hair</button>
-  <button class="bt-btn" onclick="goBT('outfits')" style="--bc:#e67e22">👗 Outfits</button>
-  <button class="bt-btn" onclick="goBT('nails')" style="--bc:#e91e8c">💅 Nails</button>
+  <button class="bt-btn active" onclick="goBT('makeup')" style="--bc:#4A6FA5">💄 Makeup</button>
+  <button class="bt-btn" onclick="goBT('hair')" style="--bc:#5C0300">💇 Hair</button>
+  <button class="bt-btn" onclick="goBT('outfits')" style="--bc:#4A6FA5">👗 Outfits</button>
+  <button class="bt-btn" onclick="goBT('nails')" style="--bc:#5C0300">💅 Nails</button>
 </div>
 
-<!-- MAKEUP --><div class="bt-page active" id="bt-makeup" style="--bc:#c0396b;--bcl:#fce4f0"><div class="bt-hero"><span style="font-size:2rem">💄</span><div><div class="bt-title">Makeup</div><div class="bt-sub">Looks, products, and inspo</div></div></div>
+<!-- MAKEUP --><div class="bt-page active" id="bt-makeup" style="--bc:#4A6FA5;--bcl:#E4EDFA"><div class="bt-hero"><span style="font-size:2rem">💄</span><div><div class="bt-title">Makeup</div><div class="bt-sub">Looks, products, and inspo</div></div></div>
 <div class="bc-g2"><div class="bc"><div class="bc-t">👁️ Eye looks</div><div id="mk-eyes"></div><div class="bi-add"><input class="bi-inp" id="mk-e-inp" placeholder="Look description..."><button class="bi-btn" onclick="bA('mk-eyes','mk-e-inp','wh_makeup_eyes')">+</button></div></div>
 <div class="bc"><div class="bc-t">👄 Lip looks</div><div id="mk-lips"></div><div class="bi-add"><input class="bi-inp" id="mk-l-inp" placeholder="Color/product..."><button class="bi-btn" onclick="bA('mk-lips','mk-l-inp','wh_makeup_lips')">+</button></div></div></div>
 <div class="bc-g2"><div class="bc"><div class="bc-t">✨ Face looks</div><div id="mk-face"></div><div class="bi-add"><input class="bi-inp" id="mk-f-inp" placeholder="Foundation, blush combo..."><button class="bi-btn" onclick="bA('mk-face','mk-f-inp','wh_makeup_face')">+</button></div></div>
@@ -22,7 +22,7 @@
 <div class="bc"><div class="bc-t">📺 Tutorials to try</div><div id="mk-tuts"></div><div class="bi-add"><input class="bi-inp" id="mk-t-inp" placeholder="Tutorial link/name..."><button class="bi-btn" onclick="bA('mk-tuts','mk-t-inp','wh_makeup_tutorials')">+</button></div></div></div>
 <div class="bc"><div class="bc-t">🛒 Wishlist</div><div id="mk-wish"></div><div class="bi-add"><input class="bi-inp" id="mk-w-inp" placeholder="Product I want..."><button class="bi-btn" onclick="bA('mk-wish','mk-w-inp','wh_makeup_wishlist')">+</button></div></div></div>
 
-<!-- HAIR --><div class="bt-page" id="bt-hair" style="--bc:#9b59b6;--bcl:#f3eafb"><div class="bt-hero"><span style="font-size:2rem">💇</span><div><div class="bt-title">Hair</div><div class="bt-sub">Styles, products, and hair journey</div></div></div>
+<!-- HAIR --><div class="bt-page" id="bt-hair" style="--bc:#5C0300;--bcl:#F6DBD9"><div class="bt-hero"><span style="font-size:2rem">💇</span><div><div class="bt-title">Hair</div><div class="bt-sub">Styles, products, and hair journey</div></div></div>
 <div class="bc-g2"><div class="bc"><div class="bc-t">🧴 Products</div><div id="hr-products"></div><div class="bi-add"><input class="bi-inp" id="hr-p-inp" placeholder="Product..."><button class="bi-btn" onclick="bA('hr-products','hr-p-inp','wh_hair_products')">+</button></div></div>
 <div class="bc"><div class="bc-t">📸 Styles log</div><div id="hr-log"></div><div class="bi-add"><input class="bi-inp" id="hr-l-inp" placeholder="Style + date..."><button class="bi-btn" onclick="bA('hr-log','hr-l-inp','wh_hair_styles')">+</button></div></div></div>
 <div class="bc-g2"><div class="bc"><div class="bc-t">💡 Inspo</div><div id="hr-inspo"></div><div class="bi-add"><input class="bi-inp" id="hr-i-inp" placeholder="Inspo..."><button class="bi-btn" onclick="bA('hr-inspo','hr-i-inp','wh_hair_inspo')">+</button></div></div>
@@ -30,14 +30,14 @@
 <div class="bc"><div class="bc-t">🛒 Wishlist</div><div id="hr-wish"></div><div class="bi-add"><input class="bi-inp" id="hr-w-inp" placeholder="Want..."><button class="bi-btn" onclick="bA('hr-wish','hr-w-inp','wh_hair_wishlist')">+</button></div></div>
 <div class="bc"><div class="bc-t">📝 Hair notes</div><textarea class="bi-area" id="hr-notes" placeholder="Hair routine, what works, what doesn't..."></textarea><button class="bi-save" onclick="ss('wh_hair_notes',document.getElementById('hr-notes').value)">Save</button></div></div>
 
-<!-- OUTFITS --><div class="bt-page" id="bt-outfits" style="--bc:#e67e22;--bcl:#fef3e7"><div class="bt-hero"><span style="font-size:2rem">👗</span><div><div class="bt-title">Outfits</div><div class="bt-sub">Your wardrobe, your rules</div></div></div>
+<!-- OUTFITS --><div class="bt-page" id="bt-outfits" style="--bc:#4A6FA5;--bcl:#E4EDFA"><div class="bt-hero"><span style="font-size:2rem">👗</span><div><div class="bt-title">Outfits</div><div class="bt-sub">Your wardrobe, your rules</div></div></div>
 <div class="bc-g2"><div class="bc"><div class="bc-t">📸 Outfit log</div><div id="of-log"></div><div class="bi-add"><input class="bi-inp" id="of-l-inp" placeholder="Describe the look + date..."><button class="bi-btn" onclick="bA('of-log','of-l-inp','wh_outfit_log')">+</button></div></div>
 <div class="bc"><div class="bc-t">💡 Inspo</div><div id="of-inspo"></div><div class="bi-add"><input class="bi-inp" id="of-i-inp" placeholder="Inspo source..."><button class="bi-btn" onclick="bA('of-inspo','of-i-inp','wh_outfits_inspo')">+</button></div></div></div>
 <div class="bc-g2"><div class="bc"><div class="bc-t">❤️ Wardrobe loves</div><div id="of-loves"></div><div class="bi-add"><input class="bi-inp" id="of-lv-inp" placeholder="Favorite piece..."><button class="bi-btn" onclick="bA('of-loves','of-lv-inp','wh_wardrobe_loves')">+</button></div></div>
 <div class="bc"><div class="bc-t">🛒 Wishlist</div><div id="of-wish"></div><div class="bi-add"><input class="bi-inp" id="of-w-inp" placeholder="Want..."><button class="bi-btn" onclick="bA('of-wish','of-w-inp','wh_outfits_wishlist')">+</button></div></div></div>
-<div class="bc"><div class="bc-t">📝 Wardrobe notes</div><textarea class="bi-area" id="of-notes" placeholder="Capsule wardrobe plans, style goals..."></textarea><button class="bi-save" style="background:#e67e22" onclick="ss('wh_wardrobe_notes',document.getElementById('of-notes').value)">Save</button></div></div>
+<div class="bc"><div class="bc-t">📝 Wardrobe notes</div><textarea class="bi-area" id="of-notes" placeholder="Capsule wardrobe plans, style goals..."></textarea><button class="bi-save" style="background:#4A6FA5" onclick="ss('wh_wardrobe_notes',document.getElementById('of-notes').value)">Save</button></div></div>
 
-<!-- NAILS --><div class="bt-page" id="bt-nails" style="--bc:#e91e8c;--bcl:#fce4f3"><div class="bt-hero"><span style="font-size:2rem">💅</span><div><div class="bt-title">Nails</div><div class="bt-sub">Designs, colors, and nail art inspo</div></div></div>
+<!-- NAILS --><div class="bt-page" id="bt-nails" style="--bc:#5C0300;--bcl:#F6DBD9"><div class="bt-hero"><span style="font-size:2rem">💅</span><div><div class="bt-title">Nails</div><div class="bt-sub">Designs, colors, and nail art inspo</div></div></div>
 <div class="bc-g2"><div class="bc"><div class="bc-t">📸 Nail log</div><div id="nl-log"></div><div class="bi-add"><input class="bi-inp" id="nl-l-inp" placeholder="Design + date..."><button class="bi-btn" onclick="bA('nl-log','nl-l-inp','wh_nails_log')">+</button></div></div>
 <div class="bc"><div class="bc-t">🎨 Polishes I own</div><div id="nl-polish"></div><div class="bi-add"><input class="bi-inp" id="nl-p-inp" placeholder="Color/brand..."><button class="bi-btn" onclick="bA('nl-polish','nl-p-inp','wh_nails_polishes')">+</button></div></div></div>
 <div class="bc-g2"><div class="bc"><div class="bc-t">💡 Inspo</div><div id="nl-inspo"></div><div class="bi-add"><input class="bi-inp" id="nl-i-inp" placeholder="Inspo..."><button class="bi-btn" onclick="bA('nl-inspo','nl-i-inp','wh_nails_inspo')">+</button></div></div>

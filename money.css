@@ -1,9 +1,9 @@
 .money-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:.8rem}
 @media(max-width:700px){.money-summary{grid-template-columns:1fr}}
-.money-stat{background:white;border:1px solid var(--cbr);border-radius:10px;padding:9px 11px;box-shadow:var(--shadow)}
+.money-stat{background:var(--cbg);border:1px solid var(--cbr);border-radius:10px;padding:9px 11px;box-shadow:var(--shadow)}
 .ms-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--tmut);margin-bottom:3px}
 .ms-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:700}
 .ms-sub{font-size:9px;color:var(--tmut);margin-top:1px}
-.wish-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:white;border:1px solid var(--cbr);border-radius:8px;font-size:11px;margin-bottom:4px}
-.wish-progress{flex:1;height:6px;background:rgba(192,57,43,.1);border-radius:3px;overflow:hidden}
+.wish-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--cbg);border:1px solid var(--cbr);border-radius:8px;font-size:11px;margin-bottom:4px}
+.wish-progress{flex:1;height:6px;background:rgba(147,5,0,.1);border-radius:3px;overflow:hidden}
 .wish-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .3s}

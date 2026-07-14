@@ -1,7 +1,7 @@
 .hobby-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.2rem}
 @media(max-width:900px){.hobby-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.hobby-grid{grid-template-columns:1fr}}
-.hobby-card{background:white;border:2px solid var(--cbr);border-radius:18px;padding:1.2rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;text-decoration:none;color:inherit;display:block}
+.hobby-card{background:var(--cbg);border:2px solid var(--cbr);border-radius:18px;padding:1.2rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;text-decoration:none;color:inherit;display:block}
 .hobby-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);border-color:var(--hc)}
 .hobby-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--hc),color-mix(in srgb,var(--hc) 60%,white))}
 .hc-emoji{font-size:2.5rem;margin-bottom:.5rem;display:block}
@@ -9,5 +9,5 @@
 .hc-desc{font-size:10px;color:var(--tmut);line-height:1.5;margin-bottom:.6rem}
 .hc-tags{display:flex;gap:4px;flex-wrap:wrap}
 .hc-tag{font-size:8px;padding:2px 7px;border-radius:20px;font-weight:600;background:color-mix(in srgb,var(--hc) 10%,white);color:var(--hc);border:1px solid color-mix(in srgb,var(--hc) 25%,transparent)}
-.hub-quote{background:linear-gradient(135deg,#fce4f3,#fff9fc,#fef9e7);border:1px solid var(--cbr);border-radius:16px;padding:1.2rem;text-align:center;margin-bottom:1.5rem}
+.hub-quote{background:linear-gradient(135deg,#F6DBD9,#E4EDFA);border:1px solid var(--cbr);border-radius:16px;padding:1.2rem;text-align:center;margin-bottom:1.5rem}
 .hub-quote-text{font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--chd);line-height:1.6}

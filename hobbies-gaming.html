@@ -18,19 +18,19 @@
 
 <!-- GAME NAV -->
 <div class="game-nav">
-  <button class="gn-btn active" onclick="goGame('overview')" style="--gc:#5b3fa0">📊 Overview</button>
-  <button class="gn-btn" onclick="goGame('skyrim')" style="--gc:#c9a84c">🗡️ Skyrim</button>
-  <button class="gn-btn" onclick="goGame('sims4')" style="--gc:#1c6b5e">🏠 Sims 4</button>
-  <button class="gn-btn" onclick="goGame('stardew')" style="--gc:#5a8c3c">🌾 Stardew</button>
-  <button class="gn-btn" onclick="goGame('minecraft')" style="--gc:#5d7c15">⛏️ Minecraft</button>
-  <button class="gn-btn" onclick="goGame('hytale')" style="--gc:#2e6b9e">🌲 Hytale</button>
-  <button class="gn-btn" onclick="goGame('echos')" style="--gc:#9b5fa0">🌸 Echos</button>
-  <button class="gn-btn" onclick="goGame('dbd')" style="--gc:#8b0000">🔪 DBD</button>
+  <button class="gn-btn active" onclick="goGame('overview')" style="--gc:#4A6FA5">📊 Overview</button>
+  <button class="gn-btn" onclick="goGame('skyrim')" style="--gc:#5C0300">🗡️ Skyrim</button>
+  <button class="gn-btn" onclick="goGame('sims4')" style="--gc:#4A6FA5">🏠 Sims 4</button>
+  <button class="gn-btn" onclick="goGame('stardew')" style="--gc:#5C0300">🌾 Stardew</button>
+  <button class="gn-btn" onclick="goGame('minecraft')" style="--gc:#4A6FA5">⛏️ Minecraft</button>
+  <button class="gn-btn" onclick="goGame('hytale')" style="--gc:#5C0300">🌲 Hytale</button>
+  <button class="gn-btn" onclick="goGame('echos')" style="--gc:#4A6FA5">🌸 Echos</button>
+  <button class="gn-btn" onclick="goGame('dbd')" style="--gc:#5C0300">🔪 DBD</button>
   <button class="gn-btn" onclick="goGame('acnh')" style="--gc:#3d9e5e">🏝️ ACNH</button>
 </div>
 
 <!-- ==================== OVERVIEW ==================== -->
-<div class="game-page active" id="gp-overview" style="--gc:#5b3fa0;--gcl:#ede8f8">
+<div class="game-page active" id="gp-overview" style="--gc:#4A6FA5;--gcl:#E4EDFA">
   <!-- STATS ROW -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem" id="ov-stats"></div>
 
@@ -68,16 +68,16 @@
 </div>
 
 <!-- ==================== SKYRIM ==================== -->
-<div class="game-page dark-theme" id="gp-skyrim" style="--gc:#c9a84c;--gcl:#fff8e0">
-  <div class="game-hero" style="background:none"><div class="gh-emoji">🗡️</div><div><div class="gh-title" style="color:#c9a84c">The Elder Scrolls V: Skyrim</div><div class="gh-sub" style="color:rgba(255,255,255,.7)">Fus Ro Dah your way through every playthrough</div></div></div>
+<div class="game-page dark-theme" id="gp-skyrim" style="--gc:#5C0300;--gcl:#F6DBD9">
+  <div class="game-hero" style="background:none"><div class="gh-emoji">🗡️</div><div><div class="gh-title" style="color:#5C0300">The Elder Scrolls V: Skyrim</div><div class="gh-sub" style="color:rgba(255,255,255,.7)">Fus Ro Dah your way through every playthrough</div></div></div>
   <div class="sv-bar dark"><span class="sv-lbl">💾 Save file:</span><select class="sv-sel" id="skyrim-sv-sel" onchange="svSwitch('skyrim')"><option>Save 1</option></select><input class="sv-name" id="skyrim-sv-name" placeholder="Name this save..." oninput="svLabel('skyrim')"></div>
 
   <!-- SESSION QUICK LOG -->
   <div class="session-bar" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)">
-    <span style="font-size:10px;color:#c9a84c;font-weight:600">Quick log:</span>
+    <span style="font-size:10px;color:#5C0300;font-weight:600">Quick log:</span>
     <input class="gi-inp" type="number" id="sky-hours" placeholder="Hours" style="width:60px" min="0" step="0.5">
     <input class="gi-inp" id="sky-did" placeholder="What did you do..." style="flex:1">
-    <button class="session-btn" style="color:#c9a84c" onclick="quickLog('Skyrim','sky-hours','sky-did')">Log</button>
+    <button class="session-btn" style="color:#5C0300" onclick="quickLog('Skyrim','sky-hours','sky-did')">Log</button>
   </div>
 
   <!-- CHARACTER -->
@@ -111,7 +111,7 @@
 </div>
 
 <!-- ==================== SIMS 4 ==================== -->
-<div class="game-page" id="gp-sims4" style="--gc:#1c6b5e;--gcl:#e0f5f0">
+<div class="game-page" id="gp-sims4" style="--gc:#4A6FA5;--gcl:#E4EDFA">
   <div class="game-hero"><div class="gh-emoji">🏠</div><div><div class="gh-title" style="color:#1c6b5e">The Sims 4</div><div class="gh-sub">Build. Live. Control.</div></div></div>
   <div class="sv-bar light"><span class="sv-lbl" style="color:var(--gc)">💾 Household:</span><select class="sv-sel" id="sims4-sv-sel" onchange="svSwitch('sims4')"><option>Save 1</option></select><input class="sv-name" id="sims4-sv-name" placeholder="Name this household..." oninput="svLabel('sims4')"></div>
 
@@ -138,7 +138,7 @@
 </div>
 
 <!-- ==================== STARDEW ==================== -->
-<div class="game-page" id="gp-stardew" style="--gc:#5a8c3c;--gcl:#eaf5e0">
+<div class="game-page" id="gp-stardew" style="--gc:#5C0300;--gcl:#F6DBD9">
   <div class="game-hero"><div class="gh-emoji">🌾</div><div><div class="gh-title" style="color:#5a8c3c">Stardew Valley</div><div class="gh-sub">Farm, fish, befriend, and flourish</div></div></div>
   <div class="sv-bar light"><span class="sv-lbl" style="color:var(--gc)">💾 Farm:</span><select class="sv-sel" id="stardew-sv-sel" onchange="svSwitch('stardew')"><option>Save 1</option></select><input class="sv-name" id="stardew-sv-name" placeholder="Farm name..." oninput="svLabel('stardew')"></div>
   <div class="session-bar"><span style="font-size:10px;color:#5a8c3c;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="sdv-hours" placeholder="Hrs" style="width:60px"><input class="gi-inp" id="sdv-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#5a8c3c" onclick="quickLog('Stardew Valley','sdv-hours','sdv-did')">Log</button></div>
@@ -159,7 +159,7 @@
 </div>
 
 <!-- ==================== MINECRAFT ==================== -->
-<div class="game-page" id="gp-minecraft" style="--gc:#5d7c15;--gcl:#e8f0d0">
+<div class="game-page" id="gp-minecraft" style="--gc:#4A6FA5;--gcl:#E4EDFA">
   <div class="game-hero"><div class="gh-emoji">⛏️</div><div><div class="gh-title" style="color:#5d7c15">Minecraft</div><div class="gh-sub">Build anything. Survive everything.</div></div></div>
   <div class="sv-bar light"><span class="sv-lbl" style="color:var(--gc)">💾 World:</span><select class="sv-sel" id="minecraft-sv-sel" onchange="svSwitch('minecraft')"><option>Save 1</option></select><input class="sv-name" id="minecraft-sv-name" placeholder="World name..." oninput="svLabel('minecraft')"></div>
   <div class="session-bar"><span style="font-size:10px;color:#5d7c15;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="mc-hours" placeholder="Hrs" style="width:60px"><input class="gi-inp" id="mc-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#5d7c15" onclick="quickLog('Minecraft','mc-hours','mc-did')">Log</button></div>
@@ -176,7 +176,7 @@
 </div>
 
 <!-- ==================== HYTALE ==================== -->
-<div class="game-page" id="gp-hytale" style="--gc:#2e6b9e;--gcl:#ddeeff">
+<div class="game-page" id="gp-hytale" style="--gc:#5C0300;--gcl:#F6DBD9">
   <div class="game-hero"><div class="gh-emoji">🌲</div><div><div class="gh-title" style="color:#2e6b9e">Hytale</div><div class="gh-sub">The game we're all waiting for</div></div></div>
   <div class="gc-g2">
     <div class="gc"><div class="gc-t">📋 Plans & ideas</div><div id="hytale-plans"></div><div class="gi-add"><input class="gi-inp" id="hytale-plan-inp" placeholder="Something I want to do..."><button class="gi-btn" onclick="gAdd('hytale-plans','hytale-plan-inp','wh_hytale_plans')">+</button></div></div>
@@ -186,7 +186,7 @@
 </div>
 
 <!-- ==================== ECHOS ==================== -->
-<div class="game-page" id="gp-echos" style="--gc:#9b5fa0;--gcl:#f5eaf8">
+<div class="game-page" id="gp-echos" style="--gc:#4A6FA5;--gcl:#E4EDFA">
   <div class="game-hero"><div class="gh-emoji">🌸</div><div><div class="gh-title" style="color:#9b5fa0">Echoes of the Plum Grove</div><div class="gh-sub">Cozy farming with a haunting twist</div></div></div>
   <div class="sv-bar light"><span class="sv-lbl" style="color:var(--gc)">💾 Village:</span><select class="sv-sel" id="echos-sv-sel" onchange="svSwitch('echos')"><option>Save 1</option></select><input class="sv-name" id="echos-sv-name" placeholder="Village name..." oninput="svLabel('echos')"></div>
   <div class="session-bar"><span style="font-size:10px;color:#9b5fa0;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="ech-hours" placeholder="Hrs" style="width:60px"><input class="gi-inp" id="ech-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#9b5fa0" onclick="quickLog('Echos','ech-hours','ech-did')">Log</button></div>
@@ -198,7 +198,7 @@
 </div>
 
 <!-- ==================== DBD ==================== -->
-<div class="game-page dark-theme" id="gp-dbd" style="--gc:#ff4444;--gcl:#ffe0e0">
+<div class="game-page dark-theme" id="gp-dbd" style="--gc:#5C0300;--gcl:#F6DBD9">
   <div class="game-hero" style="background:none"><div class="gh-emoji">🔪</div><div><div class="gh-title" style="color:#ff4444">Dead by Daylight</div><div class="gh-sub" style="color:rgba(255,255,255,.7)">Survive. Escape. Or don't.</div></div></div>
   <div class="session-bar" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)"><span style="font-size:10px;color:#ff4444;font-weight:600">Quick log:</span><input class="gi-inp" type="number" id="dbd-hours" placeholder="Hrs" style="width:60px"><input class="gi-inp" id="dbd-did" placeholder="What did you do..." style="flex:1"><button class="session-btn" style="color:#ff4444" onclick="quickLog('Dead by Daylight','dbd-hours','dbd-did')">Log</button></div>
   <div class="gc-g2">
